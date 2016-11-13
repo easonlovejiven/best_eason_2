@@ -1,0 +1,24 @@
+<% obi = params[:total_fee].to_f.round(2) == 0 ? 0 : params[:total_fee].to_f.round(2)*0.1 < 1 ? 1 : ((params[:total_fee].to_f.round(2))*0.1).to_i %>
+<div class="container">
+  <div class="block-area">
+    <div class="order-success">
+      <div class="translate-middle-y">
+        <p class="title">
+          感谢您，订单提交成功!
+        </p>
+        <p>
+          <span>
+            订单号：<%= link_to params[:out_trade_no], shop_order_path(order_no:  params[:out_trade_no]), class: "" %>
+          </span>&nbsp;&nbsp;|&nbsp;&nbsp;<span>在线支付：<span class="text-highlight-r"><%= params[:total_fee] %></span> 元 </span>
+        </p>
+        <p class="">
+          恭喜您已获得 <%= obi  %> O!元奖励！
+        </p>
+      </div>
+    </div>
+    <p class="small">
+      已完成支付，您可以：
+      <%= link_to '查看订单状态', shop_orders_path, class: "text-highlight-r" %>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/" class="text-highlight-r">返回首页</a>
+    </p>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+zh-CN:
+  activerecord:
+    models:
+      shop/task_image: 推荐图
+    attributes:
+      shop/task_image:
+        pic: 图片
+        category: 分类

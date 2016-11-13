@@ -1,0 +1,220 @@
+<%= content_for :title do %>
+  <%= @task.title %>
+<% end %>
+<%# cache @participators do %>
+  <div class="container preview-container">
+    <%= render 'shop/shared/show_crumbs' %>
+
+    <%= form_tag add_shop_carts_path, class: 'task-product', name: "shop" do %>
+      <div class="clearfix task-main">
+        <div class="detail-left">
+          <%= render 'shop/shared/task_pictures' %>
+          <% if @task.is_rush %>
+            <div class="countdown text-center">
+              <div class="time" data-end-at="<%= @task.sale_end_at %>" data-start-at="<%= @task.sale_start_at %>">
+                <small class="js-timeTip">距结束:</small>
+                <span class="timeblock">0</span>
+                <span class="timeblock">0</span>
+                <span class="">天</span>
+                <span class="timeblock">0</span>
+                <span class="timeblock">0</span>
+                <span class="">时</span>
+                <span class="timeblock">0</span>
+                <span class="timeblock">0</span>
+                <span class="">分</span>
+                <span class="timeblock">0</span>
+                <span class="timeblock">0</span>
+              </div>
+            </div>
+          <% end %>
+
+          <div class="share-box clearfix">
+            <%= render partial: "shop/shared/share", locals: {object: @task, type: 'preview', text: '我喜欢这个活动'} %>
+          </div>
+          <% if @current_user %>
+            <div class="square-article text-gray">
+              <%= render partial: 'shop/shared/complete_status', locals: {task: @task.shop_task} %>
+            </div>
+          <% end %>
+        </div>
+        <div class="detail-right">
+          <h4 class="task-title"><%= @task.title %></h4>
+          <p>
+            <span class="label-icon"><i class="icons">&#xe631;</i></span><span class="text-highlight-r js-eventprice"><%= @ticket_types.first.fee %></span> 元
+            <input name="ticket_type_id" class="js-posteventprice" type="hidden" value="<%= @categories.first[1].first.id %>">
+          </p>
+          <% if @task.start_at.present? %>
+            <p>
+              <span class="label-icon"><i class="icons">&#xe640;</i></span>
+              <span><%= @task.start_at && @task.start_at.to_date.to_s(:db) %></span>
+            </p>
+          <% end %>
+          <% if @task.address.present? %>
+            <p>
+              <span class="label-icon"><i class="icons">&#xe63f;</i></span>
+              <span><%= @task.address %></span>
+            </p>
+          <% end %>
+          <p>
+            <span class="label-icon"><i class="icons">&#xe63e;</i></span>
+            <span>
+              <span class="ticket-sold"><%= @ticket_types.first.participator %></span> /
+              <span class="ticket-total">
+                <% if  @ticket_types.first.is_limit %>
+                  <%= @ticket_types.first.ticket_limit %>
+                <% else %>
+                  不限
+                <% end %>
+              </span>
+            </span>
+          </p>
+          <p>
+            <span class="label-icon"><i class="icons">&#xe63c;</i></span>
+            <% @stars.each do |star| %>
+              <%= link_to star.name, home_star_path(star) ? home_star_path(star) : 'javascript:;' %>&nbsp;&nbsp;
+            <% end %>
+          </p>
+          <% if @freight_template.present? %>
+            <div style="margin-bottom: 15px;">
+              <span class="label-icon"> <i class="icons">&#xe6b4;</i> </span>
+              <span><%= @freight_template.start_position %></span>&nbsp;送至&nbsp;
+              <div class="distribute">
+                <a href="#modalcity" class="distribute-btn js-citytext" data-toggle="modal"><%= @freight.try(:destination) %> &darr;</a>
+              </div>&nbsp;&nbsp;
+              配送费：<span class="distribute-fee js-cityPrice">￥<%= @freight.first_fee %></span>
+            </div>
+          <% end %>
+
+
+          <ul class="list-inline js-showtype">
+            <li>分类：</li>
+            <% @categories.each do |key, category| %>
+              <li class="otag-type" data-id="<%= key %>">
+                <label for="data-1" class="task-label">
+                  <%= key %>
+                </label>
+                <span class="otag-state"></span>
+              </li>
+            <% end %>
+          </ul>
+          <ul class="list-inline js-showprice">
+            <li>类型：</li>
+            <% @categories.first[1].each do |category| %>
+              <li class="otag-type">
+                <label for="data-1" class="task-label">
+                  <%= category.second_category %>
+                </label>
+                <span class="otag-state"></span>
+              </li>
+            <% end %>
+          </ul>
+
+          <ul class="list-inline">
+            <li>数量：</li>
+            <li class="">
+              <div class="product-quantity">
+                <button name="button" type="button" class="quantity-button reduce-quantity js-minus">-</button>
+                <input type="number" min="1" value="1" class="quantity-field js-value" name="quantity" onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false">
+                <button name="button" type="button" class="quantity-button add-quantity js-add" data-target-name="quantity">+</button>
+              </div>
+            </li>
+          </ul>
+
+        </div>
+      </div>
+      <!-- 附加信息 -->
+      <% if @ext_infos.present? %>
+        <div class="ext-infos-edit clearfix">
+          <div class="pull-left">附加信息：</div>
+          <% @ext_infos.each_with_index do |info, index| %>
+          <div class="row form-group" style="margin-left: 70px;">
+            <label for="" class="col-sm-3 control-label text-right">
+              <% if info.require %>
+                <span class="text-highlight-r">*</span>
+              <% end %>
+              <%= info.title %>
+            </label>
+            <div class="col-sm-9">
+              <% if info.require %>
+                <input type="text" class="form-control js-infodanger" required="required" name="info<%= index%>" placeholder="不要添加表情符号哦，否则生成不了订单哒">
+              <% else %>
+                <input type="text" class="form-control" name="info<%= index%>"  placeholder="不要添加表情符号哦，否则生成不了订单哒">
+              <% end %>
+            </div>
+          </div>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+    <!-- 活动详情 -->
+    <h5 class="h4 aside-title">
+      <span class="border-l">活动详情</span>
+    </h5>
+    <div class="article-area">
+      <%= simple_format h @task.description %>
+      <% if @task.descripe_cover %>
+        <div>
+          <%= image_tag @task.descripe_cover %>
+        </div>
+      <% end %>
+      <%= simple_format h @task.descripe2 %>
+    </div>
+  </div>
+  <div class="js-dataInfo hide" data-participatorjson='<%= raw @price_types.to_json %>' data-participator='<%= raw @participators.to_json %>' data-maxparticipator='<%= raw @max_participators.to_json %>' data-freights='<%= raw @freights_json.to_json %>' data-each='<%= raw @each_limit.to_json %>'></div>
+  <% if @task.freight_template.present? %>
+    <% cache(@task.freight_template) do %>
+      <div class="modal fade freight-modal" id="modalcity" tabindex="-1" role="dialog" aria-labelledby="modalcityLabel" data-backdrop="static">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header text-center">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">配送：<%= @task.freight_template.start_position %>→<span class="js-changecity"><%= @task.freight_template.freights.first.destination %></span></h4>
+            </div>
+            <div class="modal-body">
+              <% @task.freight_template.freights.each do |freight| %>
+                <button class="btn btn-default js-city"><%= freight.destination %></button>
+              <% end %>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default space-lg-hor" data-dismiss="modal">取消</button>
+              <button type="submit" class="btn btn-highlight-outline space-lg-hor js-saveCity" data-dismiss="modal">保存</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+<%# end %>
+<div class="task-preview text-right">
+  <div class="container">
+    <%= link_to '返回编辑', edit_shop_event_path(@task), method: :get, class: 'btn btn-highlight space-lg-hor' %>
+    <%= link_to '发布', publish_shop_task_path(@task.shop_task), method: :put, class: 'btn btn-highlight space-lg-hor' %>
+  </div>
+</div>
+<% content_for :head do %>
+  <style media="screen">
+    body{
+      padding-bottom: 60px;
+    }
+  </style>
+<% end %>
+<% content_for :tail do %>
+  <script type="text/javascript">
+      var tid = null;
+      var bClicked = false;
+      var bCarsSecound = false;
+      var bInfo = true;
+      var json = $.parseJSON($('.js-dataInfo').attr('data-participatorjson'));
+      var participator_json = $.parseJSON($('.js-dataInfo').attr('data-participator'));
+      var max_participator_json = $.parseJSON($('.js-dataInfo').attr('data-maxparticipator'));
+      var freights_json = $.parseJSON($('.js-dataInfo').attr('data-freights'));
+      var each_json = $.parseJSON($('.js-dataInfo').attr('data-each'));
+      var oDataoIdWrap = 99999999;
+      var url = '/shop/events/'+<%= @task.id %>+'/get_ticket_type';
+      shopData(url);
+      var isHasTime = $(document).find('.time').length;
+      if(isHasTime == 1){
+        changeTime();
+      }
+  </script>
+<% end %>

@@ -1,0 +1,14 @@
+zh-CN:
+  activerecord:
+    models:
+      core/recording: 搜索记录
+    attributes:
+      core/recording:
+        name: 关键字
+        genre: 类型
+        count: 次数
+        user_id: 用户
+    enums:
+      "core/recording":
+        genre:
+          star: 明星页

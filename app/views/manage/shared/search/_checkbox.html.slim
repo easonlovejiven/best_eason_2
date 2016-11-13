@@ -1,0 +1,3 @@
+.form-group
+	= label_tag "where[#{field}]", model.human_attribute_name(field)
+	= check_box_tag "where[#{field}]", option[:value] || true, option[:checked] || false, class: 'form-control'

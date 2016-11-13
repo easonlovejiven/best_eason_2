@@ -1,0 +1,64 @@
+<div class="container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <ol class="breadcrumb">
+        <li><%= link_to '发布任务', personal_center_home_users_path %></li>
+        <li class="active">发布话题</li>
+      </ol>
+
+      <%= simple_form_for @topic, url: shop_topic_path, method: :put, html: { class: "publish-form validate-form js-checkForm" } do |f| %>
+        <%= f.hidden_field :user_id, value: @current_user.id %>
+        <%= f.hidden_field :creator_id, value: @current_user.id %>
+        <%= f.hidden_field :shop_category, value: "shop_topics"  %>
+
+        <div class="form-group">
+          <label class="">标题 <span class="text-highlight-r">*</span></label>
+          <%= f.input :title, label: false, placeholder: '请勿包含 ＃＊<> & % ^‘集资等字符', as: :text, class: "form-control", input_html: { rows: "1", class: "js_danger_chara js-emoji" } %>
+        </div>
+        <div class="form-group">
+          <label class="">任务说明 <span class="text-highlight-r">*</span></label>
+          <%= f.input :description, label: false, placeholder: '写一段详细的任务说明，描述这个任务的细节', as: :text, class: "form-control", input_html: { rows: "12", class: "js_danger_val js-emoji" } %>
+        </div>
+
+        <div class="form-group js-tagbox">
+          <label class="form-group">
+            上传封面图 <span class="text-highlight-r">*</span><small class="text-gray"> 支持jpg/gif/png格式,单张（大小 &lt; 2M）</small>
+          </label>
+          <div class="form-group">
+            <% unless @topic.cover_pic.present? %>
+              <label class="control-label">无</label>
+            <% else %>
+              <%= link_to (image_tag @topic.cover_pic, width: 200, height: 200, alt: ""), @topic.cover_pic, target: '_blank' %>
+            <% end %>
+            <%= f.hidden_field :key, label: false, placeholder: '上传图片', class: "js-name js-checkName" %>
+            <p class="js-textError text-highlight-r"></p>
+            <div class="form-control js-photobtn1">上传图片</div>
+          </div>
+          <div class="js-upload-photo-1 hide">
+            <div class="thumb-img-add js-upload-photoadd-1">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>关联明星 <span class="text-highlight-r">*</span><small class="text-gray">(最多关联10位明星)</small></label>
+          <%= render partial: 'shop/shared/select2_find_tag', locals: {f: f, field: :star_list, options: { selects: Core::Star.where(published: true).select("id, name"), multiple_class: true, auto_suppl: true, auto_url: "/manage/shop/get_star?id=#{@topic.shop_task.try(:id)}", url: '/manage/shop/search_star', tag: false } } %>
+        </div>
+        <div class="form-group">
+          <div class="checkbox">
+            <label>
+              <%= f.check_box :is_share %>
+              同时作为分享任务发布
+            </label>
+          </div>
+        </div>
+        <div class="form-group text-right">
+          <%= f.button :submit, @topic.shop_task.try(:published) == true ? '保存' : "预览", class: 'btn btn-highlight-outline space-lg-hor js-checkButton' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

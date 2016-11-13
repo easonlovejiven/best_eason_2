@@ -1,0 +1,9 @@
+<% field_class = {class: 'form-control', value: value}.merge!(f.options[:options_class]) %>
+
+<fieldset>
+  <div class="form-group row">
+    <div class="col-md-11">
+      <%= f.hidden_field field, field_class %>
+    </div>
+  </div>
+</fieldset>

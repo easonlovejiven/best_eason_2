@@ -1,0 +1,24 @@
+<% field_class = {class: 'form-control js_danger_val', rows: 7}.merge!(f.options[:options_class]) %>
+
+<fieldset class="form-group row">
+  <%= f.label field, class: 'col-md-1 control-label' do -%>
+    <%= raw('<sup>*</sup>') if defined?(required) && required %>
+    <%= model.human_attribute_name(field) %>
+  <% end -%>
+
+  <div class="col-md-11">
+    <% field_class.merge!(required: true) if defined?(required) && required %>
+    <% field_class.merge!(maxlength: maxlength) if defined?(maxlength) && maxlength %>
+    <% field_class.merge!(placeholder: placeholder) if defined?(placeholder) && placeholder %>
+    <% if defined?(show_type) && (show_type == 'kindeditor') %>
+      <%= f.input field, as: :kindeditor, label: false, input_html: field_class.merge(kindeditor_option)%>
+    <% else %>
+      <%= f.text_area field, field_class %>
+    <% end %>
+    <% if defined?(p_field) && p_field %>
+      <p class="help-block">
+        <%= p_field %>
+      </p>
+    <% end %>
+  </div>
+</fieldset>

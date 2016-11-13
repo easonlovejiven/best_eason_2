@@ -1,0 +1,183 @@
+// 话题
+.topics{
+  .image-item{
+    float: left;
+    overflow: hidden;
+    padding: 5px;
+    cursor: pointer;
+    width: 30%;
+    // height: 212px;
+  }
+  .sort-type{
+    font-size: 14px;
+  }
+}
+
+.text-hover{
+  color:#53E8E8;
+  padding-bottom:5px;
+  border-bottom:2px solid #53E8E8;
+}
+.padding-s{
+  padding-left: 15px;
+  padding-right:15px;
+  color:#C5C5C5;
+}
+.line-main{
+  color: #53E8E8;
+}
+.block-i{
+  display:inline-block;
+  font-size:16px;
+  cursor:pointer;
+}
+.comments-list,
+.topic-item{
+  .avatar-head{
+    margin-bottom: 26px;
+  }
+  .v-icon{
+    line-height: 14px;
+  }
+}
+.box-hiden{
+  visibility: hidden;
+}
+.progressBox{
+  padding-top:15px;
+  clear: both;
+  .progress-default{
+    height:40px;
+    font-size:14px;
+    color:#5C5C5C;
+    position:relative;
+    border-radius:20px;
+    margin-bottom: 12px;
+    line-height: 40px;
+    padding-left:20px;
+    background-color: #EEEEEE;
+    overflow: hidden;
+    cursor: pointer;
+    .progress-show-you{
+      position: absolute;
+      top:0;
+      left:0;
+      width: 0;
+      height: 100%;
+      text-indent:40px;
+      border-radius: 20px 0 0 20px;
+      background-color: #FF5990;
+    }
+    .progress-show-other{
+      position: absolute;
+      top:0;
+      left:0;
+      width: 0;
+      height: 100%;
+      text-indent:40px;
+      border-radius:20px 0 0 20px; 
+      background-color: #FFC900;
+    }
+    .progress-world-left{
+      position:absolute;
+      z-index: 1;
+    }
+    .progress-world-right{
+      position:absolute;
+      display: inline-block;
+      right:40px;
+      top:0;
+      .progress-world{
+        margin-left:5px;
+      }
+    }
+    .hide{
+      display: none;
+    }
+  }
+  .js_progress_btn:before{
+      content: '';
+      width: 13px;
+      height:13px;
+      display:inline-block;
+      vertical-align:middle; 
+      border: 1px solid #C9C9C9;
+      border-radius:50%;
+      margin-right: 10px;
+      background-color: #FFF; 
+    }
+}
+.js_vote_next{
+  color:#D8D8D8;
+}
+.error{
+  display: block;
+  color: #FF472D;
+}
+.topics-photo,
+.topics-video{
+  display: none;
+  margin-top: 20px;
+  border: 1px solid #E0E0E0;
+  background-color: #fff;
+  border-radius: 2px;
+  padding: 20px;
+
+  position: relative;
+  &:before{
+    content: '';
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #E0E0E0;
+    border-width: 1px 0 0 1px;
+    background-color: #fff;
+    border-radius: 5px 0 0 0;
+    position: absolute;
+    top: -8px;
+    -webkit-transform: rotateZ(45deg) skew(10deg, 10deg);
+    -moz-transform: rotateZ(45deg) skew(10deg, 10deg);
+    -ms-transform: rotateZ(45deg) skew(10deg, 10deg);
+    -o-transform: rotateZ(45deg) skew(10deg, 10deg);
+    transform: rotateZ(45deg) skew(10deg, 10deg);
+  }
+}
+.topics-photo.active{
+  &:before{
+    left: 29px;
+  }
+}
+.topics-video.active{
+  &:before{
+    left: 129px;
+  }
+}
+.topics-cover,
+.topic-images,
+.topic-article{
+  margin-bottom: 13px;
+}
+.topic-article{
+  margin-top: 10px;
+  margin-right: -58px;
+  >a{
+    color: #6A6A6A;
+  }
+  a:hover{
+    color: inherit;
+  }
+}
+.topic-images{
+  margin-left: -5px;
+  margin-top: 18px;
+}
+// 动态详情
+.reply-show{
+  display: none;
+  padding-top: 10px;
+  margin-top: 15px;
+  border-top: 1px solid #eeeeee;
+}
+.reply-list{
+  margin-bottom: 20px;
+}

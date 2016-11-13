@@ -1,0 +1,115 @@
+<div class="container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+
+    <div class="col-sm-9">
+      <div class="head-highline">
+        <span class="item active">订单详情</span>
+      </div>
+
+      <div class="table-responsive block-area">
+        <p>
+          订单信息
+        </p>
+        <table class="table table-bordered table-condensed">
+          <tbody>
+            <tr>
+              <th class="col-md-2">
+                订单编号
+              </th>
+              <td>
+                <%= @expen.order_no %>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                商品名称
+              </th>
+              <td>
+                <%= @task.title %>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                商品类型
+              </th>
+              <td>
+                <%= @expen.ticket_type.category %>:<%= @expen.ticket_type.second_category %>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                成交时间
+              </th>
+              <td>
+                <%= @expen.created_at && @expen.created_at.to_s(:db)  %>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                支付O!元
+              </th>
+              <td>
+                <%= @expen.amount || ''  %> O!元
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <% if @expen.resource_type == 'Welfare::Product'%>
+          <p>
+            收货人信息
+          </p>
+          <table class="table table-bordered table-condensed">
+            <tbody>
+              <tr>
+                <th class="col-md-2">
+                  收货人姓名
+                </th>
+                <td>
+                  <%= @expen.try(:user_name) %>
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  手机
+                </th>
+                <td>
+                  <%= @expen.try(:phone) %>
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  地址
+                </th>
+                <td>
+                  <%= @expen.try(:address) %>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        <% end %>
+
+        <p>
+          附加信息
+        </p>
+        <table class="table table-bordered table-condensed">
+          <tbody>
+            <% @ext_info_values.each do |ext_info_value|%>
+              <tr>
+                <th class="col-md-2">
+                  <%= @ext_infos[ext_info_value.ext_info_id]%>
+                </th>
+                <td>
+                  <%= ext_info_value.value%>
+                </td>
+              </tr>
+            <% end%>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

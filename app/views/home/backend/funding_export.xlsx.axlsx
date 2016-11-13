@@ -1,0 +1,55 @@
+wb = xlsx_package.workbook
+wb.use_shared_strings = true
+wrap_text = wb.styles.add_style({:alignment => {:horizontal => :center, :vertical => :center, :wrap_text => true}}  )
+ext_infos = (task_id.present? && task_type.present?) ? eval(task_type).where(id: task_id).first.try(:ext_infos) : []
+show_ext_infos = task_id.present? && task_type.present? && ext_infos.present?
+wb.add_worksheet(name: "应援订单列表") do |sheet|
+  row = %W(订单号 商品名称 商品类型 用户id 用户名字 用户昵称 用户电话 用户地址 支付类型 支付来源 数量 支付钱数 支付时间 创建时间 taskID task类型)
+  row += ext_infos.map(&:title) if show_ext_infos
+  sheet.add_row row
+
+  if orders.present?
+    orders.includes([:ticket_type, :owhat_product, :user]).each_with_index do |order, tindex|
+      sheet.add_row [
+        order.order_no,
+        order.owhat_product.try(:title),
+        "#{order.ticket_type.try(:category)} #{order.ticket_type.try(:second_category)}",
+        order.user_id,
+        order.user_name,
+        order.user.try(:name),
+        order.phone,
+        order.core_address.try(:full_address),
+        order.pay_type == 'alipay' ? '支付宝' : '微信',
+        order.platform == 'web' ? '网站' : (order.platform || ''),
+        order.quantity,
+        order.payment,
+        order.paid_at ? order.paid_at.to_s(:db) : '',
+        order.created_at ? order.created_at.to_s(:db) : '',
+        order.shop_funding_id,
+        order.shop_funding_type,
+      ] + (show_ext_infos ? order.split_memo.gsub(/%&\*/, " %&*").split("%&*") : []), :style => wrap_text, :types => [:string]
+    end
+  end
+  if miss_orders.present?
+    miss_orders.includes([:ticket_type, :owhat_product, :user]).each_with_index do |order, tindex|
+      sheet.add_row [
+        order.order_no,
+        order.owhat_product.try(:title),
+        "#{order.ticket_type.try(:category)} #{order.ticket_type.try(:second_category)}",
+        order.user_id,
+        order.user_name,
+        order.user.try(:name),
+        order.phone,
+        order.core_address.try(:full_address),
+        order.pay_type == 'alipay' ? '支付宝' : '微信',
+        order.platform == 'web' ? '网站' : (order.platform || ''),
+        order.quantity,
+        order.payment,
+        order.paid_at ? order.paid_at.to_s(:db) : '',
+        order.created_at ? order.created_at.to_s(:db) : '',
+        order.shop_funding_id,
+        order.shop_funding_type,
+      ] + (show_ext_infos ? order.split_memo.gsub(/%&\*/, " %&*").split("%&*") : []), :style => wrap_text, :types => [:string]
+    end
+  end
+end

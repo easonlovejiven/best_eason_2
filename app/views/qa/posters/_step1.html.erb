@@ -1,0 +1,17 @@
+<!-- 1.编辑任务.引导语 -->
+<div class="publish-form">
+  <div class="form-group">
+    <label class="">任务口号 <span class="text-highlight-r">*</span></label>
+    <!-- 不同的页面显示不同的placeholder -->
+    <%= f.text_area :title,  class: 'form-control', rows: 12, placeholder: '如：新专辑上市了，快来参与任务哦～' %>
+  </div>
+
+  <div class="form-group">
+    <label class="">关联明星 <span class="text-danger">*</span></label>
+    <%= render partial: 'shop/shared/select2_tag', locals: {f: f, field: :star_list, options: { selects: Core::Star.where(published: true).select("id, name"), multiple_class: true, url: '/manage/shop/search_star', tag: true } } %>
+  </div>
+
+  <div class="form-group">
+    <button type="button" class="btn btn-danger btn-lg space-lg-hor" date-step-button="next">下一步</button>
+  </div>
+</div>

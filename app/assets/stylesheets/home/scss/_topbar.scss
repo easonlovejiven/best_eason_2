@@ -1,0 +1,148 @@
+// 导航栏
+.navbar{
+  height: 60px;
+  // font-size: 12px;
+  background-color: $colorHighLight;
+  border: 0;
+}
+.navbar-link{
+  display: inline-block;
+  text-align: center;
+  min-width: 8.3%;
+  padding: 10px;
+  line-height: 40px;
+  color: #00A5A6;
+  &:hover{
+    background:linear-gradient(#9AF6F5,#53E8E8);
+  }
+  &.active{
+    background:linear-gradient(#20D3D3,#53E8E8);
+  }
+  & + .navbar-link{
+    margin-left: -3px;
+  }
+}
+.logo,
+.form-search{
+  display: inline-block;
+  vertical-align: middle;
+}
+.logo{
+  margin-right: 10px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  img{
+    width: 122px;
+  }
+}
+// 搜索框
+.form-search{
+  width: 240px;
+  font-size: 12px;
+  color: $colorOrgan;
+  margin-right: 6px;
+  .btn, .form-control{
+    border: 0;
+    height: 40px;
+    min-width: 40px;
+    opacity: 0.6;
+  }
+  .form-control{
+    font-size: 12px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+  }
+  .btn{
+    font-size: 20px;
+    padding: 0 9px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+  }
+  .input-group-btn:last-child>.btn{
+    margin-left: 0;
+  }
+  // 搜索-搜索结果页面
+  .search-results &{
+    margin-bottom: 10px;
+    width: 100%;
+    .icons{
+      line-height: 18px;
+    }
+  }
+}
+// 导航栏 ends
+// 导航栏下拉按钮&下拉菜单样式
+.dropdown-group{
+  line-height: 0;
+  display: inline-block;
+  vertical-align: middle;
+  &.open{
+    background-color: #30CECD;
+    .navbar-link{
+      color: #fff;
+      // max-width: 125px;
+    }
+    .arrow{
+      border-color: #fff transparent transparent transparent;
+      // margin-top: -4px;
+      -webkit-transform: rotate(180deg);
+      -moz-transform: rotate(180deg);
+      -ms-transform: rotate(180deg);
+      -o-transform: rotate(180deg);
+      transform: rotate(180deg);
+    }
+  }
+  // 下拉菜单
+  .dropdown-menu{
+    background-color: #30CECD;
+    min-width: 100px;
+    text-align: center;
+    border-radius: 0 0 2px 2px;
+    box-shadow: none;
+    border: 0;
+    margin-top: 0;
+    padding: 0;
+    left: auto;
+    right: 0;
+    a{
+      color: #fff;
+      line-height: 40px;
+      padding: 0 4px;
+      &:hover,
+      &:focus{
+        color: #fff;
+        opacity: 0.8;
+        background-color: inherit;
+      }
+    }
+  }
+}
+.dropdown-arrow{
+  display: inline-block;
+  vertical-align: middle;
+  width: 10px;
+  height: 0;
+  border: 6px solid;
+  border-width: 7px 5px 0;
+  border-color: #4A4A4A transparent transparent transparent;
+  // margin-top: 4px;
+  margin-left: 4px;
+  -webkit-transition: .3s all;
+  -moz-transition: .3s all;
+  -ms-transition: .3s all;
+  -o-transition: .3s all;
+  transition: .3s all;
+  .dropdown-group &{
+    border-color: #00A5A6 transparent transparent transparent;
+  }
+
+}
+// 导航栏下拉按钮&下拉菜单样式 ends
+// 手机版导航
+.navbar-toggle{
+  background-color: #20DEFF;
+  .icon-bar{
+    background-color: #fff;
+  }
+}
+// 手机版导航 ends

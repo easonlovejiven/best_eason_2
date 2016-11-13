@@ -1,0 +1,22 @@
+zh-CN:
+  activerecord:
+    models:
+      notification/send: 广播消息
+    attributes:
+      notification/send:
+        sendor_id: 发送人
+        updater_id: 更新人
+        skip_channel: 跳转频道
+        skip_id: 跳转ID
+        object_name: 消息类别
+        send_date: 发送时间
+        push_content: 显示push内容
+        content: 正文
+        receivor_id: 接收人
+        creator_id: 创建人
+        os: 平台
+        count_down: 倒计时
+        send_status: 消息状态
+        receivor_id: 发送对象
+        ios_times: 唤醒点击次数-iOS
+        android_times: 唤醒点击次数-Android

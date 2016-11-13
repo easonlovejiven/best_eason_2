@@ -1,0 +1,31 @@
+<div class="container m-container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <div class="block-area">
+        <table class="table table-nobordered table-sm">
+          <thead>
+            <tr>
+              <th>文件名</th>
+              <th>创建时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @exported_orders.each do |file| %>
+            <tr>
+              <td><%= file.name %></td>
+              <td><%= time_ago_in_words file.created_at %>前</td>
+              <td nowrap>
+                <%= link_to "下载", download_home_backend_index_path(id: file.id), class: 'btn btn-default btn-xs', target: '_blank' %>
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

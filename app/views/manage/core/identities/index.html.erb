@@ -1,0 +1,56 @@
+<h3><%= "#{model.model_name.human}#{t(:index)}" %> (<%= @records.total_entries %>)</h3>
+
+<div class="well well-sm">
+  <%= form_tag request.path, method: 'get', id: 'search_form', class: 'form-inline' do %>
+    <div class="form-inline">
+      <%= render 'manage/shared/search/basic', field: 'id' %>
+      <%= render 'manage/shared/search/like', field: 'name' %>
+      <%= render 'manage/shared/search/order' %>
+      <%= render 'manage/shared/search/page' %>
+      <div class="form-group">
+        <%= submit_tag t(:search), name: nil, class: 'btn btn-info' %>
+        <%#= link_to t(:reset), request.path, class: 'btn btn-info', data: {remote: true} %>
+      </div>
+      <%#= link_to t('new'), [:new, :manage, model.model_name.singular], class: 'btn btn-info pull-right' %>
+    </div>
+  <% end %>
+</div>
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <% %i{ id org_pic org_name name phone position related_ids status user_id created_at }.each do |field| %>
+        <th><%= model.human_attribute_name(field) %></th>
+      <% end %>
+      <th><%= t 'actions' %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @records.each do |record| %>
+      <tr>
+        <td><%= record.id %></td>
+        <td><%= image_tag(record.org_pic_url, width: '55px', height: '50px') %></td>
+        <td><%= record.org_name %></td>
+        <td><%= record.name %></td>
+        <td><%= record.phone %></td>
+        <td><%= record.position %></td>
+        <td><%= Core::Star.where(id: JSON.parse(record.related_ids.to_s)).pluck(:name).join(', ') %></td>
+        <td><%= record.status %></td>
+        <td><%= link_to record.user.name, home_user_path(record.user) if  record.user %></td>
+        <td><%= record.created_at.to_s(:db) %></td>
+        <td>
+          <%= link_to t('show'), [:manage, record], class: 'btn btn-xs btn-default' %>
+          <% if can?(:manage, record) && record.status == '待审核' %>
+            <%= link_to t('accept'), [:accept, :manage, record], data: {confirm: t('confirm'), method: 'put'}, class: 'btn btn-xs btn-default' %>
+            <%= link_to t('reject'), [:reject, :manage, record], data: {confirm: t('confirm'), method: 'put'}, class: 'btn btn-danger btn-xs' %>
+          <% end %>
+          <%= link_to t('destroy'), [:manage, record], data: {confirm: t('confirm'), method: 'delete'}, class: 'btn btn-danger btn-xs' if can?(:destroy, record) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="dt-toolbar-footer">
+  <%= render 'manage/shared/pagination', records: @records %>
+</div>

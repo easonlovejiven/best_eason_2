@@ -1,0 +1,15 @@
+<% show = !%w[new edit].include?(params[:action]) && @record.valid? %>
+<% options_class = show ? {disabled: 'true'} : {} %>
+<%= form_for @record, url: [:manage, @record], method: @record.new_record? ? :post : :put, html: {class: 'form-horizontal'} do |f| %>
+  <% f.options.merge!(options_class: options_class) %>
+  <!-- <%= render 'manage/shared/modal/text_field', {f: f, field: :like_count, required: true } %> -->
+  <div class="modal-body">
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :like_count, required: true, p_field: '赞数最大限制为9999', options: {options_class: 'input_number'}, maxlength: 4 } %>
+
+    <%= render 'manage/shared/modal/timestamps', {f: f} if show %>
+  </div>
+
+  <div class="modal-footer">
+    <%= render 'manage/shared/modal/footer', {f: f} unless show %>
+  </div>
+<% end %>

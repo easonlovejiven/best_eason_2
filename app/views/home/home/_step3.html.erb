@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="null-content">
+    <div class="text-center translate-middle-y">
+      <p>
+        <%= image_tag "home/publish-success.png", style: "height: 160px;" %>
+      </p>
+      <p class="lead">恭喜<br>已<%= ((defined? action) && action == 'update')? "保存" : "发布" %>成功</p>
+      <p>
+        <%= link_to '返回首页', home_root_path, class: 'btn btn-default text-highlight-r' %>
+        <%if (defined? path) && path.present? %>
+          <%= link_to '查看详情',  path, class: 'btn btn-default text-highlight-r', style: 'margin-left: 20px;' %>
+        <% end %>
+      </p>
+    </div>
+  </div>
+</div>
+<% content_for :tail do %>
+  <script type="text/javascript">
+  // function tickSeconds(oClass,s){
+  //   var oVal=document.querySelector('.'+oClass+'');
+  //   timer=setInterval(function(){
+  //     s--;
+  //     if(s<=0){
+  //       clearInterval(timer);
+  //       window.location.href='/';
+  //     }else{
+  //       oVal.innerHTML=s;
+  //     }
+  //   },1000);
+  // }
+  // tickSeconds('js-seconds',10);
+  </script>
+<% end %>

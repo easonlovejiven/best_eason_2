@@ -1,0 +1,56 @@
+<%= content_for :title do %>
+  <%= @medium.title %>
+<% end %>
+<div class="container preview-container">
+  <ol class="breadcrumb">
+    <li><a href="<%= personal_center_home_users_path %>">发布任务</a></li>
+    <li class="active">O妹精选</li>
+  </ol>
+
+  <div class="block-area">
+    <h5 class="h4 aside-title">
+      <span class="border-l">标题</span>
+    </h5>
+    <h4 class="h4 form-group"><%= @medium.title %></h4>
+    <div class="mediums-cover text-center">
+      <img src="<%= @medium.cover_pic %>">
+    </div>
+  </div>
+  <div class="block-area">
+    <h5 class="h4 aside-title">
+      <span class="border-l">跳转链接</span>
+    </h5>
+    <h4 class="h4 form-group"><%= @medium.url %></h4>
+  </div>
+  <div class="block-area">
+    <h5 class="h4 aside-title">
+      <span class="border-l">任务时间</span>
+    </h5>
+    <div class="form-inline">
+      <%= @medium.start_at.to_s(:db)%> 至 <%= @medium.end_at.to_s(:db)%>
+    </div>
+  </div>
+
+  <div class="block-area">
+    <h5 class="h4 aside-title">
+      <span class="border-l">关联明星</span>
+    </h5>
+    <% @medium.shop_task.core_stars.each do |star| %>
+      <%= link_to star.name, home_star_path(star) ? home_star_path(star) : 'javascript:;' %>&nbsp;&nbsp;
+    <% end %>
+  </div>
+</div>
+<div class="task-preview text-right">
+  <div class="container">
+    <%= link_to '返回编辑', edit_shop_media_path(@medium), method: :get, class: 'btn btn-highlight space-lg-hor' %>
+    <%= link_to '发布', publish_shop_task_path(@medium.shop_task), method: :put, class: 'btn btn-highlight space-lg-hor' %>
+  </div>
+</div>
+
+<% content_for :head do %>
+  <style media="screen">
+    body{
+      padding-bottom: 60px;
+    }
+  </style>
+<% end %>

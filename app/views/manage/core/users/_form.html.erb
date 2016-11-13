@@ -1,0 +1,5 @@
+<%= simple_form_for @user, url: manage_core_user_path(id: params[:id]), html: { multipart: true, method: :put} do |f| %>
+  <%= f.input :identity, collection: Core::User.identities.keys, selected: Core::User.identities.keys[@user[:identity].to_i], input_html: { autocomplete: 'off' }, label: "身份" %>
+  <%= f.input :name, label: "姓名" %>
+  <%= f.submit "保存", class: 'btn btn-info' %>
+<% end %>

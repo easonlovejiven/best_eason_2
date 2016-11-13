@@ -1,0 +1,34 @@
+my_first_job:
+  cron: "*/2 * * * *"
+  class: "ClearExpiredOrdersWorker"
+  queue: clear
+
+sync_task_job:
+  cron: "50 23 * * *"
+  class: "SyncTaskWorker"
+  queue: sync
+
+send_day_mail_job:
+  cron: "5 0 * * *"
+  class: "SendDayMailWork"
+  queue: send_day
+
+recordings_job:
+  cron: "5 03 * * *"
+  class: "RecordingsWorker"
+  queue: recordings
+
+web_sync_job:
+  cron: "*/3 * * * *"
+  class: "WebSyncTaskWorker"
+  queue: web_sync
+
+add_hot_job:
+  cron: "50 02 * * *"
+  class: "AddHotWorker"
+  queue: add_hot
+
+notification_send_job:
+  cron:  "*/2 * * * *"
+  class: "NotificationSendWorker"
+  queue: send_notification

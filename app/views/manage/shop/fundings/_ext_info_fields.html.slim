@@ -1,0 +1,4 @@
+.form-inline.nested-fields.nested-fields-inline
+  = f.input :title, label: "名称（寄语）", placeholder: "寄语, 最多输入20个字", maxlength: "20"
+  = f.input :require, :as => :boolean, label: "必填？"
+  = link_to_remove_association "删除报名信息", f, class: "btn btn-link"

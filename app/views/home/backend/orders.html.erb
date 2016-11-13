@@ -1,0 +1,126 @@
+<div class="container m-container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <ol class="breadcrumb">
+        <li><a href="<%= manage_home_backend_index_path %>">管理中心</a></li>
+        <li><a href="<%= tasks_home_backend_index_path( shop_category: 'shop_events') %>">任务管理</a></li>
+        <li><a href="<%= tasks_home_backend_index_path( shop_category: 'shop_events') %>">活动</a></li>
+        <li class="active">活动订单列表</li>
+      </ol>
+
+      <div class="block-area">
+        <div class="form-group">
+          当前活动总收入：<strong><%= @task.sum_fee %></strong>
+        </div>
+        <div class="form-group">
+          截至：<%= Time.now.strftime("%Y-%m-%d")  %> &nbsp;&nbsp;全部可提现余额：<%= @task.unwithdraw_order_fee %>
+        </div>
+        <br>
+        <%= form_tag orders_home_backend_index_path, method: :get, class: "row row-10"  do %>
+          <%= hidden_field_tag "shop_category", params[:shop_category] %>
+          <%= hidden_field_tag "task_id", params[:task_id] %>
+          <div class="form-group col-sm-5">
+            <label class="control-label">订单状态</label>
+            <%= select_tag 'status', options_for_select([[" 已支付", 2], ["待支付", 1],  ["超时取消", -1], ["用户取消", -2]] , params[:status]), class: 'form-control' %>
+          </div>
+          <% if params[:shop_category] != 'Shop::Funding' %>
+            <div class="form-group col-sm-5">
+              <label class="control-label">总订单号</label>
+              <%= text_field_tag 'basic_order_no', params[:basic_order_no], class: "form-control", placeholder: "671b9060985a0133a8cb6c400891d81e" %>
+            </div>
+          <% end %>
+          <div class="form-group col-sm-5">
+            <label class="control-label">子订单号</label>
+            <%= text_field_tag 'order_no', params[:order_no], class: "form-control", placeholder: "671b9060985a0133a8cb6c400891d81e" %>
+          </div>
+          <div class="form-group col-sm-5">
+            <label class="control-label">联系方式</label>
+            <%= text_field_tag 'phone', params[:phone], class: "form-control", placeholder: "18888888888" %>
+          </div>
+          <button type="submit" class="btn btn-highlight-outline btn-md">搜索</button>
+        <% end %>
+        <br>
+        <%= form_tag export_home_backend_index_path, method: :get, class: "row row-10"  do %>
+          <%= hidden_field_tag "shop_category", params[:shop_category] %>
+          <%= hidden_field_tag "task_id", params[:task_id] %>
+          <div class="form-group col-sm-5">
+            <label class="control-label">导出格式</label>
+            <%= select_tag 'format', options_for_select(['xlsx', 'csv'], params[:format]), class: 'form-control' %>
+          </div>
+          <div class="form-group col-sm-5">
+            <label class="control-label">订单状态</label>
+            <%= select_tag 'status', options_for_select([['已付款', 2]]), class: 'form-control' %>
+          </div>
+          <button type="submit" class="btn btn-highlight-outline btn-md">导出订单</button>
+        <% end %>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <% if params[:shop_category] != 'Shop::Funding' %>
+                <th class="col-md-2">总订单号</th>
+              <% end %>
+              <th class="col-md-2">子订单号</th>
+              <th>数量</th>
+              <th>总金额</th>
+              <th>用户</th>
+              <th>联系方式</th>
+              <th>创建时间</th>
+              <th>付款时间</th>
+              <th>状态</th> <!-- （已支付／未支付/短信已通知／未通知） -->
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @orders = params[:shop_category] == 'shop_fundings' ? @orders.includes(:user, :funding) : @orders.includes(:user, :owhat_product) %>
+            <% @orders.each do |order|  %>
+              <tr>
+                <% if params[:shop_category] != 'Shop::Funding' %>
+                  <td class="">
+                    <%= order.basic_order_no %>
+                    <br>
+                    <% if params[:shop_category] == 'shop_fundings'  %>
+                      <a href="#" class="text-success"><%= order.funding.title %></a>
+                    <% else %>
+                      <a href="#" class="text-success"><%= order.owhat_product.title %></a>
+                    <% end %>
+                  </td>
+                <% end %>
+                <td class="">
+                  <%= order.order_no %>
+                  <br>
+                  <% if params[:shop_category] == 'shop_fundings'  %>
+                    <a href="#" class="text-success"><%= order.funding.title %></a>
+                  <% else %>
+                    <a href="#" class="text-success"><%= order.owhat_product.title %></a>
+                  <% end %>
+                </td>
+                <td class=""><%= order.quantity %></td>
+                <td class=""><%= order.payment %></td>
+                <td class=""><%= order.user.name %></td>
+                <td class=""><%= order.phone %></td>
+                <td class=""><%= order.created_at.to_s(:db) %></td>
+                <td class=""><%= order.paid_at && order.paid_at.to_s(:db) %></td>
+                <td class="">
+                  <span class="label label-success"><%= t(order.status)%></span>
+                </td>
+                <td class="">
+                  <%= link_to '详情', order_show_home_backend_index_path(order_no: order.order_no, shop_category: params[:shop_category]), class: 'btn btn-default btn-sm' %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <br>
+      <div class="text-center">
+        <%= will_paginate @orders %>
+      </div>
+    </div>
+  </div>
+</div>

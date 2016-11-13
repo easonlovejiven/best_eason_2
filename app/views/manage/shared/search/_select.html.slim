@@ -1,0 +1,2 @@
+.form-group
+	= select_tag "where[#{field}]", options_for_select([[model.human_attribute_name(field), nil]] + (options.is_a?(ActiveRecord::Relation) ? options.map { |record| [record.respond_to?(:name) ? record.name : record.id, record.id] } : options.to_a), params[:where].try(:[], field)), class: 'form-control'

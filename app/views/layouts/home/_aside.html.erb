@@ -1,0 +1,82 @@
+<!-- 右侧边栏 -->
+<div class="content-right block-area">
+  <h5 class="h4 aside-title"><span class="border-l">发布人</span></h5>
+  <div class="aside-area">
+    <div class="clearfix">
+      <div class="pull-left">
+        <%= link_to home_user_path(publish_user), class: 'avatar-round' do %>
+          <%= image_tag publish_user.picture_url.to_s + '?imageMogr2/auto-orient/thumbnail/!44x44r/gravity/Center/crop/44x44', class: 'img-circle' %>
+        <% end if defined?(publish_user) %>
+        <div class="checkbox-stars checkbox-stars-sm">
+          <%= follow_links(publish_user) if defined?(publish_user) && publish_user != @current_user %>
+        </div>
+      </div>
+      <div class="aside-location">
+        <div class="ellipsis">
+          <%= defined?(publish_user) ? publish_user.name : '未知' %>
+          <%= user_identity_style(publish_user) %>
+        </div>
+        <div class="avatar-desc">
+          <a href="<%= follows_home_user_path(publish_user)%>" class="text-gray">
+            关注：<%=  defined?(publish_user) ? publish_user.follow_count : 0  %>
+          </a>
+          &nbsp;&nbsp;|&nbsp;&nbsp;
+          <a href="<%= followers_home_user_path(publish_user)%>" class="text-gray">
+            粉丝：<%=  defined?(publish_user) ? publish_user.followers_count : 0  %>
+          </a>
+        </div>
+        <p class="avatar-desc ellipsis ellipsis-l2"><%=  defined?(publish_user) ? publish_user.signature : 'Ta还没有填写个人信息喔~' %></p>
+      </div>
+    </div>
+  </div>
+
+  <h5 class="aside-title">
+    <span class="border-l">推荐任务</span>
+  </h5>
+  <div class="media-list">
+    <% pu = "suggestions_tasks_" + publish_user.id.to_s %>
+    <% tasks = Rails.cache.fetch(pu, expires_in: 20.minutes) do
+      Shop::Task.published.events.where(user_id: publish_user.id).includes(:shop).order(position: :desc, created_at: :desc).limit(3).map{|t| {task: t, shop: t.shop, shop_type: t.shop_type, pic: t.pic, title: t.title}}
+    end %>
+    <% tasks.each do |task| %>
+      <%= link_to task[:shop_type] == 'Shop::Media' ? extlink(task[:shop].url.to_s) : task[:shop], class: "media" do %>
+        <div class="media-left">
+          <% if task[:pic].present? %>
+            <%= image_tag task[:pic].to_s + '?imageMogr2/auto-orient/thumbnail/!200x200r/gravity/Center/crop/200x200', class: "", alt: "" %>
+          <% end %>
+        </div>
+        <div class="media-body">
+          <h5 class="media-title ellipsis ellipsis-l2"><%= task[:title] %></h5>
+          <% if @current_user.present? %>
+            <div class="article text-gray">
+              <%= render partial: 'shop/shared/complete_status', locals: {task: task[:task]} %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <h5 class="aside-title">
+    <span class="border-l">推荐用户</span>
+  </h5>
+  <div class="aside-user-list">
+    <% if @current_user %>
+      <%  @get_users && @get_users.each do |user|%>
+        <div class="avatar-head has-bordered clearfix">
+          <%= link_to home_user_path(user), class: 'avatar-round pull-left' do %>
+            <%= image_tag user.picture_url.to_s + "?imageMogr2/auto-orient/thumbnail/!44x44r/gravity/Center/crop/44x44", class: 'img-circle' %>
+          <% end %>
+          <label class="checkbox-stars checkbox-stars-sm pull-right">
+            <%= follow_links(user) %>
+          </label>
+
+          <div class="name-location name-location-xml">
+            <div class="ellipsis"><a href="<%= home_user_path(user) %>" style="margin-right: 10px;"><%= user.name %></a><%= user_identity_style(user) %></div>
+            <p class="avatar-desc ellipsis"><%= user.signature %></p>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

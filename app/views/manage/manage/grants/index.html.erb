@@ -1,0 +1,50 @@
+<h3><%= "#{model.model_name.human}#{t(:index)}" %>(<%= @records.total_entries %>)</h3>
+
+<div class="well well-sm">
+  <%= form_tag request.path, method: 'get', id: 'search_form', class: 'form-inline' do %>
+    <fieldset>
+      <%= render 'manage/shared/search/basic', field: 'id' %>
+      <%= render 'manage/shared/search/select', field: 'editor_id', options: Manage::Editor.active %>
+      <%= render 'manage/shared/search/select', field: 'role_id', options: Manage::Role.active %>
+      <%= render 'manage/shared/search/order', fields: %w[] %>
+      <%= render 'manage/shared/search/page' %>
+      <div class="form-group">
+        <%= submit_tag t(:search), name: nil, class: 'btn btn-info' %>
+        <%#= link_to t(:reset), request.path, class: 'btn btn-info', data: {remote: true} %>
+      </div>
+      <%= link_to raw('<i class="fa fa-plus-circle"></i> ' + t('new')), [:new, :manage, model.model_name.singular], class: 'btn btn-info pull-right', data: {target: 'rightPanel'} if can?(:create, model) %>
+    </fieldset>
+  <% end %>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+      <% %i{ id editor_id role_id creator_id created_at }.each do |field| %>
+        <th><%= model.human_attribute_name(field) %></th>
+      <% end %>
+      <th><%= t 'actions' %></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @records.each do |record| %>
+      <tr>
+        <td><%= link_to record.id, manage_manage_editor_path(record) %></td>
+        <td><%= link_to_if can?(:show, record.editor), h(record.tries(:editor, :name)), [:manage, record.editor] if record.editor %>
+        <td><%= link_to_if can?(:show, record.role), h(record.tries(:role, :name)), [:manage, record.role] if record.role %>
+        <td><%= link_to_if can?(:show, record.creator), h(record.tries(:creator, :name)), [:manage, record.creator], data: {target: 'rightPanel'} if record.creator %>
+        </td>
+        <td><%= record.created_at.to_s(:db) %></td>
+        <td class="actions">
+          <%= render 'manage/shared/actions', record: record %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+  <div class="dt-toolbar-footer">
+    <%= render 'manage/shared/pagination', records: @records %>
+  </div>
+</div>

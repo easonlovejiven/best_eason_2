@@ -1,0 +1,81 @@
+<div class="container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <div class="head-highline">
+        <span class="item active">全部订单</span>
+      </div>
+      <% if @expens.blank? %>
+        <div class="null-content">
+          <div class="text-center translate-middle-y">
+            <p>
+              <%= image_tag 'home/null-content.png', alt: '' %>
+            </p>
+            <p>您还没有订单哦, 快去参加活动赢O元吧!</p>
+            <a href="/" class="btn btn-sm btn-default">去首页</a>
+          </div>
+        </div>
+      <% else %>
+        <div class="table-responsive task-in">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th width="60%">订单信息</th>
+                <th>单价</th>
+                <th>数量</th>
+                <th>实付款</th>
+                <th>订单状态</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @expens.includes(:resource, :ticket_type).each do |expen|  %>
+                <tr class="trades-number-tr">
+                  <td colspan="5" class="bg-grey">
+                    <small class="pull-right text-gray"><%= expen.created_at && expen.created_at.to_s(:db) %></small>
+                    <span class="text-gray">订单编号:</span>
+                    <%= link_to welfare_expen_path(id: expen.id), class: '' do %>
+                      <%= expen.order_no %>
+                    <% end %>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-left">
+                    <div class="task-in-image pull-left">
+                      <%= link_to expen.resource, class: 'thumb-img' do %>
+                        <%= image_tag expen.resource.cover_pic.to_s + '?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120' %>
+                      <% end %>
+                    </div>
+                    <div class="task-in-desc">
+                      <%= link_to expen.resource, class: 'thumb-img' do %>
+                        <h4 class="task-in-title"><%= expen.resource.title %></h4>
+                      <% end %>
+                      <div class="task-it-in">
+                        <div class="text-gray"><%= expen.ticket_type.try(:category) %>:<%= expen.ticket_type.try(:second_category) %></div>
+                        <div class="text-gray"><%= expen.resource.sale_start_at ? expen.resource.sale_start_at.to_s(:db) : '' %></div>
+                        <div class="text-gray"><%= expen.resource.address %></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td style="vertical-align: middle;"> <%= expen.ticket_type.try(:fee) %> O!</td>
+                  <td style="vertical-align: middle;" class="text-center"><%= expen.quantity %></td>
+                  <td style="vertical-align: middle;" class="text-highlight-r">
+                     <%= expen.amount %> O!<br>
+                  </td>
+                  <td style="vertical-align: middle;" class="text-center">
+                    <small> 已付款 </small>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <br>
+        <div class="text-center">
+          <%= will_paginate @expens %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

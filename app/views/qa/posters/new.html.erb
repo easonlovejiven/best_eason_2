@@ -1,0 +1,105 @@
+<div class="container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <ol class="breadcrumb">
+        <li><a href="<%= personal_center_home_users_path %>">发布任务</a></li>
+        <li class="active">发布问答</li>
+      </ol>
+
+      <%= simple_form_for @poster, url: @poster, method: :post, :html => {multipart: true, class: 'publish-form publish-questions validate-form js-qaFormValidate' } do |f|%>
+        <div class="form-group">
+          <label class="" for="qa_poster_title">标题<span class="text-highlight-r">*</span><small class="text-gray">(最多输入30个字,请勿包含 ＃＊<>& % ^‘集资等字符)</small></label>
+          <%= f.text_area :title,  class: 'form-control required js_danger_chara js-emoji', rows: 12, placeholder: '如：新专辑上市了，快来参与任务哦～',maxlength:'30'%>
+        </div>
+
+        <div class="form-group">
+          <label class="">关联明星 <span class="text-highlight-r">*</span><small class="text-gray">(最多关联10位明星)</small></label>
+          <%= render partial: 'shop/shared/select2_tag', locals: {f: f, field: :star_list, options: { selects: Core::Star.where(published: true).select("id, name"), multiple_class: true, url: '/manage/shop/search_star', tag: true } } %>
+        </div>
+
+        <% (1..5).map{ @poster.questions.new }.each_with_index do |question, i| %>
+        <%= f.fields_for :questions, question do |qf| %>
+        <div class="question-group js-tagbox">
+          <div class="question-title">
+            第<%= i+1 %>题
+          </div>
+          <div class="row row-10">
+            <div class="col-md-6">
+              <div class="form-group">
+                <%= qf.label :title do %>
+                  标题 <span class="text-highlight-r">*</span><small class="text-gray">(最多输入30个字,请勿包含 ＃＊<>& % ^‘集资等字符)</small>
+                <% end %>
+                <%= qf.text_area :title, class: 'form-control required js_danger_val js-emoji', placeholder: '如：迈克尔杰克逊是那个国家的歌手？', rows: 5, required: 'required' ,maxlength:'30'%>
+              </div>
+              <div class="form-group">
+                <%= qf.label :pic do %>
+                  添加选择题背景图片 <span class="text-highlight-r">*</span><small class="text-gray">(支持jpg/jpeg/gif/png格式,大小 &lt; 2M,建议上传640*480px)</small>
+                <% end %>
+
+                <%= qf.hidden_field :pic, class: 'js-qa-name required js-name', required: 'required' %>
+
+                <div class="js-upload-photo-0<%= i+1 %>">
+                  <div class="thumb-img-add topics-btn js-upload-photoadd-0<%= i+1 %>"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group js-qa-parent">
+                <label class="">选项设置 <span class="text-highlight-r">*</span></label>
+                <% (1..4).map{ question.answers.new }.each_with_index do |answer, j| %>
+                  <%= qf.fields_for :answers, answer do |af| %>
+                  <div class="qustion-item clearfix js-qa-pa">
+                    <span class="qustion-item-number pull-left"><%= j==0 && "A" || j==1 && "B" || j==2 && "C" || j==3 && "D"  %>.</span>
+                    <div class="input-group">
+                      <%= af.text_field :content, class: "form-control required js_danger_val js-emoji", placeholder: "必填且不超过16个字", required: 'required' %>
+                      <!-- 此处每道题的input name属性值相同 -->
+                      <label class="input-group-addon">
+                        <!-- <input type="radio" name="aaa" value="false" class="js-qa-radio set-cover required"/> -->
+                        <%= af.radio_button :right, true, class: 'set-cover js-qa-radio required', name: "qa_poster[questions_attributes][#{i}][answers_attributes][0][right]" %>
+                        <button type="button" class="btn">设为答案</button>
+                      </label>
+                    </div>
+                  </div>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <% end %>
+        </div>
+        <% end %>
+        <div class="form-group">
+          <div class="checkbox">
+            <label>
+              <%= f.check_box :is_share %>
+              同时作为分享任务发布
+            </label>
+
+          </div>
+        </div>
+        <div class="form-group text-right">
+          <%= f.submit "预览", class: "btn btn-highlight-outline space-lg-hor js-sub js-checkButton"%>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% content_for :tail do %>
+  <script>
+    $('.js-qa-radio').on('click',function(){
+      var str=$(this).attr('name');
+      //55
+      var str1=str.substring(0,55);
+      var str3=str.substring(56,str.length);
+      var str2=$(this).parents('.js-qa-pa').index()-1;
+      var strAll=str1+str2+str3;
+      $(this).parents('.js-qa-parent').find('.js-qa-radio').each(function(index){
+        $(this).attr('name',strAll);
+      });
+    });
+  </script>
+<% end %>

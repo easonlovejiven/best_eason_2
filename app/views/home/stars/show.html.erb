@@ -1,0 +1,162 @@
+<%= content_for :title do %>
+  <%= @star.name %>
+<% end %>
+<div class="container star-profile">
+  <div class="star-header row row-10">
+    <!-- 明星封面 -->
+    <div class="col-sm-4 star-cover">
+      <%= image_tag @star.tries(:pic, :url).to_s + '&imageMogr2/auto-orient/thumbnail/!387x387r/gravity/Center/crop/387x387', class: "star-avatar", alt: ""%>
+      <div class="star-followers">
+        <label class="checkbox-stars pull-right">
+          <%= follow_links(@star) %>
+        </label>
+        <span>
+          粉丝 <strong class="followers-number"><%= @star.fans_total %></strong>
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-8">
+      <!-- Owhat Super Stars -->
+      <div class="star-info">
+        <% if @current_user.present? %>
+          <% if @current_user.punches.where(star_id: @star.id).is_punch(Time.zone.now.beginning_of_day).present? %>
+            <span class="btn btn-yellow pull-right">
+              已打卡
+            </span>
+          <% else %>
+            <%= link_to '打卡领 O! 元', 'javascript:;', data: {'punch': home_punches_path(star_id: @star.id) }, class: "btn btn-yellow pull-right js-punch", method: :post, rel: "nofollow" %>
+          <% end %>
+        <% else %>
+          <a class="btn btn-yellow pull-right js-punch" href="/sessions/new?redirect=/home/stars/<%= @star.id %>">打卡领 O! 元</a>
+        <% end %>
+        <div class="h4 ellipsis">
+          <%= @star.name %>
+          <span class="icons v-icon v-star">&#xe609;</span>
+        </div>
+        <p class="ellipsis"><%= @star.sign %></p>
+        <h4 class="title text-center">
+          <span>Owhat Super Stars</span>
+        </h4>
+        <p class="">
+          经纪公司：<%= @star.company %>
+        </p>
+        <p class="">
+          代表作品：<%= @star.works %>
+        </p>
+        <p class="">
+          代言品牌：<%= @star.acting %>
+        </p>
+        <div class="clearfix">
+          <div class="share-box pull-right">
+            <%= render partial: "shop/shared/share", locals: {object: @star, type: 'star'} %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 粉丝会 -->
+  <div class="tag-box">
+    <div class="h4 text-pink">
+      <% if @star.orgs_and_fans.size > 8 %>
+        <a href="#" class="pull-right"><small>更多</small></a>
+      <% end %>
+      已认证粉丝会
+    </div>
+    <hr>
+    <% if @star.orgs_and_fans.blank? %>
+      <div class="null-content">
+        <div class="text-center translate-middle-y">
+          <p>
+            <%= image_tag 'home/null-content.png', alt: '' %>
+          </p>
+          <p>还没有粉丝会！</p>
+          <a href="/" class="btn btn-sm btn-default">去首页看看吧</a>
+        </div>
+      </div>
+    <% else %>
+      <div class="row">
+        <% @star.orgs_and_fans.limit(8).each do |user|%>
+          <div class="avatar-head has-bordered clearfix col-md-6">
+            <a href="<%= home_user_path(user) %>" class="avatar-round pull-left">
+              <%= image_tag user.picture_url.to_s + "?imageMogr2/auto-orient/thumbnail/!62x62r/gravity/Center/crop/62x62", class: "img-circle", alt: '' %>
+            </a>
+
+            <label class="checkbox-stars pull-right">
+              <%= follow_links(user) %>
+            </label>
+            <div class="name-location">
+              <div class="ellipsis">
+                <a href="<%= home_user_path(user) %>"><%= user.name %></a>
+                <span class="icons v-icon v-expert">&#xe609;</span>
+              </div>
+              <p class="text-gray ellipsis">
+                <a href="<%= followers_home_user_path(user) %>" class="text-gray">
+                  粉丝：<%= user.followers_count %>
+                </a>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <%= link_to follows_home_user_path(user), class: "text-gray" do%>
+                  关注：<%= user.follow_count %>
+                <% end if user.is_a?(Core::User) %>
+              </p>
+              <p class="name-desc ellipsis text-gray"><%= user.is_a?(Core::User) ? user.signature : user.sign %></p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  <!-- 相关福利 -->
+  <ul class="head-highline list-unstyled">
+    <li class="item <%= 'active' if params[:type] != 'welfare' %>">
+      <%= link_to '全部任务', home_star_path(@star) %>
+    </li>
+    <li class="item <%= 'active' if params[:type] == 'welfare' %>">
+    <%= link_to '全部福利', home_star_path(@star, type: 'welfare') %>
+    </li>
+  </ul>
+  <% if @tasks.blank? %>
+    <div class="tag-box null-content">
+      <div class="text-center translate-middle-y">
+        <p>
+          <%= image_tag 'home/null-content.png', alt: '' %>
+        </p>
+        <p>还没有相关内容！</p>
+        <a href="/" class="btn btn-sm btn-default">去首页看看吧</a>
+      </div>
+    </div>
+  <% else %>
+    <div class="list">
+      <div class="row row-10">
+        <% @tasks.each do |task| %>
+        <div class="col-sm-6 col-md-3">
+          <%= render partial: 'shop/shared/task_card', locals: {task: task} %>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+<% content_for :tail do %>
+  <script type="text/javascript">
+  $(function(){
+    var oPunch = $('.js-punch');
+    if(oPunch.length){
+      oPunch.click(function(){
+        var that = $(this);
+        $.ajax({
+          url : that.attr('data-punch'),
+          type : 'post',
+          success : function(msg){
+            if(msg.success){
+              that.html('已打卡');
+            }else{
+              alert(msg.error);
+            }
+          }
+        });
+      });
+    }
+  })
+  </script>
+<% end %>

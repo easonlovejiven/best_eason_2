@@ -1,0 +1,63 @@
+// 身份认证
+$identityIcon: 80px;
+.identity-container{
+  max-width: 700px;
+  margin: 0 auto;
+}
+.identity-label{
+  position: relative;
+  width: $identityIcon+70;
+  & + .identity-label{
+    margin-left: 36px;
+  }
+  .radio &{
+    padding-left: 0;
+  }
+  .icon-companies,
+  .icon-club{
+    font-size: $identityIcon;
+    line-height: $identityIcon;
+    width: 152px;
+    height: 152px;
+    color: RGB(177, 178, 182);
+    padding: 35px;
+    background-color: #fff;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    border: 1px solid #efefef;
+  }
+  .checked-icon-right{
+    display: none;
+    position: absolute;
+    bottom: 46px;
+    right: 7px;
+    font-size: 20px;
+  }
+  input[type="radio"]{
+    width: $identityIcon+70;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    opacity: 0;
+    &:checked ~ .checked-icon-right{display: inline-block;}
+    &:checked ~ .icons{
+      border: 1px solid transparent;
+    }
+    &:checked.identity-companies ~ .icons{
+      color: #43B7E2;
+    }
+    &:checked.identity-club ~ .icons{
+      color: $colorViRed;
+    }
+    &:checked.identity-companies ~ .icon-companies{
+      border-color: #43B7E2;
+    }
+    &:checked.identity-club ~ .icon-club{
+      border-color: $colorViRed;
+    }
+  }
+}

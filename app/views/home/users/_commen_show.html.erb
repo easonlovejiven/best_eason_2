@@ -1,0 +1,35 @@
+<% if @feeds.blank? %>
+  <div class="null-content">
+    <div class="text-center translate-middle-y">
+      <p>
+        <%= image_tag 'home/null-content.png', alt: '' %>
+      </p>
+      <p>Ta还没有参加过任何活动~</p>
+    </div>
+  </div>
+<% else %>
+  <div class="timeline list row row-10">
+    <% @feeds.each do |feed| %>
+      <div class="col-sm-6 col-md-3">
+        <div class="thumbnail">
+          <div class="text-center timeline-data"><%= feed.created_at.to_s(:db) %></div>
+          <div class="thumb-cover index-img-height">
+            <%= link_to feed.owhat_product_type == 'Shop::Media' ? extlink(feed.owhat_product.url) : feed.owhat_product, class: 'thumb-img' do %>
+              <%= image_tag "#{feed.owhat_product.cover_pic}?imageMogr2/auto-orient/thumbnail/!640x480r/gravity/North/crop/640x480", alt: '' %>
+              <% if feed.owhat_product_type.to_s.match(/^Shop/) && feed.owhat_product.free %>
+                <span class="task-mark task-mark-free"><%= home_task_mark(feed.owhat_product_type) %></span>
+              <% else %>
+                <span class="task-mark task-mark-<%= home_task_mark(feed.owhat_product_type) %>"><%= home_task_mark(feed.owhat_product_type) %></span>
+              <% end %>
+            <% end %>
+          </div>
+          <div class="limit-height">
+            <h5 class="ellipsis"><%= feed.owhat_product.title %></h5>
+            <% shop_task = feed.owhat_product.shop_task %>
+            <%= render partial: 'shop/shared/complete_status', locals: {task: shop_task} %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

@@ -1,0 +1,86 @@
+// 订单中心导航
+// .onavbars{
+//   margin-bottom: 20px;
+// }
+.onavbar-nav{
+  li{
+    display: inline-block;
+    text-align: center;
+    border: 1px solid #eee;
+    padding: 0;
+    a{
+      padding: 10px 15px;
+    }
+    & + li{
+      border-left: 0;
+    }
+    &.active{
+      a{
+        color: $colorRed;
+        border-top: 2px solid #83F8E9;
+        padding-top: 8px;
+        position: relative;
+        top: -1px;
+      }
+    }
+  }
+  &.nav{
+    > li.disabled{
+      > a{
+        cursor: default;
+        background-color: #f7f7f7;
+      }
+    }
+  }
+  &.offset-1{
+    margin-left: 60px;
+  }
+}
+.onavbar-tabs{
+  border-bottom: 1px solid #eee;
+  > li{
+    > a{
+      float: left;
+      padding: 9px 20px;
+      &:hover,
+      &:focus{
+        color: #333;
+        outline: none;
+      }
+    }
+    &.active{
+      a{
+        border-bottom: 2px solid #83F8E9;
+        color: #FF472D;
+        bottom: -2px;
+        position: relative;
+      }
+    }
+  }
+}
+
+// 订单提交成功提示页面
+.order-success{
+  position: relative;
+  min-height: 227px;
+  width: 60%;
+  margin: 50px auto 20px;
+  padding: 20px 280px 20px 20px;
+  background: #fff asset-url('home/order-success.png') no-repeat right top;
+  &,
+  .small .btn{
+    font-size: 12px;
+  }
+  .title{
+    font-size: 24px;
+    color: $colorRed;
+    margin-bottom: 10px;
+  }
+  a{
+    color: #000;
+    font-size: 14px;
+  }
+  p{
+    margin-bottom: 5px;
+  }
+}

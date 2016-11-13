@@ -1,0 +1,130 @@
+<div class="register-box">
+  <ul class="register-tabs list-unstyled nav-tabs clearfix" id="myTabs">
+    <li class="active"><a href="#modile-register" data-toggle="tab" class="btn btn-block">手机号码注册</a></li>
+    <li class=""><a href="#email-register" data-toggle="tab" class="btn btn-block">邮箱</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane fade in active" id="modile-register">
+      <form method="post">
+        <div class="form-group">
+          <label class="control-label" for="account_phone">
+            <abbr title="必须">*</abbr>手机
+          </label>
+          <input class="form-control jqphone js_accounts_phone" placeholder="请输入手机号" type="text" name="account[phone]"/>
+        </div>
+
+        <div class="form-group">
+          <div>
+            <label class="control-label" for="jqcaptcha">验证码  </label>
+          </div>
+          <div class="clearfix">
+            <%= rucaptcha_input_tag(class: 'form-control pull-left jqcaptcha', placeholder: '图片验证码', style: "width:45%") %>
+            <%= rucaptcha_image_tag(class: 'pull-left captcha_image', id: 'captcha_image_phone') %>
+            <a href="#" id="captcha_refresh_phone" title="换一换" style="margin-top: 8px;display: inline-block;">换一换</a>
+          </div>
+        </div>
+        <p class="test" id="jqerror"></p>
+
+        <div class="form-group">
+          <label class="control-label" for="captcha">
+            <abbr title="必须">*</abbr>输入短信验证码
+          </label>
+          <div class="row">
+            <div class="col-xs-7"><a id="message" class="btn btn-default btn-block message">免费获取短信验证码</a></div>
+            <div class="col-xs-5"><input class="form-control jqcaptchafree js_pass_val" type="text" name="captcha" id="jqcaptchafree"></div>
+          </div>
+        </div>
+        <div class="form-group js_accounts_voice hide text-highlight-r">
+          没有收到短信验证码？您可以尝试重新发送或使用<a href="#" class="text-primary js_accounts_voice_btn">语音验证码</a>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="account_password">
+            <abbr title="必须">*</abbr>密码
+          </label>
+          <input class="form-control jqpassword js_pass_val" type="password" name="account[password]" onpaste="return false;">
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="password_confirmation">
+            <abbr title="必须">*</abbr>确认密码
+          </label>
+          <input class="form-control jqconfirmpassword" type="password" name="password_confirmation" onpaste="return false;">
+          <% if params[:connection_id] %>
+            <%= hidden_field_tag 'connection_id', params[:connection_id], id: 'account_connection_id' %>
+            <%= hidden_field_tag 'sign', params[:sign], id: 'account_connection_sign' %>
+          <% end %>
+        </div>
+        <input type="button" name="commit" class="btn btn-highlight-r btn-block jqsubmit" value="注册"/>
+      </form>
+    </div>
+    <div class="tab-pane fade" id="email-register">
+      <form action="<%= accounts_path %>" method="post">
+        <div class="form-group">
+          <label class="control-label" for="jqemail">
+            <abbr title="必须">*</abbr>邮箱
+          </label>
+          <input class="form-control" placeholder="请输入邮箱" type="email" name="account[email]" id="jqemail">
+        </div>
+
+        <div class="form-group">
+          <div class="form-group">
+            <div>
+              <label class="control-label" for="user_signup_captcha">验证码  </label>
+            </div>
+            <div class="clearfix">
+              <%= rucaptcha_input_tag(class: 'form-control pull-left jqcaptcha', placeholder: '图片验证码', style: "width:45%", id: 'user_signup_captcha') %>
+              <%= rucaptcha_image_tag(class: 'pull-left captcha_image', id: 'captcha_image') %>
+              <a href="#" id="captcha_refresh" title="换一换" style="margin-top: 8px;display: inline-block;">换一换</a>
+            </div>
+          </div>
+        </div>
+        <p class="test" id="jqerror"></p>
+
+
+        <div class="form-group">
+          <label class="control-label" for="captcha">
+            <abbr title="必须">*</abbr>输入邮箱验证码
+          </label>
+          <div class="row">
+            <div class="col-xs-7"><a id="email_message" class="btn btn-default btn-block">免费获取邮箱验证码</a></div>
+            <div class="col-xs-5"><input class="form-control jqcaptchafree js_pass_val" type="text" name="captcha" id="jqcaptchafree_email"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="jqpassword">
+            <abbr title="必须">*</abbr>密码
+          </label>
+          <input class="form-control js_pass_val" type="password" name="account[password]" id="jqpassword" onpaste="return false;">
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="jqpasswordconfirmation">
+            <abbr title="必须">*</abbr>确认密码
+          </label>
+          <input class="form-control" type="password" name="account[password_confirmation]" id="jqpasswordconfirmation" onpaste="return false;">
+          <% if params[:connection_id] %>
+            <%= hidden_field_tag 'connection_id', params[:connection_id], id: 'account_connection_id' %>
+            <%= hidden_field_tag 'sign', params[:sign], id: 'account_connection_sign' %>
+          <% end %>
+        </div>
+
+        <input type="button" name="commit" class="btn btn-highlight-r btn-block jqsubmit" value="注册"/>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade no-bordered" id="showUserBox" tabindex="-1" role="dialog" aria-hidden="false" data-keyboard="false" data-backdrop='static'>
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="modal-header"></div>
+        <h4 class="text-center">是否完善个人资料</h4>
+      </div>
+      <div class="modal-footer text-center">
+        <a href="javascript:;" class="btn btn-highlight-outline space-lg-hor js_tip_yes">是</a>
+        <a href="javascript:;" class="btn btn-default space-lg-hor js_tip_no">否</a>
+      </div>
+    </div>
+  </div>
+</div>

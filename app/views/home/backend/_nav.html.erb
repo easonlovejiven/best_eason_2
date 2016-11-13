@@ -1,0 +1,22 @@
+<div class="onavbars m-index-nav">
+  <ul class="nav onavbar-tabs">
+    <li class="<%= 'active' if params[:action] == 'manage' %>">
+      <%= link_to '管理首页', manage_home_backend_index_path %>
+    </li>
+    <li class="<%= 'active' if params[:action] == 'tasks'%>">
+      <%= link_to '任务管理', tasks_home_backend_index_path( shop_category: 'shop_events') %>
+    </li>
+    <li class="<%= 'active' if params[:action] == 'welfares'%>">
+      <%= link_to '福利管理', welfares_home_backend_index_path( shop_category: 'welfare_events') %>
+    </li>
+    <li class="<%= 'active' if params[:action] == 'withdraw'%>">
+      <%= link_to '财务管理', withdraw_home_backend_index_path %>
+    </li>
+    <li class="<%= 'active' if params[:action] == 'exported_orderss' %>">
+      <%= link_to '查看导出订单', exported_orders_home_backend_index_path %>
+    </li>
+    <li class="<%= 'active' if params[:controller] == 'shop/freight_templates' %>">
+      <%= link_to '我的运费模板', shop_freight_templates_path %>
+    </li>
+  </ul>
+</div>

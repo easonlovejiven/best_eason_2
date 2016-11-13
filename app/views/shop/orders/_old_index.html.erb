@@ -1,0 +1,54 @@
+<div class="table-responsive task-in">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th width="60%">订单信息</th>
+        <th>总价</th>
+        <th>数量</th>
+        <th>实付款</th>
+        <th>订单状态</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% orders.each do |order|  %>
+        <tr class="trades-number-tr">
+          <td colspan="5" class="bg-grey">
+            <small class="pull-right text-gray"><%= (order['paid_at'].to_time+8.hours).to_s(:db) %></small>
+            <small class="text-gray">订单号:</small>
+            <%= link_to '#', class: '' do %>
+              <%= order['order_no'] %>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-left">
+            <div class="task-in-image pull-left">
+              <%= link_to '#', class: 'thumb-img' do %>
+                <%= image_tag "http://owhat.qiniudn.com/uploads/event/cover1/#{order['event_id']}/app_cover_#{order['cover1']}" %>
+              <% end %>
+            </div>
+            <div class="task-in-desc">
+              <%= link_to '#', class: 'thumb-img' do %>
+                <h4 class="task-in-title"><%= order['title'] %></h4>
+              <% end %>
+              <div class="task-it-in">
+                <p>默认</p>
+                <div><%=  (order['start_at'].to_time+8.hours).to_s(:db) %></div>
+                <div><%= order['address_id'] && $connection.connection.execute("SELECT address FROM owhat.`addresses` WHERE  id = #{order['address_id']}").tries(:first,:first) %></div>
+              </div>
+            </div>
+          </td>
+          <td>￥ <%= order['payment'].to_s %></td>
+          <td><%= order['quantity'] %></td>
+          <td class="text-highlight-r">
+            ￥ <%= order['payment'] %> <br>
+            <small class="text-gray">(含运费￥ 0)</small>
+          </td>
+          <td>
+            <small>已支付</small>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,27 @@
+<%= content_for :title do %>
+  <%= @media.title %>
+<% end %>
+<!-- 图文直播详情 -->
+<div class="container special">
+  <ol class="breadcrumb">
+    <li><a href="/">首页</a></li>
+    <li><%= link_to '任务', shop_tasks_path %></li>
+    <li><a href="/shop/tasks?category=subjects">o妹精选任务</a></li>
+    <li class="active"><%= Shop::Media::KIND_TYPES[@media.kind] %></li>
+  </ol>
+  <div class="clearfix">
+    <div class="content-left block-area">
+      <h4 class="title"><%= @media.title %></h4>
+      <div class="word-bread">
+        <%= (@media.description || "").html_safe %>
+      </div>
+
+      <div class="share-box text-center">
+        <%= render partial: "shop/shared/share", locals: {object: @media, type: 'task', text: '我Get到了爱豆最新动向'} %>
+      </div>
+    </div>
+
+    <!-- 右侧边栏 -->
+    <%= render partial: "layouts/home/aside", locals: {publish_user: @media.user} %>
+  </div>
+</div>

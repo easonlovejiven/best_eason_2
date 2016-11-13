@@ -1,0 +1,28 @@
+<% show = !%w[new edit].include?(params[:action]) && @record.valid? %>
+<% auto_suppl = %w[edit show].include?(params[:action]) && @record.present? %>
+<% options_class = show ? {disabled: 'true'} : {} %>
+<%= simple_form_for @record, url: [:manage, @record], method: @record.new_record? ? :post : :put, html: {class: 'form-horizontal'} do |f| %>
+  <% f.options.merge!(options_class: options_class) %>
+
+  <div class="modal-body">
+
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :order_no, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :owhat_product_id, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :owhat_product_type, required: true } %>
+    <%= render 'manage/shared/modal/select_tag', {f: f, field: :status, required: true, options: Shop::OrderItem.statuses.keys } %>
+    <%= render 'manage/shared/modal/select_tag', {f: f, field: :pay_type, required: true, options: Shop::OrderItem.pay_types.keys } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :quantity, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :payment, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :paid_at, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :canceled_at, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :address_id, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :memo, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :platform, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :user_name, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :phone, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :address, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :freight_fee, required: true } %>
+    <div class="modal-footer">
+      <%= render 'manage/shared/modal/footer', {f: f} unless show %>
+    </div>
+<% end %>

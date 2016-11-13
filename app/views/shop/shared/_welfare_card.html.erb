@@ -1,0 +1,104 @@
+<!-- 认证用户主页 -->
+<div class="thumbnail">
+  <div class="thumb-cover index-img-height">
+    <% if welfare.task_state["#{welfare.shop_type.to_s}:#{@current_user.try(:id)}"].to_i > 0 || @current_user.try(:id) == welfare.user_id%>
+      <% if welfare.shop_type == 'Welfare::Letter' %>
+        <%= link_to welfare.shop, class: "thumb-img", target: "_blank" do %>
+          <%= image_tag(welfare.pic.to_s + '?imageMogr2/auto-orient/thumbnail/!233x175r/gravity/North/crop/233x175', alt: '') %>
+          <span class="task-mark task-mark-<%= home_task_mark(welfare.shop_type) %>"><%= home_task_mark(welfare.shop_type) %></span>
+        <% end %>
+      <% else %>
+        <!-- 语音 -->
+        <a data-target=".modal-welfare-voice_<%= welfare.id %>" class="thumb-img" data-toggle="modal">
+          <%= image_tag(welfare.pic.to_s + '?imageMogr2/auto-orient/thumbnail/!233x175r/gravity/North/crop/233x175', alt: '') %>
+          <span class="task-mark task-mark-<%= home_task_mark(welfare.shop_type) %>"><%= home_task_mark(welfare.shop_type) %></span>
+        </a>
+      <% end %>
+    <% else %>
+      <!-- 语音 -->
+      <a data-target=".modal-welfare-obi_<%= welfare.id %>" class="thumb-img" data-toggle="modal">
+        <%= image_tag(welfare.pic.to_s + '?imageMogr2/auto-orient/thumbnail/!233x175r/gravity/North/crop/233x175', alt: '') %>
+        <span class="task-mark task-mark-<%= home_task_mark(welfare.shop_type) %>"><%= home_task_mark(welfare.shop_type) %></span>
+      </a>
+    <% end %>
+    <!-- 头像 -->
+    <div class="avatar-round avatar-line">
+      <%= link_to home_user_path(welfare.user), class: '' do %>
+        <%= image_tag welfare.tries(:user, :picture_url).blank? ? 'home/user/user.jpeg' : welfare.tries(:user, :picture_url).to_s + '?imageMogr2/auto-orient/thumbnail/!100x100r/gravity/Center/crop/100x100', class: 'img-circle' %>
+        <span class="user-name ellipsis <%= welfare.user.verified ? '' : 'user-no-icon' %>">
+          <%= welfare.tries(:user, :name) %>
+          <% if welfare.tries(:user, :verified) %>
+            <%= user_identity_style(welfare.user)%>
+          <% end %>
+        </span>
+      <% end if welfare.user.present? %>
+    </div>
+  </div>
+  <div class="caption">
+    <h4 class="ellipsis"><%= welfare.title %></h4>
+    <!-- 福利卡片显示打开福利按钮 -->
+    <% if welfare.task_state["#{welfare.shop_type.to_s}:#{@current_user.try(:id)}"].to_i > 0 || @current_user.try(:id) == welfare.user_id%>
+      <% if welfare.shop_type == 'Welfare::Letter' %>
+        <%= link_to '打开福利', welfare.shop, class: "btn btn-danger btn-outline pull-right", target: "_blank" %>
+      <% else %>
+        <!-- 语音 -->
+        <a data-target=".modal-welfare-voice_<%= welfare.id %>" class="btn btn-danger btn-outline pull-right" data-toggle="modal">打开福利</a>
+      <% end %>
+    <% else %>
+      <a data-target=".modal-welfare-obi_<%= welfare.id %>" class="btn btn-danger btn-outline pull-right" data-toggle="modal">打开福利</a>
+
+      <!-- 打开福利弹框 -->
+      <div class="modal fade text-center modal-welfare-obi modal-welfare-obi_<%= welfare.id %>" tabindex="-1" role="dialog" aria-labelledby="" data-backdrop="static">
+        <div class="modal-dialog modal-sm" role="document">
+          <div class="modal-content">
+            <div class="modal-body">
+              <p>
+                打开福利需要消耗5 O!元
+              </p>
+              <p>
+                <% if @current_user.try(:obi).to_i < 5 %>
+                O!元不足，点击确定去做任务赚O!元吧
+                <% end %>
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+              <% if welfare.shop_type == 'Welfare::Letter' %>
+                <%= link_to '确定', @current_user.try(:obi).to_i < 5 ? '/' : welfare.shop, class: "btn btn-danger" %>
+              <% else %>
+                <%= link_to '确定', @current_user.try(:obi).to_i < 5 ? '/' : 'javascript:;', class: "btn btn-danger js-voice-open", data: {id: "#{welfare.shop.id}", target: ".modal-welfare-voice_#{welfare.id}"} %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <% if welfare.shop_type == 'Welfare::Voice' %>
+      <!-- 语音播放弹框 -->
+      <div class="modal fade text-center audio-modal modal-welfare-voice_<%= welfare.id %>"  data-id="welfare-audio_<%= welfare.id %>" tabindex="-1" role="dialog" aria-labelledby="audioModalLabel" data-backdrop="static" data-isOpened="false">
+        <div class="modal-dialog modal-md" role="document">
+          <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <div class="modal-body" style="padding: 0;">
+              <%= image_tag welfare.pic.to_s + "?imageMogr2/auto-orient/thumbnail/!492x280r/gravity/North/crop/492x280" %>
+              <audio class="welfare-audio welfare-audio_<%= welfare.id %>" id="welfare-audio_<%= welfare.id %>" controls="controls">
+                Your browser does not support the <code>audio</code> element.
+                <source src="<%= asset_path(welfare.shop.default_voice) %>" type="audio/mp3">
+              </audio>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <!-- 已领取按钮样式 -->
+    <% if welfare.shop_type.to_s.match(/^Shop|^Qa/) %>
+      <p style="margin-bottom: 0;"><i class="icons text-highlight-r">&#xe614;</i>参与得O!元</p>
+    <% else %>
+      <p style="margin-bottom: 0;"><i class="icons text-highlight-r">&#xe614;</i>需花费5 O!元</p>
+    <% end %>
+    <% if welfare.tries(:shop, :is_share) %>
+      <p style="margin-bottom: 0;"><i class="icons text-highlight-r">&#xe616;</i>分享再得1 O!元</p>
+    <% end %>
+  </div>
+</div>

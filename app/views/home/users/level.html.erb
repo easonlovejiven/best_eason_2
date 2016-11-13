@@ -1,0 +1,68 @@
+<% grade = Core::User::GRADE_CONFIG%>
+<!-- 普通用户等级 -->
+<div class="container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <ol class="breadcrumb">
+        <li><a href="/home/users/owhat">玩转Owhat</a></li>
+        <li><a href="/home/users/owhat">等级与头衔</a></li>
+        <li class="active">等级规则</li>
+      </ol>
+      <div class="block-area table-responsive">
+        <table class="table block-area level-table">
+          <thead>
+            <tr>
+              <td width="40%">
+                等级与头衔
+              </td>
+              <td width="15%">
+                晋升奖励
+              </td>
+              <td width="30%"></td>
+              <td width="15%">
+                所需经验值
+              </td>
+            </tr>
+          </thead>
+          <tbody>
+            <% grade.each do |level, data| %>
+              <tr class="<%= level == @current_user.level ? 'text-yellow' : '' %>">
+                <td>
+                  <%= "Lv.#{level} #{data[0]}" %>
+                </td>
+                <td>
+                  <%= data[2] %> <i class="icons text-yellow">&#xe60f;</i> 元
+                </td>
+                <td></td>
+                <td>
+                  <%= data[1] %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<% content_for :head do %>
+  <style media="screen">
+    .level-table tbody tr:nth-child(2n+1){
+      background-color: #FAFCFC;
+    }
+    .level-table td:nth-child(2){
+      text-align: right;
+    }
+    .level-table.table>thead>tr>th,
+    .level-table.table>tbody>tr>th,
+    .level-table.table>tfoot>tr>th,
+    .level-table.table>thead>tr>td,
+    .level-table.table>tbody>tr>td,
+    .level-table.table>tfoot>tr>td{
+      border-top: 0;
+    }
+  </style>
+<% end %>

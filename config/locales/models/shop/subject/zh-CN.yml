@@ -1,0 +1,25 @@
+zh-CN:
+  activerecord:
+    models:
+      shop/subject: 直播
+    attributes:
+      shop/subject:
+        title: 名称
+        cover1: 封面
+        guide: 引导语
+        description: 描述
+        user_id: 发布人
+        creator_id: 创建人
+        star_list: 关联明星
+        status: 状态
+        start_at: 直播开始时间
+        live_url: 直播地址
+        storage_url: 直播存储地址
+        category: 类型
+  enums:
+    shop/subject:
+      status:
+        pending: 未开始
+        living: 直播中
+        closed: 已结束
+        accident: 意外情况

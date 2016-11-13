@@ -1,0 +1,17 @@
+<div class="col-sm-6 col-md-4">
+  <%= link_to 'javascript:;', class: 'thumbnail text-center', data: { 'no-turbolink': true } do %>
+    <!-- 头像 -->
+    <span class="avatar-round">
+      <%= image_tag star.picture_url, class: 'img-circle', alt: '' %>
+    </span>
+    <div class="caption">
+      <!-- text-purple 粉丝会 -->
+      <h4 class="ellipsis"><%= star.name %> <span class="text-yellow">V</span></h4>
+      <div class="ellipsis"><%= star.nickname %></div>
+      <p class="text-gray ellipsis">
+        粉丝：<%= star.followers_count %>
+      </p>
+      <p class="ellipsis">简介：<%= star.description %></p>
+    </div>
+  <% end %>
+</div>

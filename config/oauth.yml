@@ -1,0 +1,13 @@
+qq:
+  site: ''
+  request_token_path: ''
+  authorize_path: ''
+  access_token_path: ''
+  key: ''
+  secret: ''
+
+wechat:
+  authorize_path: ""
+  access_token_path: ""
+  refresh_token_path: ""
+  user_info_path: ""

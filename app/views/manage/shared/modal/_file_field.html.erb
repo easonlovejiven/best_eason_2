@@ -1,0 +1,39 @@
+<% field_class = {class: 'form-control'}.merge!(f.options[:options_class]) %>
+<%# imgextension = defined?(imgextension) && maxsize.present? ? imgextension : 1 %>
+<fieldset>
+  <div class="form-group row">
+    <%= f.label field, class: 'col-md-1 control-label' do -%>
+      <%= raw('<sup>*</sup>') if defined?(required) && required %>
+      <%= model.human_attribute_name(field) %>
+    <% end -%>
+
+    <div class="col-md-11">
+      <% field_class.merge!(required: true) if defined?(required) && required %>
+			<% if picture_url.present?  %>
+				<%= link_to (image_tag picture_url, width: image[:width], height: image[:height], alt: ""), picture_url, target: '_blank' %>
+			<% end %>
+      <%= f.file_field field, field_class.merge({required: defined?(required) && required && @record.new_record?  ? true : false, onChange: "filefujianChange(this,#{(defined?(maxsize) && maxsize.present?) ? maxsize : 2})" 
+      }) %>
+      
+
+      <!-- <div class="">
+        <div class="thumb-show">
+          <%= image_tag 'home/default-square-sm.png', alt: '' %>
+          <a href="javascript:;" class="close close-rounded-sm">&times;</a>
+        </div>
+        <div class="thumb-img-add topics-btn">
+          <%= f.file_field field, field_class %>
+        </div>
+      </div> -->
+      <% if defined?(p_field) && p_field %>
+        <p class="help-block">
+          <%= p_field %>
+        </p>
+      <% else %>
+        <p class="help-block">
+          请选择格式为JPEG/PNG格式的图片!
+        </p>
+      <% end %>
+    </div>
+  </div>
+</fieldset>

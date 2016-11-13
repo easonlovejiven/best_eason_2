@@ -1,0 +1,20 @@
+zh-CN:
+  activerecord:
+    models:
+      core/star: 明星
+    attributes:
+      core/star:
+        name: 名字
+        category: 种类
+        pic: 头像
+        sign: V认证
+        description: 描述
+        company: 公司
+        works: 作品
+        acting: 代言品牌
+        nickname: 粉丝昵称
+        cover: 背景图
+        related_ids: 关联粉丝会
+        org_id: 关联机构
+        participants: 人气值
+        fans_count: 粉丝数

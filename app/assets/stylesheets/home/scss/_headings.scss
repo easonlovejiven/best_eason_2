@@ -1,0 +1,152 @@
+// 个人中心
+.head-highline{
+  background-color: #fff;
+  font-size: 14px;
+  margin-bottom: 20px;
+  .item{
+    display: inline-block;
+    padding: 10px 20px;
+    text-align: center;
+  }
+  .active{
+    color: $colorHighLight;
+    border-bottom: 2px solid $colorHighLight;
+  }
+  .btn.pull-right{
+    margin-top: 5px;
+    margin-right: 5px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+  // 草稿箱
+  .drafts &{
+    .dropdown-menu{
+      width: 255px;
+      border: 0;
+      text-align: center;
+      font-size: 12px;
+      padding-top: 15px;
+      >div{
+        padding-bottom: 20px;
+      }
+      .icons{
+        font-size: 21px;
+      }
+    }
+  }
+  // 个人主页&明星主页
+  .profile &,
+  .star-profile &{
+    border-bottom: 1px solid #eee;
+  }
+  // &&首页
+  .index &{
+    line-height: 30px;
+  }
+  &.onav-line{
+    border-radius: 2px;
+    font-size: 12px;
+    line-height: 26px;
+    .item{
+      padding: 11px 15px 10px;
+    }
+    .active{
+      border-bottom: 0;
+    }
+    .text-pink,
+    .text-highlight,
+    .text-highlight-r,
+    .text-yellow{
+      font-size: 16px;
+    }
+  }
+  // 首页－发现
+  &.head-nomargin{
+    margin-bottom: 0;
+  }
+  // 购物车－确认订单
+  &.head-gray{
+    background-color: $colorGrey;
+  }
+  // 首页－heading
+  .icons{
+    font-size: 24px;
+    line-height: 24px;
+    margin-right: 5px;
+  }
+  // 更多任务页面-排序
+  .dropdown{
+    white-space: nowrap;
+  }
+  .dropdown-menu{
+    left: auto;
+    right: 0;
+    min-width: 100px;
+    border: 0;
+    border-radius: 0;
+    margin-top: 2px;
+    text-align: center;
+    -webkit-box-shadow: 0 6px 12px rgba(172,172,172,.5);
+    box-shadow: 0 6px 12px rgba(172,172,172,.5);
+    > li > a{
+      padding: 10px;
+    }
+    > li > .active{
+      &:before{
+        display: none;
+      }
+      >a,
+      >a:hover,
+      >a:focus{
+        background-color: inherit;
+        color: inherit;
+      }
+    }
+  }
+  // 更多任务页面-排序 ends
+}
+// 个人中心 ends
+// 首页
+.onav-line{
+  list-style: none;
+  border-bottom: 2px solid $colorHighLight;
+  padding: 0;
+  .active{
+    // border-bottom: 0;
+    position: relative;
+    &:before{
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 50%;
+      margin-left: -4px;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 5px 4px;
+      border-color: transparent transparent $colorHighLight transparent;
+    }
+  }
+  > li{
+    display: inline-block;
+  }
+}
+.onav-line-r{
+  border-bottom: 2px solid $colorHighLightR;
+  .active{
+    color: $colorHighLightR;
+    &:before{
+      border-color: transparent transparent $colorHighLightR transparent;
+    }
+  }
+}
+.onav-line-y{
+  border-bottom: 2px solid $colorStar;
+  .active{
+    color: $colorStar;
+    &:before{
+      border-color: transparent transparent $colorStar transparent;
+    }
+  }
+}
+// 首页 ends

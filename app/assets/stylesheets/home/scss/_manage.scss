@@ -1,0 +1,66 @@
+.m-container{
+  .table{
+    font-size: 12px;
+    th{
+      font-weight: normal;
+    }
+    &.table-sm{
+      font-size: 14px;
+    }
+    &.table-nobordered{
+      >thead>tr>th,
+      >tbody>tr>th,
+      >tbody>tr>td{
+        border: 0;
+      }
+    }
+  }
+  .table-bordered>thead>tr>th,
+  .table-bordered>tbody>tr>th,
+  .table-bordered>tfoot>tr>th,
+  .table-bordered>thead>tr>td,
+  .table-bordered>tbody>tr>td,
+  .table-bordered>tfoot>tr>td{
+    word-break: break-all;
+  }
+  .btn-md{
+    min-width: 110px;
+  }
+  form.row{
+    position: relative;
+    .btn-md{
+      position: absolute;
+      right: 10px;
+      bottom: 20px;
+    }
+  }
+  .start-position{
+    margin: 30px 0 35px;
+  }
+}
+.withdraw-btns{
+  .btn + .btn{
+    margin-left: 40px;
+  }
+}
+@media (max-width: 767px) {
+  .m-container {
+    form.row-10 .btn-md{
+      position: static;
+      margin-left: 10px;
+      margin-bottom: 20px;
+    }
+  }
+  .withdraw-btns{
+    .btn + .btn{
+      margin-left: 15px;
+    }
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .m-container {
+    .btn-md{
+      min-width: 0;
+    }
+  }
+}

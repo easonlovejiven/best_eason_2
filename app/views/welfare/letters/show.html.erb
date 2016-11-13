@@ -1,0 +1,168 @@
+<div class="letter-show">
+  <div class="letter-header text-center">
+    <a class="avatar-round" href="/home/users/<%= @user.try(:id) %>">
+      <img class="img-circle" src="<%= @user.try(:picture_url) %>">
+    </a>
+    <p class="h5 ellipsis">
+      <%= @user.try(:name) %>
+    </p>
+    <p class="small ellipsis">
+      <%= @user.try(:signature) %>
+    </p>
+    <p class="small ellipsis">
+      粉丝：<%= @user.try(:followers_count) %>&nbsp;&nbsp;|&nbsp;&nbsp;关注：<%= @user.try(:follow_count)%>
+    </p>
+  </div>
+  <div class="letter-body">
+    <h3 class="title text-center"><%= @letter.title %></h3>
+    <br>
+    <br>
+    <!-- 称呼 -->
+    <!-- <p class="article">
+      亲爱的 <%#= @letter.receiver %>：
+    </p> -->
+    <!-- <p class="article"><%#= @letter.content %></p> -->
+    <div class="letter-images row row-10">
+      <!-- 未打开的福利展示 -->
+      <% unless @letter.shop_task.task_state["#{@letter.class.to_s}:#{@current_user.try(:id)}"].to_i > 0 || @current_user.try(:id) == @letter.user_id %>
+        <% @letter.images.active.each_with_index do |image, i| %>
+          <% if i < 1 %>
+            <div class="col-sm-6">
+              <div class="tag-box text-center">
+                <div>
+                  <%= image_tag "home/letter-image.png" %>
+                </div>
+                <span class="text-desc">打开查看惊喜内容</span>
+              </div>
+            </div>
+          <% elsif i >= 1 && i < 5 %>
+            <div class="col-sm-3">
+              <div class="tag-box text-center">
+                <div>
+                  <%= image_tag "home/letter-image.png" %>
+                </div>
+                <span class="text-desc">打开查看惊喜内容</span>
+              </div>
+            </div>
+          <% else %>
+            <div class="col-sm-20">
+              <div class="tag-box text-center">
+                <div>
+                  <%= image_tag "home/letter-image.png" %>
+                </div>
+                <span class="text-desc">打开查看惊喜内容</span>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      <% else %>
+      <!-- 打开后的页面展示 -->
+        <% @letter.images.active.each_with_index do |image, i| %>
+          <% if i < 1 %>
+            <div class="col-sm-6">
+              <div class="item">
+                <a data-lightbox="letter" href="<%= image.picture_url%>">
+                  <img src="<%= image.picture_url%>?imageMogr2/auto-orient/thumbnail/!406x406r/gravity/Center/crop/406x406" alt="" />
+                </a>
+              </div>
+            </div>
+          <% elsif i >= 1 && i < 5 %>
+            <div class="col-sm-3">
+              <div class="item">
+                <a data-lightbox="letter" href="<%= image.picture_url%>">
+                  <img src="<%= image.picture_url%>?imageMogr2/auto-orient/thumbnail/!406x406r/gravity/Center/crop/406x406" alt="" />
+                </a>
+              </div>
+            </div>
+          <% else %>
+            <div class="col-sm-20">
+              <div class="item">
+                <a data-lightbox="letter" href="<%= image.picture_url%>">
+                  <img src="<%= image.picture_url%>?imageMogr2/auto-orient/thumbnail/!406x406r/gravity/Center/crop/406x406" alt="" />
+                </a>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+    <!-- <div class="letter-footer text-right">
+      <span><%#= @letter.signature %></span>
+      <div>
+        <%#= @letter.tries(:created_at, :to_date) %>
+      </div>
+    </div> -->
+  </div>
+</div>
+<% unless @letter.shop_task.task_state["#{@letter.class.to_s}:#{@current_user.try(:id)}"].to_i > 0 || @current_user.try(:id) == @letter.user_id %>
+  <div class="task-preview text-center welfare-open">
+    <div class="container">
+      <a class="btn btn-highlight-outline" href="#welfare-open" data-toggle="modal">打开福利</a>
+    </div>
+  </div>
+  <!-- 未打开福利展示 -->
+  <div class="modal fade no-bordered" id="welfare-open" tabindex="-1" role="dialog" aria-labelledby="modalwelfareLabel" data-backdrop="static">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body text-center">
+          打开福利需要消耗5O！元
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-highlight-outline space-lg-hor js_letter_open">打开</button>
+          <button type="button" class="btn btn-default space-lg-hor" data-dismiss="modal">取消</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<% content_for :head do %>
+  <style media="screen">
+    @media (min-width: 768px) {
+      .col-sm-20{
+        width: 20%;
+        float: left;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+    }
+  </style>
+  <%= stylesheet_link_tag "lightbox/lightbox.css" %>
+<% end %>
+<% content_for :tail do %>
+  <%= javascript_include_tag "lightbox.js" %>
+  <script>
+    $(function() {
+      $('.js_letter_open').on('click', function (e) {
+        // do something...
+        $(this).prop('disabled',true);
+        $.ajax({
+          type:'post',
+          url:'/welfare/letters/'+<%= @letter.id %>+'/buy.json',
+          success:function(msg){
+            if(msg.success){
+              location.reload();
+            }else{
+              $('#welfare-open').modal('hide');
+              $('.js_letter_open').prop('disabled',false);
+              alert(msg.error);
+            }
+          },
+          error:function(){
+            alert('服务器正忙，请稍候重试');
+            $('.js_letter_open').prop('disabled',false);
+          }
+        });
+      })
+      lightbox.option({
+        positionFromTop: 0,
+        fadeDuration: 300,
+        resizeDuration: 300,
+        showImageNumberLabel:false
+      })
+    })
+  </script>
+<% end %>

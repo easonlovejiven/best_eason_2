@@ -1,0 +1,205 @@
+.table{
+  &.table-condensed{
+    .form-control{
+      padding: 4px;
+      height: 30px;
+      max-width: 100%;
+    }
+  }
+  &:last-child{
+    margin-bottom: 0;
+  }
+}
+.table,
+.table-responsive{
+  background-color: #fff;
+}
+
+.task-in{
+  .checkbox{
+    margin: 0;
+    padding-left: 30px;
+    line-height: 44px;
+    input[type=checkbox]{
+      margin-right: 10px;
+      position: relative;
+      top: -1px;
+    }
+  }
+  input[type="checkbox"][disabled="disabled"]{
+    position: relative;
+    &:before{
+      content: '失效';
+      display: inline-block;
+      position: absolute;
+      left: -7px;
+      top: 0;
+      width: 26px;
+      padding-bottom: 2px;
+      text-align: center;
+      font-size: 12px;
+      color: #fff;
+      background-color: #bfbfbf;
+      border-radius: 2px;
+    }
+  }
+}
+.task-in-image{
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+}
+.task-in-desc{
+  margin-left: 125px;
+  font-size: 12px;
+  .task-in-title{
+    margin-top: 0;
+    font-size: 14px;
+    line-height: 22px;
+  }
+  p{
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+}
+.task-it-in{
+  div{
+    margin-bottom: 5px;
+  }
+}
+.ext-infos{
+  font-size: 12px;
+  span{
+    margin-right: 10px;
+  }
+}
+.shop-name{
+  font-size: 12px;
+  color: #666;
+  font-weight: bold;
+}
+
+//  选择支付方式需付款商品列表
+.order-list{
+  p{
+    margin-bottom: 5px;
+    color: #979797;
+  }
+}
+$scanIcon: 40px;
+.weixin-qrcode-scan{
+  .hr-black-8{
+    margin-bottom: 0;
+    border-top: 8px solid black;
+  }
+  .thumbnail{
+    border-radius: 0;
+  }
+  .btn-block{
+    &:hover{
+      background-color: $colorRed;
+      border-color: transparent;
+      cursor: default;
+    }
+    span{
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+  .weixin-code{
+    max-width: 300px;
+    margin: 15px auto 0;
+  }
+  .iphone-img{
+    width: 290px;
+    margin-left: 30px;
+  }
+}
+// 发任务-价格信息
+.table-responsive.table-new-price{
+  padding-bottom: 15px;
+  >.table-bordered{
+    min-width: 700px;
+  }
+}
+
+
+// 选择付款方式
+$bankHeight: 27px;
+.bank-icon{
+  display: inline-block;
+  width: 140px;
+  height: $bankHeight;
+  background-image: asset-url("home/banks-combo.png");
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 20px;
+}
+.icon-alipay{
+  background-position: 0 -4px;
+}
+.icon-CCB{
+  background-position: 0 -257px;
+}
+.icon-ICBC-DEBIT{
+  background-position: 0 -724px;
+}
+.icon-BOC-DEBIT{
+  background-position: 0 -112px;
+}
+.icon-ABC{
+  background-position: 0 -39px;
+}
+.icon-CMB{
+  background-position: 0 -400px;
+}
+.icon-COMM{
+  background-position: 0 -474px;
+}
+.icon-CEB-DEBIT{
+  background-position: 0 -291px;
+}
+.icon-PSBC-DEBIT{
+  background-position: 0 -867px;
+}
+.icon-CIB{
+  background-position: 0 -328px;
+}
+.icon-GDB{
+  background-position: 0 -580px;
+}
+.icon-SPDB{
+  background-position: 0 -1013px;
+}
+.icon-CITIC{
+  background-position: 0 -366px;
+}
+.icon-CMBC{
+  background-position: 0 -437px;
+}
+.icon-SPABANK{
+  background-position: 0 -977px;
+}
+.icon-BJBANK{
+  background-position: 0 -74px;
+}
+.icon-weixin-pay{
+  background-position: 0 -1159px;
+}
+.bank-name{
+  position: absolute;
+  left: 30px;
+}
+.cashier-bank {
+  position: relative;
+  width: 190px;
+  height: 42px;
+  float: left;
+  padding: 7px 8px;
+  margin-right: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #eee;
+  &:first-child{
+    padding-left: 8px;
+  }
+}

@@ -1,0 +1,41 @@
+var defaultAddressBadge = '<span class="badge badge-highlight-outline">默认收货地址</span>'
+var $parents = $(".set-default-address<%= params[:id]%>").parents('.address-item<%= params[:id]%>');
+// console.log($('.set-default-address12').attr('id'));
+if ($parents.find('.badge').length == 0) {
+  $parents.siblings('.address-item').find('.badge').remove();
+  $parents.find('.title').append(defaultAddressBadge);
+}
+if($(".set-default-address<%= params[:id]%>").attr('id') != "address-true"){
+  // console.log("$(".set-default-address14")[0].id ");
+  <% if @ticket_types.present? %>
+    <% @ticket_types.each do |user_name, types| %>
+      <% province_name = Core::Address.active.where(user_id: @current_user.id, is_default: true).first.province_name %>
+      <% freight = Shop::Freight.active.where(freight_template_id: Shop::TicketType.find_by(id: types[0]['ticket_type'].to_i).task.try(:freight_template_id), destination: province_name).first || Shop::Freight.where(freight_template_id: types[0]['task'].try(:freight_template_id), destination: '其它').first %>
+      <% sum_quantity = types.map{|t| t['quantity'].to_i}.sum  %>
+      <% if freight %>
+        <% if sum_quantity > freight.frist_item %>
+          <% if (sum_quantity - freight.frist_item) / freight.reforwarding_item == 0 %>
+            <% freight_fee = freight.first_fee + freight.reforwarding_fee %>
+          <% else %>
+            <% if (sum_quantity - freight.frist_item) % freight.reforwarding_item == 0 %>
+              <% freight_fee = freight.first_fee + freight.reforwarding_fee * ( (sum_quantity - freight.frist_item) / freight.reforwarding_item ) %>
+            <% else %>
+              <% freight_fee = freight.first_fee + freight.reforwarding_fee * ( (sum_quantity - freight.frist_item) / freight.reforwarding_item ) + freight.reforwarding_fee %>
+            <% end %>
+          <% end %>
+        <% else %>
+          <% freight_fee = freight.first_fee %>
+        <% end %>
+      <% else %>
+        <% freight_fee = 0 %>
+      <% end %>
+      <% @sum_fee += freight_fee %>
+      $("#task_<%= types[0]['task'] %>")[0].innerHTML = "<%= freight_fee %>";
+      $(".task_<%= types[0]['task'] %>")[0].value = "<%= freight_fee %>";
+      $("#freight_fee")[0].value = "<%= freight_fee %>";
+    <% end %>
+    $("#sum_fee")[0].value = "<%= @sum_fee %>"
+    $(".sum_fee")[0].innerHTML = "<%= @sum_fee %>"
+    $("#address_id")[0].value = "<%= params[:id] %>"
+  <% end %>
+}

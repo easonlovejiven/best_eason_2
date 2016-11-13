@@ -1,0 +1,245 @@
+.publish-item{
+  display: block;
+  height: 160px;
+  border-radius: 4px;
+  font-size: 16px;
+  position: relative;
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+.flag-event{
+  color: #D762F0;
+}
+.flag-product{
+  color: $colorExpert;
+}
+.flag-funding{
+  color: #FF472E;
+}
+.flag-topic{
+  color: #00EB83;
+}
+.flag-subject{
+  color: $colorYellow;
+}
+.flag-welfare-event,
+.flag-question{
+  color: #FF7A29;
+}
+.flag-media{
+  color: #20DEFF;
+}
+.flag-letter{
+  color: #51C91C;
+}
+.flag-voice{
+  color: #58ABFE;
+}
+.flag-welfare-product{
+  color: #FA5534;
+}
+.flag-drafts{
+  color: $colorYellow;
+}
+// 发任务
+.publish-form{
+  @extend .block-area;
+  .kindeditor{
+    max-width: 70%;
+  }
+  label{
+    >label{
+      margin-bottom: 0;
+    }
+    .tips{
+      color: #999999;
+      font-weight: normal;
+    }
+  }
+  // 时间控件
+  .btn-group-justified>.btn-group{
+    vertical-align: top;
+  }
+}
+// 上传图片
+.thumb-show,
+.thumb-img-add{
+  display: inline-block;
+  vertical-align: middle;
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;
+  .topics-list &{
+    margin-bottom: 10px;
+  }
+}
+.thumb-img-add{
+  border: 1px solid #53E8E8;
+  position: relative;
+  input{
+    opacity: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  &:before,
+  &:after{
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translateY(-50%) translateX(-50%);
+    transform: translateY(-50%) translateX(-50%);
+  }
+  &:before{
+    width: 1px;
+    height: 20px;
+    background-color: #53E8E8;
+  }
+  &:after{
+    width: 20px;
+    height: 1px;
+    background-color: #53E8E8;
+  }
+}
+.thumb-show{
+  position: relative;
+  .thumbnail-cover{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+}
+// 时间控件
+.datetime-wrap{
+  display: inline-block;
+  position: relative;
+  margin-bottom: 5px;
+  .form-control{
+    max-width: 100%;
+  }
+}
+// 问答
+.publish-questions{
+  textarea{
+    height: 38px;
+    max-width: 100%;
+  }
+  .question-title{
+    font-size: 16px;
+    margin-left: -20px;
+    margin-right: -20px;
+    border-left: 4px solid $colorHighLight;
+    padding-left: 16px;
+    margin-bottom: 16px;
+  }
+  .question-group{
+    margin-bottom: 16px;
+  }
+}
+.qustion-item{
+  margin-bottom: 16px;
+  &:last-child{
+    margin-bottom: 0;
+  }
+  .btn{
+    border-radius: 0 4px 4px 0;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  .qustion-item-number{
+    line-height: 38px;
+    margin-right: 5px;
+  }
+}
+// 富文本
+// .ke-container{
+//   width: 100%;
+// }
+// 发福利
+.envelope-item{
+  position: relative;
+  margin-bottom: 14px;
+  .envelope-thumb{
+    display: inline-block;
+    border-radius: 4px;
+    overflow: hidden;
+    height: 94px;
+    width: 100%;
+    img{
+      min-width: 100%;
+      min-height: 100%;
+    }
+  }
+  .envelope-checked{
+    position: absolute;
+    top: -4px;
+    right: -5px;
+    opacity: 0;
+  }
+  input:checked ~ .envelope-checked{
+    opacity: 1;
+  }
+}
+
+.input-group-addon{
+  border: 0;
+  margin-left: -1px;
+  color: #666666;
+  position: relative;
+  z-index: 2;
+  .btn{
+    background-color: #eeeeee;
+    margin-left: -1px;
+    // padding: 8px 24px;
+  }
+  input:checked ~ .btn{
+    background-color: $colorHighLight;
+    color: #fff;
+  }
+  .set-cover{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    &.error{
+      & + .btn{
+        box-shadow: 0 0 3px #FE4227;
+      }
+    }
+  }
+
+  .publish-form &,
+  .envelope-opts &{
+    padding: 0;
+  }
+  .question-item &{
+    margin-left: -1px;
+  }
+  .envelope-item &{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    margin: 0;
+    text-align: right;
+    background-color: transparent;
+  }
+}
+//
+span.error{
+  color: $colorRed;
+}
+select.error,
+input.error,
+textarea.error{
+  box-shadow: 0 0 3px #FE4227;
+}

@@ -1,0 +1,66 @@
+<% show = !%w[new edit].include?(params[:action]) && @record.valid? %>
+<% options_class = show ? {disabled: 'true'} : {} %>
+
+<%= form_for @record, url: [:manage, @record], method: @record.new_record? ? :post : :put, html: {class: 'form-horizontal readonly-form'} do |f| %>
+  <% f.options.merge!(options_class: options_class) %>
+
+  <div class="modal-body">
+    <%= render 'manage/shared/modal/id', {f: f} %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :name, required: true} %>
+    <%= render 'manage/shared/modal/select_tag', {f: f, field: :role_id, required: true, options: options_from_collection_for_select(Manage::Role.active, :id, :name, @record.role_id)} %>
+
+    <fieldset>
+      <div class="form-group">
+        <%= f.label :grants, '授予', class: 'col-md-1 control-label' %>
+        <div class="col-md-11">
+          <% (@record.grants.sort_by { |grant| grant.id || 99999999 } + (show ? [] : 1..10).map{ @record.grants.new(:active => false) }).each do |grant| %>
+            <%= f.fields_for :grants, grant do |sf| %>
+              <% unless show %>
+                <%= sf.check_box :active, :onclick => "$(this).next().slideToggle('fast').find('input').prop('disabled', !$(this).prop('checked'));" %>
+              <% end %>
+              <div style="<%= 'display:none;' unless grant.active? %>">
+                <table class="table form-table">
+                  <tbody>
+                    <% unless grant.new_record? %>
+                      <tr>
+                        <th><%= sf.label :id, 'ID' %></th>
+                        <td><%= grant.id %></td>
+                      </tr>
+                    <% end %>
+                    <tr>
+                      <th><%= sf.label :role_id, '角色' %></th>
+                      <td>
+                        <% if show %>
+                          <%= link_to_if can?(:show, grant.role), h(grant.role.name), [:manage, grant.role], :rel => 'facebox' if grant.role %>
+                        <% else %>
+                          <%= sf.collection_select :role_id, Manage::Role.active, :id, :name, { :include_blank => '' } %>
+                            <%#= sf.error_message_on :role_id %>
+                        <% end %>
+                      </td>
+                    </tr>
+                    <% unless grant.new_record? %>
+                      <tr>
+                        <th><%= sf.label :created_at, '创建时间' %></th>
+                        <td><%= grant.created_at && grant.created_at.to_s(:db) %></td>
+                      </tr>
+                      <tr>
+                        <th><%= sf.label :updated_at, '修改时间' %></th>
+                        <td><%= grant.updated_at && grant.updated_at.to_s(:db) %></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </fieldset>
+
+    <%= render 'manage/shared/modal/timestamps', {f: f} if show %>
+  </div>
+
+  <div class="modal-footer">
+    <%= render 'manage/shared/modal/footer', {f: f} unless show %>
+  </div>
+<% end %>

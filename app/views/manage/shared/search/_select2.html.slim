@@ -1,0 +1,68 @@
+.form-group
+  = label_tag "where[#{field}]", model.human_attribute_name(field)
+  .input-group
+	  = select_tag "where[#{field}]", options[:selects], {class: 'form-control select2', id: field, style: "width: 200px", placeholder: "请选择一个用户"}.merge(options[:multiple_class] ? {multiple: 'multiple'} : {})
+
+javascript:
+  $(document).ready(function(){
+    if("#{options[:auto_suppl]}" == 'true'){
+      var $element = $("##{field}").select2(); // the select element you are working with
+      var $request = $.ajax({
+        url: "#{options[:auto_url]}", // wherever your data is actually coming from
+      });
+      $request.then(function (data) {
+        for (var d = 0; d < data.stars.length; d++) {
+          var item = data.stars[d];
+
+          var option = new Option(item.name, item.id, true, true);
+
+          $element.append(option);
+        }
+
+        $element.trigger('change');
+      });
+    }
+
+    $("##{field}").select2({
+      allowClear: true,
+      tags: false,
+      placeholder: "请选择一个用户",
+      maximumSelectionLength: 10,
+      ajax: {
+        url: "#{options[:url]}",
+        dataType: 'json',
+        delay: 250,
+        type: "POST",
+        data: function (params) {
+          return {
+            name: params // search term
+            // page: params.page
+          };
+        },
+        processResults: function (data, page) {
+          // parse the results into the format expected by Select2.
+          // since we are using custom formatting functions we do not need to
+          // alter the remote JSON data
+          return { results: $.map( data.stars, function(client, i) {
+                    return { id: client.id, text: client.name }
+                } ) };
+        },
+        cache: true
+      },
+      escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+      minimumInputLength: 1
+
+    });
+    var value = $.map($('.select2').select2('data'), function(client, i) {
+      client.name
+    });
+    $('input.select2').val(value.join(','));
+  })
+css:
+  .select2-hidden-accessible{
+    visibility: hidden;
+  }
+  .select2-container--default .select2-selection--single .select2-selection__clear{
+    position: relative;
+    z-index: 1;
+  }

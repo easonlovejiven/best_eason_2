@@ -1,0 +1,20 @@
+<div class="connection">
+  <div class="text-center" style="margin-bottom: 20px;">
+    <%= link_to 'javascript:;', class: 'avatar-round' do %>
+      <%= image_tag @connection.picture_url, class: 'img-circle' %>
+    <% end %>
+    <p class="connect-avatar-name">
+      <%= @connection.name %>
+    </p>
+  </div>
+  <div class="lead">
+    欢迎使用Owhat
+  </div>
+  <p class="">为了给您提供更好的服务，请关联一个Owhat账号</p>
+  <div class="connect-btn-group">
+    <% unless @connection.tries(:account, :user, :verified) %>
+      <%= link_to "已有Owhat账号？立即关联", new_session_path(connection_id: @connection.id, sign: Digest::MD5.hexdigest("session#{@connection.id}#{OAUTH_CONFIG[@connection.site]['secret']}#{@connection.token}").downcase), class: "btn btn-block btn-default-outline" %>
+    <% end %>
+    <%= link_to "还没有Owhat账户？快速注册", new_account_path(connection_id: @connection.id, sign: Digest::MD5.hexdigest("account#{@connection.id}#{OAUTH_CONFIG[@connection.site]['secret']}#{@connection.token}").downcase), class: "btn btn-block btn-blue-outline" %>
+  </div>
+</div>

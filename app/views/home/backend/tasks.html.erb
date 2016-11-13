@@ -1,0 +1,85 @@
+<div class="container m-container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <ul class="head-highline list-unstyled">
+        <li class="item <%= 'active' if params[:shop_category] == 'shop_events' %>">
+          <%= link_to '活动管理', tasks_home_backend_index_path(shop_category: 'shop_events') %>
+        </li>
+        <li class="item <%= 'active' if params[:shop_category] == 'shop_products' %>">
+          <%= link_to '商品管理', tasks_home_backend_index_path(shop_category: 'shop_products') %>
+        </li>
+        <li class="item <%= 'active' if params[:shop_category] == 'shop_fundings' %>">
+          <%= link_to '应援管理', tasks_home_backend_index_path(shop_category: 'shop_fundings') %>
+        </li>
+      </ul>
+      <p>此列表仅显示已发布的任务。若需查看或编辑未发布的任务，请到左侧导航的「发布任务/福利」>「草稿」页面。</p>
+      <%= form_tag tasks_home_backend_index_path, method: :get, class: "form-inline" do %>
+        <%= hidden_field_tag "shop_category", params[:shop_category] %>
+        <div class="form-group">
+          <label for="">任务ID</label>
+          <%= text_field_tag 'id', params[:id], class: "form-control", placeholder: "1255" %>
+        </div>
+        <div class="form-group">
+          <label for="">关键字</label>
+          <%= text_field_tag 'title', params[:title], class: "form-control", placeholder: "请输入关键字" %>
+        </div>
+        <button type="submit" class="btn btn-highlight btn-md">搜索</button>
+      <% end %>
+      <br>
+
+      <% @shop_title = params[:shop_category] == "shop_events" ? '活动' : params[:shop_category] == "shop_products" ? '商品' : '应援' %>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>名称</th> <!-- （活动／商品／应援） -->
+              <th>已支付</th>
+              <th>待支付</th>
+              <th>用户取消</th>
+              <th>超时取消</th>
+              <th>交易额</th>
+              <th>未提现金额</th>
+              <th>创建时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @shops.includes(:order_items).each do |task| %>
+              <tr>
+                <td class=""><%= task.id %></td>
+                <td width="200">
+                  <span class="label label-success"><%= @shop_title %></span><%= task.title %>
+                </td>
+                <td class=""><%= task.order_items_size[2] || 0 %></td>
+                <td class=""><%= task.order_items_size[1] || 0 %></td>
+                <td class=""><%= task.order_items_size[-2] || 0 %></td>
+                <td class=""><%= task.order_items_size[-1] || 0 %></td>
+                <td class=""><%= task.sum_fee %></td>
+                <td class=""><%= (task.sum_fee.to_f.round(2) - Core::WithdrawOrder.where(task_id: task.id, task_type: task.class.name, status: [1, 3]).map(&:amount).sum.to_f.round(2)).to_f.round(2)%></td>
+                <td class=""><%= task.created_at.to_s(:db) %></td>
+                <td class="">
+                  <%= link_to '查看', orders_home_backend_index_path(task_id: task.id, shop_category: task.class.name), class: 'btn btn-default btn-sm' %>
+                  <% if params[:shop_category] == 'shop_events' %>
+                    <%= link_to '编辑', edit_shop_event_path(task), class: 'btn btn-default btn-sm' %>
+                  <% elsif params[:shop_category] == 'shop_products' %>
+                    <%= link_to '编辑', edit_shop_product_path(task), class: 'btn btn-default btn-sm' %>
+                  <% else %>
+                    <%= link_to '编辑', edit_shop_funding_path(task), class: 'btn btn-default btn-sm' %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <br>
+      <div class="text-center">
+        <%= will_paginate @tasks %>
+      </div>
+    </div>
+  </div>
+</div>

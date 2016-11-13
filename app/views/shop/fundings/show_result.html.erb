@@ -1,0 +1,27 @@
+<div class="container">
+  <ol class="breadcrumb">
+    <li><a href="/home">首页</a></li>
+    <li><a href="/home">应援任务</a></li>
+    <li><a href="/shop/fundings/<%= @task.id %>"><%= @task.title%></a></li>
+    <li class="active">应援结果</li>
+  </ol>
+  <div class="clearfix">
+    <div class="content-left block-area">
+      <% if @task.result_describe.present? %>
+        <%= @task.result_describe %>
+      <% else %>
+        <div class="null-content">
+          <div class="text-center translate-middle-y">
+            <p>
+              <%= image_tag 'home/null-content.png', alt: '' %>
+            </p>
+            <p>暂时还没有内容哦~</p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- 右侧边栏 -->
+    <%= render partial: "layouts/home/aside", locals: {publish_user: @task.user} %>
+  </div>
+</div>

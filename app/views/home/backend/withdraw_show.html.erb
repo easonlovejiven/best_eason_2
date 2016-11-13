@@ -1,0 +1,66 @@
+<div class="container m-container">
+  <%= render partial: "home/backend/nav" %>
+
+  <div class="head-highline">
+    <span class="item active">财务管理</span>
+  </div>
+  <div class="table-responsive">
+    <h3>提现申请总金额：<%= @withdraw_order.amount %> | 订单数：335</h3>
+    <br>
+    <table class="table table-bordered">
+      <tbody>
+        <tr>
+          <th>状态：</th>
+            <td><span class="label label-success"><%= @withdraw_order.status_name %></span></td>
+        </tr>
+        <tr>
+          <th>申请提现金额：</th>
+          <td>
+            <%= @withdraw_order.amount %>
+            <a class="btn btn-xs btn-primary" href="#">查看相关订单</a>
+          </td>
+        </tr>
+        <tr>
+          <th>收款人姓名：</th>
+          <td><%= @withdraw_order.requested_by.name %></td>
+        </tr>
+        <tr>
+          <th>收款人手机号：</th>
+          <td><%= @withdraw_order.mobile %></td>
+        </tr>
+        <tr>
+          <th>收款人邮箱：</th>
+          <td><%= @withdraw_order.mail %></td>
+        </tr>
+        <tr>
+          <th>收款人银行账号或者支付宝：</th>
+          <td><%= @withdraw_order.receiver_account %></td>
+        </tr>
+        <tr>
+          <th>开户行名称：</th>
+          <td><%= @withdraw_order.bank_name %></td>
+        </tr>
+        <tr>
+          <th>申请人备注：</th>
+          <td><%= @withdraw_order.requestor_remark %></td>
+        </tr>
+        <tr>
+          <th>提现订单截止时间：</th>
+          <td><%= @withdraw_order.requested_at %></td>
+        </tr>
+        <tr>
+          <th>申请时间：</th>
+          <td><%= @withdraw_order.created_at.to_s(:db) %></td>
+        </tr>
+        <tr>
+          <th>审核人备注：</th>
+          <td><%= @withdraw_order.status_name %></td>
+        </tr>
+        <tr>
+          <th>审核时间：</th>
+          <td><%= @withdraw_order.updated_at.to_s(:db) %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,174 @@
+<% task_type = { 'Shop::Event': '活动任务', 'Shop::Product': '产品任务', 'Shop::Funding': '应援任务',
+                 'Shop::Subject': '直播任务', 'Shop::Topic': '话题任务', 'Shop::Media': 'O妹精选任务',
+                 'Shop::FundingOrder': '应援订单', 'Shop::Order': 'shop订单', 'Shop::Comment': '直播任务',
+                 'Shop::TopicDynamic': '动态', 'Shop::DynamicComment': '动态', 'Welfare::Letter': '图片',
+                 'Welfare::Voice': '语音', 'Qa::Answer': '问答', 'Core::User': '用户相关', 'Qa::Poster': '问答',
+                 'Welfare::Event': '免费活动', 'Welfare::Product': '免费商品' } %>
+<!-- 普通用户钱包 -->
+<% unless @current_user.verified %>
+  <div class="container wallets">
+    <div class="row row-10">
+      <div class="col-sm-3">
+        <%= render "home/users/panel" %>
+      </div>
+      <div class="col-sm-9">
+        <div class="block-area block-area-md">
+          <div class="overall">
+            <i class="icons">&#xe60f;</i> <%= @obi_account %>
+          </div>
+          <div class="">
+            <a href="/home/abouts/obi">（什么是 O!元）</a>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table block-area">
+            <thead>
+              <tr>
+                <td width="33%">
+                  交易时间
+                </td>
+                <td width="34%">
+                  收支明细
+                </td>
+                <td width="33%">
+                  收入/开支
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              <% @obi_detail.each do |detail| %>
+              <tr>
+                <td>
+                  <%= detail.created_at.to_s(:db) %>
+                </td>
+                <td>
+                  <% if detail.from.match(/_share/)%>
+                  分享任务
+                  <% elsif detail.from.match(/punch/) %>
+                  打卡任务
+                  <% elsif detail.task_type == "Core::User" %>
+                  <% if detail.obi > 10 %>
+                  升级
+                  <% else %>
+                  登陆
+                  <% end %>
+                  <% else %>
+                  <%= task_type[detail.task_type.to_sym] %>
+                  <% end %>
+                </td>
+                <td>
+                  <span class="<%= detail.is_income ? 'text-highlight-r' : 'text-gray' %>"><%= detail.is_income ? '+' : '-'%><%= detail.obi %> </span>O!&nbsp;元
+                </td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <div class="text-center">
+          <%= will_paginate @obi_detail %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% else %>
+<!-- 认证用户钱包 -->
+  <div class="container wallets">
+    <div class="row row-10">
+      <div class="col-sm-3">
+        <%= render "home/users/panel" %>
+      </div>
+      <div class="col-sm-9">
+        <div class="block-area text-center block-area-md">
+          <div class="row overall">
+            <div class="col-xs-6">
+              <i class="icons">&#xe615;</i> <%= @balance_account.to_f.round(2) %>
+            </div>
+            <div class="col-xs-6">
+              <i class="icons">&#xe60f;</i> <%= @obi_account %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-6">
+              <a href="/home/backend/withdraw" class="btn btn-default">申请提现</a>
+            </div>
+            <div class="col-xs-6">
+              <a href="/home/abouts/obi">（什么是 O!元）</a>
+            </div>
+          </div>
+        </div>
+        <div class="head-highline">
+          <a href="/home/wallets" class="item <%= 'active' unless params[:type] %>">人民币明细</a>
+          <a href="/home/wallets?type=obi" class="item <%= 'active' if params[:type] %>">O元明细</a>
+        </div>
+        <div class="table-responsive">
+          <table class="table block-area">
+            <thead>
+              <tr>
+                <td width="30%">
+                  交易时间
+                </td>
+                <td width="40%">
+                  收支明细
+                </td>
+                <td width="30%">
+                  收入
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              <% unless params[:type] == 'obi' %>
+                <% @rmb_detail.each do |detail| %>
+                  <tr>
+                    <td>
+                      <%= detail.created_at.to_s(:db) %>
+                    </td>
+                    <td>
+                      【<%= task_type[detail.owhat_product_type.to_sym] %>】<%= detail.owhat_product.title %>
+                    </td>
+                    <td>
+                      <span class="text-highlight-r">+ <%= detail.payment %> 元</span>
+                    </td>
+                  </tr>
+                <% end %>
+              <% else %>
+                <% @obi_detail.each do |detail| %>
+                  <tr>
+                    <td>
+                      <%= detail.created_at.to_s(:db) %>
+                    </td>
+                    <td>
+                      【<% if detail.from.match(/_share/)%>
+                        分享任务
+                        <% elsif detail.from.match(/punch/) %>
+                          打卡任务
+                        <% elsif detail.task_type == "Core::User" %>
+                          <% if detail.obi > 10 %>
+                            升级
+                          <% else %>
+                            登陆
+                          <% end %>
+                        <% else %>
+                          <%= task_type[detail.task_type.to_sym] %>
+                        <% end %>】<%= detail.task.try(:title) %>
+                    </td>
+                    <td>
+                      <span class="<%= detail.is_income ? 'text-highlight-r' : 'text-gray' %>"><%= detail.is_income ? '+' : '-'%><%= detail.obi %></span> O!&nbsp;元
+                    </td>
+                  </tr>
+                <% end %>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <br>
+        <div class="text-center">
+          <% if params[:type] == 'obi' %>
+            <%= will_paginate @obi_detail %>
+          <% else %>
+            <%= will_paginate @rmb_detail %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

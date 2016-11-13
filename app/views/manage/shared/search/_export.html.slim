@@ -1,0 +1,6 @@
+.form-group
+	= label_tag 'export', t('.export')
+	= select_tag 'export', options_for_select([nil] + (exports ||= []).map { |export| [t(".#{export}"), export] }), multiple: false, class: 'form-control'
+.form-group
+	= label_tag 'format', t('.format')
+	= select_tag 'format', options_for_select((formats ||= %w[html xls csv tsv]).map { |format| [format.upcase, format] }), multiple: false, class: 'form-control'

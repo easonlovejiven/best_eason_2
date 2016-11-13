@@ -1,0 +1,124 @@
+<h3><%= "#{model.model_name.human}#{t(:index)}" %> (<%= @records.total_entries %>)</h3>
+<h3>截止<%= (Time.now-1).beginning_of_day.strftime "%Y-%m-%d" %> 23:50:00 应援总收入: <%= h = eval(Redis.current.get("shop_funding_order_sum_pay_for_day") || '{}')[:sum]%></h3>
+<div class="well well-sm">
+  <!-- 用户搜索 -->
+  <%= form_tag request.path, method: 'get', id: 'search_form', class: 'form-inline clearfix' do %>
+    <%= render 'manage/shared/search/basic', field: 'id' %>
+    <%= render 'manage/shared/search/basic', field: 'shop_funding_id' %>
+    <%= render 'manage/shared/search/select', field: 'status', options: Shop::OrderItem.statuses.to_a.map { |w| [t(w[0]), w[1]] } %>
+    <%= render 'manage/shared/search/basic', field: 'order_no' %>
+    <%= render 'manage/shared/search/select2', field: 'user_id', options: { selects: [], url: "/manage/core/search_user_all" , multiple_class: false, auto_suppl: true, auto_url: "/manage/core/get_user_all?id=#{(params[:where] || {})[:user_id]}" } %>
+    <%= render 'manage/shared/search/basic', field: 'phone' %>
+    <%#= render 'manage/shared/search/page' %>
+    <div class="form-group">
+      <%= submit_tag t(:search), name: nil, class: 'btn btn-primary' %>
+      <%#= link_to t(:reset), request.path, class: 'btn btn-info', data: {remote: true} %>
+    </div>
+  <% end %>
+  <br>
+  <%= form_tag export_manage_shop_funding_orders_path, method: :get, class: "form-inline clearfix js-exportorder-form"  do %>
+    <%= render 'manage/shared/search/basic', field: 'shop_funding_id' %>
+    <%= render 'manage/shared/search/range', field: 'paid_at', provide: 'datepicker-time-second-inline' %>
+    <%= render 'manage/shared/search/checkbox', field: 'exclude_free', option:{value: true, checked: false}%>
+    <%#= render 'manage/shared/search/basic', field: 'shop_funding_type' %>
+    <div class="form-group">
+      <label class="control-label">导出格式</label>
+      <%= select_tag 'format', options_for_select(['xlsx', 'csv'], params[:format]), class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      <label class="control-label">订单状态</label>
+      <%= select_tag 'status', options_for_select([['已付款', 2]]), class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      <button type="button" class="btn btn-danger js-exportorder-submit">导出订单</button>
+    </div>
+  <% end %>
+  <!-- 用户搜索 end/ -->
+</div>
+<!-- 用户列表 -->
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <% %i{ id order_no shop_funding_id shop_funding_type user_id 用户主账号key phone status quantity payment created_at }.each do |field| %>
+        <th><%= model.human_attribute_name(field) %></th>
+      <% end %>
+      <th><%= t 'actions' %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @records.includes(:owhat_product, :user).each do |record| %>
+      <tr>
+        <td><%= record.id %></td>
+        <td><%= record.order_no %></td>
+        <td><%= record.shop_funding_id %></td>
+        <td>应援</td>
+        <td><%= record.user.try(:name) %>
+        <td><%= record.user.account.try(:phone) || record.user.account.try(:email) %>
+        <td><%= record.try(:phone) %>
+        <td><%= t record.status %>
+        <td><%= record.quantity %>
+        <td><%= record.payment.to_f.round(2) %>
+        <td><%= record.created_at.to_s(:db) %></td>
+        <td>
+          <%= render 'manage/shared/actions', record: record %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="dt-toolbar-footer">
+  <%= render 'manage/shared/pagination', records: @records %>
+</div>
+<script>
+  $('#where_paid_at_start').click(function(){
+     var oval = $(this).val();
+     if(oval == ''){
+       $(this).val("<%= Time.now.beginning_of_day.to_s(:db) %>");
+     }
+  });
+  $('#where_paid_at_end').click(function(){
+     var oval = $(this).val();
+     if(oval == ''){
+       $(this).val("<%= Time.now.end_of_day.to_s(:db) %>");
+     }
+  });
+  $('.js-exportorder-submit').click(function(){
+    var nowId = $('.js-exportorder-form #where_shop_funding_id').val();
+    var startTime = $('#where_paid_at_start').val();
+    var endTime = $('#where_paid_at_end').val();
+    var errorTime = new Date(endTime).getTime()-new Date(startTime).getTime();
+    var oDay = parseInt(errorTime/86400000);
+    if(nowId ==''){
+      if(startTime !='' && endTime != ''){
+        errorFunTime(oDay);
+      }else{
+        alert('应援ID为空,无法导出订单,请至少选择一项');
+        return false;
+      }
+    }else{
+      if(startTime == '' && endTime == '' || startTime != '' && endTime !=''){
+        errorFunTime(oDay);
+      }else{
+        alert('支付时间的开始时间和结束时间必须同时选择,请检查');
+        return false;
+      }
+    }
+  });
+   function errorFunTime(oDay){
+    if(oDay<0){
+      alert('结束时间必须晚于开始时间,请确认后重试');
+      return false;
+    }else{
+      if(oDay>7){
+        if(confirm("无法导出。您的选择已超过限制：订单导出的时间范围最长仅支持7天。点击确认，将自动导出开始时间后7天的数据；点击取消，则重新选择时间。")){
+          $('.js-exportorder-form').submit();
+        }else{
+          return false;
+        }
+      }else{
+        $('.js-exportorder-form').submit();
+      }
+    }
+  }
+</script>

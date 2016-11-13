@@ -1,0 +1,6 @@
+<% unless record.class == Core::ExportedOrder%>
+  <%= link_to t('show'), [:manage, record], class: 'btn btn-xs btn-default' %>
+  <%#= link_to t('copy'), [:new, :manage, model.model_name.singular, {id: record.id}], class: 'btn btn-xs btn-default' if can?(:create, record) %>
+  <%= link_to t('edit'), [:edit, :manage, record], class: 'btn btn-xs btn-default' %>
+<% end %>
+<%= link_to t('destroy'), [:manage, record], data: {confirm: t('confirm'), method: 'delete'}, class: 'btn btn-danger btn-xs' if can?(:destroy, record) %>

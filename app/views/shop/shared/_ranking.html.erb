@@ -1,0 +1,74 @@
+<% unless params[:action] == 'more_users' %>
+  <h5 class="h4 aside-title">
+    <a href="<%= url %>" class="small pull-right">更多</a>
+    <span class="border-l">
+      参与用户
+    </span>
+  </h5>
+  <div class="welfare-ranking-list clearfix">
+    <% users.each do |user| %>
+      <span class="parti-item">
+        <%= link_to home_user_path(user), class: "avatar-round avatar-xs", title: "#{user.name}" do %>
+          <%= image_tag user.picture_url.to_s + "?imageMogr2/auto-orient/thumbnail/!62x62r/gravity/Center/crop/62x62", class: 'img-circle', alt: '' %>
+        <% end %>
+      </span>
+    <% end %>
+    <% if users.count >= 23 %>
+      <span class="parti-item">
+        <a href="<%= url %>" class="parti-more-btn text-center">• • •</a>
+      </span>
+    <% end %>
+  </div>
+<% else %>
+  <ol class="breadcrumb">
+    <li><a href="/">首页</a></li>
+    <li><a href="<%= shop_tasks_path %>">任务</a></li>
+    <li class="active">参与用户</li>
+  </ol>
+  <% if users.blank? %>
+    <div class="null-content block-area">
+      <div class="text-center translate-middle-y">
+        <p>
+          <%= image_tag 'home/null-content.png', alt: '' %>
+        </p>
+        <p>还没有人参加, 赶快参加吧!</p>
+      </div>
+    </div>
+  <% else %>
+    <div class="block-area">
+      <div class="row avatar-list">
+        <% unless users.blank?  %>
+          <% users.each do |user| %>
+            <div class="avatar-head has-bordered clearfix col-sm-6">
+              <%= link_to home_user_path(user), class: 'avatar-round pull-left' do %>
+                <%= image_tag user.picture_url.to_s + "?imageMogr2/auto-orient/thumbnail/!62x62r/gravity/Center/crop/62x62", class: 'img-circle', alt: '' %>
+              <% end %>
+
+              <label class="checkbox-stars pull-right" for="">
+                <%= follow_links(user) if @current_user.try(:id) != user.id %>
+              </label>
+              <div class="name-location">
+                <div class="ellipsis">
+                  <a href="<%= home_user_path(user) %>">
+                    <%= user.name %>
+                  </a>
+                  <%= user_home_identity_style(user) %>
+                </div>
+                <p class="text-gray ellipsis">
+                  <a href="<%= follows_home_user_path(user) %>" class="text-gray">
+                    关注：<%= user.follow_count %>
+                  </a>
+                  &nbsp;&nbsp;|&nbsp;&nbsp;
+                  <a href="<%= followers_home_user_path(user)%>" class="text-gray">
+                    粉丝：<%= user.followers_count %>
+                  </a>
+                </p>
+                <p class="name-desc ellipsis text-gray"><%= user.signature %></p>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

@@ -1,0 +1,26 @@
+I"O(function() {
+  $(function() {
+    $('#new_session_form').on('submit', function() {
+      $.ajax({
+        url: $('#new_session_form').attr('action') + '.json',
+        type: 'post',
+        data: $('#new_session_form').serialize(),
+        dataType: 'json',
+        success: function(data) {
+          if (data.url) {
+            window.location.href = data.url;
+          } else {
+            alert(data.error);
+            return;
+          }
+        },
+        error: function() {
+          alert('请稍候重试');
+        }
+      });
+      return false;
+    });
+  });
+
+}).call(this);
+:ET

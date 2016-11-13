@@ -1,0 +1,64 @@
+// 内页右侧边栏
+.aside-area{
+  padding: 0 20px 20px;
+  margin-bottom: 20px;
+}
+.avatar-desc{
+  // margin: 8px 0 0;
+  margin-top: 8px;
+  font-size: 12px;
+  min-height: 18px;
+  &,
+  & a{
+    @extend .text-gray;
+  }
+  & + .avatar-desc{
+    margin-top: 18px;
+  }
+}
+.aside-location{
+  min-height: 50px;
+  margin-left: 64px;
+  .icons{
+    line-height: 14px;
+  }
+}
+.aside-title{
+  font-weight: normal;
+  line-height: 20px;
+  padding: 10px 20px 10px 0;
+  margin: 0;
+  background-color: #fff;
+  .border-l{
+    display: inline-block;
+    border-left: 4px solid $colorHighLight;
+    padding-left: 14px;
+  }
+  &.h4{
+    font-size: 16px;
+    .small{
+      display: inline-block;
+      line-height: 22px;
+    }
+  }
+  .content-right &{
+    margin-bottom: 15px;
+  }
+}
+// 详情页面右侧用户推荐
+.aside-user-list {
+  .avatar-head{
+    &:last-child{
+      margin-bottom: 0;
+      .name-location{
+        border-bottom: 0;
+      }
+    }
+    &.has-bordered{
+      .name-location{
+        height: 66px;
+      }
+    }
+  }
+}
+// 详情页面右侧用户推荐 ends

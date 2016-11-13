@@ -1,0 +1,64 @@
+<div class="container">
+  <ol class="breadcrumb">
+    <li><a href="/">首页</a></li>
+    <li class="active">关注任务</li>
+  </ol>
+  <div class="head-highline onav-line onav-line-sm">
+    <%= link_to "全部", home_suggestions_path(order: params[:order]), class: "item #{'active' unless %w(events fundings topics questions subjects media).include?(params[:category].to_s)}" %>
+    <%= link_to "shop", home_suggestions_path(category: 'events', order: params[:order]), class: "item #{'active' if params[:category] == 'events'}" %>
+    <%= link_to "应援", home_suggestions_path(category: 'fundings', order: params[:order]), class: "item #{'active' if params[:category] == 'fundings'}" %>
+    <%= link_to "话题", home_suggestions_path(category: 'topics', order: params[:order]), class: "item #{'active' if params[:category] == 'topics'}" %>
+    <%= link_to "问答", home_suggestions_path(category: 'questions', order: params[:order]), class: "item #{'active' if params[:category] == 'questions'}" %>
+    <%= link_to "O妹精选", home_suggestions_path(category: 'media', order: params[:order]), class: "item #{'active' if params[:category] == 'media'}" %>
+    <%= link_to "直播", home_suggestions_path(category: 'subjects', order: params[:order]), class: "item #{'active' if params[:category] == 'subjects'}" %>
+    <%= link_to "图片", home_suggestions_path(category: 'letters', order: params[:order]), class: "item #{'active' if params[:category] == 'letters'}" %>
+    <%= link_to "语音", home_suggestions_path(category: 'voices', order: params[:order]), class: "item #{'active' if params[:category] == 'voices'}" %>
+    <%= link_to "福利活动", home_suggestions_path(category: 'welfare_events', order: params[:order]), class: "item #{'active' if params[:category] == 'welfare_events'}" %>
+    <%= link_to "福利商品", home_suggestions_path(category: 'welfare_products', order: params[:order]), class: "item #{'active' if params[:category] == 'welfare_products'}" %>
+
+    <span class="pull-right dropdown hide-sm">
+      <a class="item" href="javascript:;" data-toggle="dropdown">排序 <i class="dropdown-arrow"></i></a>
+      <ul class="dropdown-menu">
+        <li>
+          <%= link_to '推荐', shop_tasks_path(category: params[:category], order: 'home'), class: "#{'active' unless %w(time hot).include?(params[:order].to_s)}" %>
+        </li>
+        <li>
+          <%= link_to '时间', shop_tasks_path(category: params[:category], order: 'time'), class: "#{'active' if params[:order] == 'time'}" %>
+        </li>
+        <li><%= link_to '人气', shop_tasks_path(category: params[:category], order: 'hot'), class: "#{'active' if params[:order] == 'hot'}" %></li>
+      </ul>
+    </span>
+  </div>
+  <div class="clearfix show-sm">
+    <div class="head-highline">
+      <span class="item small text-gray">排序</span>
+      <%= link_to '推荐', shop_tasks_path(category: params[:category], order: 'home'), class: "item small #{'active' unless %w(time hot).include?(params[:order].to_s)}" %>
+      <%= link_to '时间', shop_tasks_path(category: params[:category], order: 'time'), class: "item small #{'active' if params[:order] == 'time'}" %>
+      <%= link_to '人气', shop_tasks_path(category: params[:category], order: 'hot'), class: "item small #{'active' if params[:order] == 'hot'}" %>
+    </div>
+  </div>
+  <% if @tasks.blank? %>
+    <div class="null-content">
+      <div class="text-center translate-middle-y">
+        <p>
+          <%= image_tag 'home/null-content.png', alt: '' %>
+        </p>
+        <p>您还没有关注明星哦！快去关注吧！</p>
+        <%= link_to "去关注", home_stars_path, class: "btn btn-sm btn-default" %>
+      </div>
+    </div>
+  <% else %>
+    <div class="list">
+      <div class="row row-10">
+        <% @tasks.each do |task| %>
+        <div class="col-sm-6 col-md-3">
+          <%= render partial: 'shop/shared/task_card', locals: {task: task} %>
+        </div>
+        <% end %>
+      </div>
+      <div class="text-center">
+        <%= will_paginate(@tasks) %>
+      </div>
+    </div>
+  <% end %>
+</div>

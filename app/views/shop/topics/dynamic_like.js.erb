@@ -1,0 +1,3 @@
+<% if @like_count < 9999  %>
+  document.getElementById("dynamic_like_<%= @dynamic.id %>").innerHTML = "<i class='icons text-highlight-r'>&#xe641;</i> <%= @like_count %>";
+<% end %>

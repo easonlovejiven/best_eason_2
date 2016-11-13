@@ -1,0 +1,111 @@
+<ul class="user-panel list-unstyled" id="user-panel" role="tablist" aria-multiselectable="false">
+  <li class="menu-group panel">
+    <a class="item" data-toggle="collapse" data-parent="#user-panel" href="#user-panel-center" aria-expanded="false" aria-controls="user-panel-center">
+      <span class="arrow pull-right">&gt;</span>
+      个人中心
+    </a>
+    <ul class="list-unstyled collapse <%= 'in' if request.path.match(/\/home\/users\/edit/) || request.path.match(/\/home\/wallets/) || request.path.match(/\/home\/users\/addresses/) || request.path.match(/\/home\/users\/identity/) %>" id="user-panel-center" role="tabpanel">
+      <li>
+        <a class="item <%= 'active' if request.path.match(/\/home\/users\/edit/) %>" href="<%= edit_home_users_path %>">资料修改</a>
+      </li>
+      <li>
+        <a class="item <%= 'active' if request.path.match(/\/home\/wallets/) %>" href="/home/wallets">我的钱包</a>
+      </li>
+      <li>
+        <a class="item <%= 'active' if request.path.match(/\/home\/users\/addresses/) %>" href="<%= addresses_home_users_path %>">收货地址管理</a>
+      </li>
+      <% if @current_user && @current_user.verified.blank? %>
+        <li>
+          <a class="item <%= 'active' if request.path.match(/\/home\/users\/identity/) %>" href="<%= identity_home_users_path %>">身份认证</a>
+        </li>
+      <% end %>
+    </ul>
+  </li>
+  <% if @current_user && @current_user.verified %>
+    <% ['管理中心'].each do |item| %>
+      <li class="menu-group panel">
+        <a class="item" data-toggle="collapse" data-parent="#user-panel" href="#user-panel-backend" aria-expanded="false" aria-controls="user-panel-backend">
+          <span class="arrow pull-right">&gt;</span>
+          <%= item %>
+        </a>
+        <ul class="list-unstyled collapse <%= 'in' if request.path.match(/\/home\/backend/) || request.path.match(/\/shop\/freight/) %>" id="user-panel-backend" role="tabpanel">
+          <li>
+            <%= link_to '管理首页', manage_home_backend_index_path, class: "item #{'active' if request.path.match(/\/home\/backend\/manage/)}" %>
+          </li>
+          <li>
+            <%= link_to '任务管理', tasks_home_backend_index_path( shop_category: 'shop_events'), class: "item #{'active' if request.path.match(/\/home\/backend\/tasks/) && params[:shop_category] == 'shop_events'}" %>
+          </li>
+          <li>
+            <%= link_to '福利管理', welfares_home_backend_index_path( shop_category: 'welfare_events'), class: "item #{'active' if request.path.match(/\/home\/backend\/welfares/) && params[:shop_category] == 'welfare_events'}" %>
+          </li>
+          <li>
+            <%= link_to '财务管理', withdraw_home_backend_index_path, class: "item #{'active' if request.path.match(/\/home\/backend\/withdraw/)}" %>
+          </li>
+          <li>
+            <%= link_to '查看导出订单', exported_orders_home_backend_index_path, class: "item #{'active' if request.path.match(/\/home\/backend\/exported/)}" %>
+          </li>
+          <li>
+            <%= link_to '我的运费模板', shop_freight_templates_path, class: "item #{'active' if request.path.match(/\/shop\/freight\/templates/)}" %>
+          </li>
+        </ul>
+      </li>
+    <% end %>
+
+    <li>
+      <a class="item" href="<%= personal_center_home_users_path %>">发布任务/福利</a>
+    </li>
+  <% end %>
+  <li class="menu-group panel">
+    <a class="item" data-toggle="collapse" data-parent="#user-panel" href="#user-panel-orders" aria-expanded="false" aria-controls="user-panel-orders">
+      <span class="arrow pull-right">&gt;</span>
+      订单管理
+    </a>
+    <ul class="list-unstyled collapse <%= 'in' if request.path.match(/\/shop\/orders/) || request.path.match(/\/shop\/funding_orders/) || request.path.match(/\/welfare\/expens/) %>" id="user-panel-orders" role="tabpanel">
+      <li>
+        <a class="item <%= 'active' if request.path.match(/\/shop\/orders/) && params[:from_release].blank? %>" href="<%= shop_orders_path %>">活动/商品订单</a>
+      </li>
+      <li>
+        <a class="item <%= 'active' if request.path.match(/\/shop\/funding_orders/) %>" href="<%= shop_funding_orders_path %>">应援订单</a>
+      </li>
+      <li>
+        <a class="item <%= 'active' if request.path.match(/\/welfare\/expens/) %>" href="<%= welfare_expens_path %>">福利订单</a>
+      </li>
+      <li>
+        <%= link_to "旧版订单", shop_orders_path(from_release: "old"), class: "item #{params[:from_release].present? ? 'active' : ''}" %>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a class="item <%= 'active' if request.path.match(/\/home\/users\/welfares/) %>" href="<%= welfares_home_users_path %>">福利</a>
+  </li>
+  <li>
+    <%= link_to home_notifications_path, class: "item #{'active' if request.path.match(/\/home\/notifications/)}" do %>
+      消息中心
+    <% end %>
+  </li>
+  <% if @current_user && !@current_user.verified %>
+    <li>
+      <a class="item <%= 'active' if request.path.match(/\/home\/users\/owhat/) %>" href="/home/users/owhat">
+        玩转Owhat
+      </a>
+    </li>
+  <% end %>
+  <li class="menu-group panel">
+    <a class="item" data-toggle="collapse" data-parent="#user-panel" href="#user-panel-safe" aria-expanded="false" aria-controls="user-panel-safe">
+      <span class="arrow pull-right">&gt;</span>
+      安全设置
+    </a>
+    <ul class="list-unstyled collapse <%= 'in' if request.path.match(/\/accounts\/edit_password/) %>" id="user-panel-safe" role="tabpanel">
+      <li>
+        <a class="item <%= 'active' if request.path.match(/\/accounts\/edit_password/) %>" href="<%= edit_password_accounts_path %>">修改帐号密码</a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <% if @current_account && @current_account.phone.present? %>
+      <span class="item"><span class="pull-right"><%= @current_account.phone %></span>手机号已绑定</span>
+    <% else %>
+      <a class="item <%= 'active' if request.path.match(/\/accounts\/edit_phone/) %>" href="<%= edit_phone_accounts_path %>">手机号码绑定</a>
+    <% end %>
+  </li>
+</ul>

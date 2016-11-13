@@ -1,0 +1,519 @@
+// Owhat3.1 css
+.show-sm{
+  display: none!important;
+}
+.btn-smChange{
+  padding:3px 12px;
+  margin-left: 8px;
+}
+
+@media (max-width: 767px){
+  .show-sm{
+    display: block!important;
+  }
+  .hide-sm{
+    display: none!important;
+  }
+  .block-sm{
+    display: block;
+  }
+  .unfloat-sm{
+    float: none!important
+  }
+  .space-lg-hor{
+    min-width: 100px;
+  }
+  .modal-dialog{
+    min-width: 270px;
+  }
+  .modal-title{
+    font-size: 0.28rem;
+  }
+  .footer{
+    font-size: 0.20rem;
+  }
+  .breadcrumb,
+  .task-product .task-title{
+    font-size: 0.24rem;
+  }
+  // 首页－推荐关注明星
+  .star-item {
+    width: 50%;
+    margin-bottom: 20px;
+    .avatar-round{
+      width: 50px;
+      height: 50px;
+      &.star-more .icons{
+        line-height: 50px;
+      }
+    }
+  }
+  // 首页下载app浮层
+  .download-app > a + a{
+    margin-left: 65px;
+  }
+  // 首页－heading
+  .onav-line{
+    &.onav-line-sm{
+      display: -webkit-flex;
+      display: -ms-flex;
+      display: flex;
+      -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+      flex-direction: row;
+      .item{
+        -webkit-flex: auto;
+        -ms-flex: auto;
+        flex: auto;
+        padding: 5px;
+      }
+    }
+    .pull-right{
+      float: none!important;
+    }
+    &.head-highline .item{
+      padding-left: 5px;
+      padding-right: 5px;
+      .index &{
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+    }
+  }
+  // 首页－导航
+  .navbar-sm{
+    &.block-area{
+      padding: 0.3rem;
+    }
+    .item{
+      display: block;
+      text-align: center;
+      font-size: 0.24rem;
+    }
+    .icons{
+      font-size: 0.6rem;
+    }
+  }
+  // banner
+  .slick-prev,
+  .slick-next{
+    display: none!important;
+  }
+  // topbar-导航-- mobile
+  body{
+    padding-bottom: 65px;
+  }
+  .navbar{
+    text-align: center;
+  }
+  .logo{
+    margin-right: 0;
+  }
+  .logo-sm{
+    display: block;
+    float: none!important;
+    margin-left: 100px;
+    margin-right: 100px;
+    line-height: 36px;
+  }
+  .dropdown-group{
+    max-width: 100px;
+    text-align: right;
+    .navbar-link{
+      max-width: 100px;
+    }
+    &.open .navbar-link{
+      max-width: 100px;
+    }
+  }
+  .form-search-sm{
+    margin-top: 12px;
+  }
+  .pagination > a, .pagination > em, .pagination > span{
+    padding: 6px;
+  }
+  // topbar-导航-- mobile end
+  // 个人主页
+  .star-cover{
+    margin-bottom: 20px;
+  }
+  .profile {
+    .share-box {
+      position: static;
+      margin-top: 20px;
+      .bds_txt{
+        width: auto;
+      }
+    }
+  }
+  .profile-cover{
+    min-height: 0;
+  }
+  .profile-info {
+    height: auto;
+    padding: 15px;
+    .avatar-square{
+      margin-top: 0;
+      width: 50px;
+      height: 50px;
+    }
+    .profile-text{
+      margin-left: 60px;
+      margin-right: 0;
+      .h5{
+        margin: 0;
+      }
+      a{
+        font-size: 12px;
+      }
+    }
+  }
+  // 个人主页 ends
+  //
+  .share-box.text-center .icons{
+    width: 0.9rem!important;
+    height: 0.9rem!important;
+    line-height: 0.9rem!important;
+    font-size: 0.6rem!important;
+  }
+  .special .title{
+    font-size: 0.32rem;
+  }
+  // 活动详情
+  .task-product{
+    padding: 10px;
+  }
+  // 购物车
+  .task-in{
+    .block-sm{
+      display: block;
+      line-height: 38px;
+      text-align: center;
+    }
+  }
+  // 收货地址
+  .address-form {
+    .form-control{
+      width: 100%!important;
+    }
+    select.form-control {
+      margin-bottom: 10px;
+      & + select{
+        margin-left: 0;
+      }
+    }
+  }
+  // 购买用户排行榜
+  .paid-box.paid-reward{
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .paid-box{
+    padding-left: 45px;
+    padding-right: 10px;
+    .rank-no-l{
+      font-size: 24px;
+      width: 32px;
+      left: 10px;
+    }
+    .name-location.translate-middle-y{
+      padding-left: 125px;
+      padding-right: 90px;
+    }
+    .paid-ranking-money{
+      right: 10px;
+    }
+  }
+  // 登录注册
+  .connect-linkurl .link-a{
+    font-size: 0.6rem;
+  }
+  .register-box {
+    margin-top: 0;
+    .tab-content{
+      padding: 15px;
+    }
+  }
+  // 问答详情
+  .question-right{
+    margin-left: 0;
+    margin-top: 15px;
+  }
+  .form-currentGroup{
+     height: 538px;
+     overflow: hidden;
+  }
+  // 话题
+  .topics{
+    .block-area{
+      padding: 2%;
+    }
+    .name-location-ml{
+      margin-left: 45px;
+      padding-right: 40px;
+    }
+    .topic-article{
+      margin-right: -40px;
+    }
+  }
+  .comment-form{
+    margin-left: 45px;
+    .btn{
+      min-width: 0;
+    }
+    .btn + .btn{
+      margin-left: 2px;
+    }
+    .topics-video.active:before{
+      left: 113px;
+    }
+  }
+  .topic-article .share-box{
+    text-align: center;
+    display: block;
+    height: 26px;
+    margin-top: 10px;
+    .bdsharebuttonbox{
+      display: inline-block;
+    }
+  }
+  // 关于我们
+  .abouts{
+    .abouts-container{
+      width: 90%;
+    }
+  }
+  .abouts-list.joinus-list,
+  .abouts-list.contact-list,
+  .abouts-list{
+    width: auto;
+    padding: 8px;
+  }
+  // 评论
+  .like-num, .comment-num, .share-num{
+    min-width: 55px;
+  }
+}
+@media (max-width: 640px) {
+  // 购买用户排行榜
+  $rankRewardIcon: 0.6rem;
+  .paid-box.paid-reward{
+    padding: 0.3rem 0.1rem 0.1rem;
+    border: 0;
+  }
+  .rank-reward{
+    height: $rankRewardIcon;
+    .icons{
+      font-size: $rankRewardIcon;
+      line-height: $rankRewardIcon;
+    }
+    span{
+      font-size: 14px;
+    }
+  }
+  .paid-ranking-item{
+    .avatar-round{
+      width: 0.9rem;
+      height: 0.9rem;
+    }
+    &:nth-child(2) {
+      margin-top: -0.1rem;
+      .avatar-round{
+        width: 1rem;
+        height: 1rem;
+      }
+      .rank-reward{
+        height: $rankRewardIcon+0.1;
+        .icons{
+          font-size: $rankRewardIcon+0.1;
+          line-height: $rankRewardIcon+0.1;
+        }
+        span{
+          font-size: 18px
+        }
+      }
+    }
+    & .paid-money-tag{
+      min-width: 1rem;
+      padding: 3px;
+    }
+  }
+}
+@media (min-width: 768px){
+  // topbar-导航
+  .dropdown-group{
+    .navbar-link{
+      max-width: 70px;
+    }
+  }
+  .form-search{
+    width: 135px;//chrome
+    // width: 130px;//safari
+  }
+  // topbar-导航 ends
+
+  // 首页banner高度
+  // .slider-box{
+  //   height: 236px;
+  // }
+  // 任务列表图片高度
+  .index-img-height{
+    height: 263px;
+  }
+  // 首页－推荐关注明星
+  .star-item .avatar-round{
+    width: 70px;
+    height: 70px;
+    &.star-more .icons{
+      line-height: 70px;
+    }
+  }
+  // 明星主页
+  .profile-info-star{
+    height: 372px;
+  }
+  .profile-cover{
+    min-height: 260px;
+  }
+      // 问答
+  .questions{
+    .time-counter{
+      font-size: 32px;
+      line-height: 32px;
+    }
+    .time-bg{
+      padding: 3%;
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px){
+  .current-user .name-location{
+    padding-left: 0;
+  }
+  .current-user .avatar-square.pull-left{
+    float: none!important;
+  }
+  // 首页-heading
+  .block-area.block-area-sm,
+  .head-highline .item{
+    padding: 10px;
+  }
+  .onav-line{
+    .pull-right{
+      float: none!important;
+    }
+    &.head-highline .item{
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  }
+
+  .name-location.name-location-ml{
+    margin-left: 45px;
+  }
+  // 任务列表图片高度
+  .index-img-height{
+    .welfares &{
+      height: 194px;
+    }
+  }
+
+}
+
+@media (min-width: 992px){
+  // topbar-导航
+  .dropdown-group{
+    .navbar-link{
+      min-width: 100px;
+      max-width: 136px;
+    }
+  }
+  .form-search{
+    width: 220px;
+  }
+  // topbar-导航 ends
+
+  // 首页banner高度
+  // .slider-box{
+  //   height: 308px;
+  // }
+  // 任务列表图片高度
+  .index-img-height{
+    height: 166px;
+  }
+  // 首页下载app浮层
+  .download-app > a + a{
+    margin-left: 65px;
+  }
+  // .download-app-pop{
+  //   height: 430px;
+  // }
+  // 话题
+  // .topics{
+  //   .image-item{
+  //     height: 158px;
+  //   }
+  // }
+  // 首页－推荐关注明星
+  .star-item .avatar-round{
+    width: 90px;
+    height: 90px;
+    &.star-more .icons{
+      line-height: 90px;
+    }
+  }
+  // 明星个人主页
+  .star-info {
+    height: 352px;
+  }
+  // 详情页
+  .detail-img-height{
+    height: 225px;
+    overflow: hidden;
+  }
+  .detail-left{
+    float: left;
+  }
+  .detail-left{
+    width: 300px;
+  }
+  .detail-right{
+    margin-left: 312px;
+  }
+}
+@media (min-width: 1200px) {
+  // 首页banner高度
+  .slider-box{
+    height: 400px;
+  }
+  // 任务列表图片高度
+  .index-img-height{
+    height: 215px;
+  }
+  // 明星个人主页
+  .star-info {
+    height: 439px;
+  }
+  // 首页下载app浮层
+  .download-app-pop{
+    height: 460px;
+  }
+  // 话题
+  .topics{
+    .image-item{
+      // height: 212px;
+    }
+  }
+  // 问答
+  .questions{
+    // .time-counter{
+    //   font-size: 40px;
+    //   line-height: 40px;
+    // }
+    .time-bg{
+      padding: 4%;
+    }
+  }
+}
+// Owhat3.1 css ends

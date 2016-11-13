@@ -1,0 +1,15 @@
+<% field_class = {class: 'form-control', value: f.object.send(field).try(:strftime, '%Y-%m-%d %H:%M'), data: {provide: provide ||= 'datepicker-time-inline'}}.merge!(f.options[:options_class]) %>
+
+<fieldset>
+  <div class="form-group">
+    <%= f.label field, class: 'col-md-1 control-label' do -%>
+      <%= raw('<sup>*</sup>') if defined?(required) && required %>
+      <%= model.human_attribute_name(field) %>
+    <% end -%>
+
+    <div class="col-md-11">
+      <% field_class.merge!(required: true) if defined?(required) && required %>
+      <%= f.text_field field, field_class %>
+    </div>
+  </div>
+</fieldset>

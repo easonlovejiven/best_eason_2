@@ -1,0 +1,52 @@
+<div class="container preview-container">
+  <ol class="breadcrumb">
+    <li><a href="/">首页</a></li>
+    <li><%= link_to '任务', home_suggestions_path %></li>
+    <li><a href="/home/suggestions?category=questions">死忠粉任务</a></li>
+  </ol>
+  <div class="block-area">
+    <%= simple_form_for @poster, url: @poster, method: :put, :html => {multipart: true, class: 'question-form' } do |f|%>
+      <h4 class="h4 form-group">
+        <%= @poster.title %>
+      </h4>
+      <input type="hidden" value="<%= @poster.id %>" class="js-qaCheck">
+
+      <% @poster.questions.each_with_index do |question, i| %>
+        <div class="form-group clearfix js-questionP">
+          <div class="pull-left">
+            <%= image_tag question.picture_url.to_s + "?imageMogr2/auto-orient/thumbnail/!200x150r/gravity/Center/crop/200x150" %>
+          </div>
+          <div style="margin-left: 220px;">
+            <h4 class="title-question"><%= i+1 %>.<%= question.title %></h4>
+            <% question.answers.each do |answer| %>
+            <div class="radio">
+              <label>
+                <input type="radio" name="question-<%= i %>" class="question">
+                <input type="hidden" value="<%= question.id %>" class="js-question">
+                <input type="hidden" value="<%= answer.id %>" class="js-answer">
+                <%= answer.content %>
+              </label>
+            </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+    <br>
+    <div class="share-box">
+      <%= render partial: "shop/shared/share", locals: {object: @poster, type: 'preview', text: '看看你是不是死忠粉'} %>
+    </div>
+  </div>
+</div>
+<div class="task-preview text-right">
+  <div class="container">
+    <%= link_to '发布', publish_shop_task_path(@poster.shop_task), method: :put, class: 'btn btn-highlight space-lg-hor' %>
+  </div>
+</div>
+<% content_for :head do %>
+  <style media="screen">
+    body{
+      padding-bottom: 60px;
+    }
+  </style>
+<% end %>

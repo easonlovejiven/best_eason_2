@@ -1,0 +1,13 @@
+zh-CN:
+  activerecord:
+    models:
+      core/finding: 发现
+    attributes:
+      core/finding:
+        title: 标题
+        url: 链接
+        category: 类型
+        pic: 老版图
+        pic2: 新版图
+        count: 更新数
+        description: 描述

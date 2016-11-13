@@ -1,0 +1,48 @@
+<div class="row-box addresses-show">
+  <div class="row">
+    <% addresses.each do |address| %>
+      <div class="col-sm-6 address-item<%= address.id %> address-item">
+        <div class="tag-box">
+          <div class="tag-box-title">
+
+            <div class="title">
+              <%= link_to "×", home_address_path(address), method: :delete, class: 'close pull-right', data: { confirm: '确定要删除该地址？' } %>
+              <%= address.addressee %>
+              <% if address.is_default %>
+                <span class="badge badge-highlight-outline">默认收货地址</span>
+              <% end %>
+            </div>
+          </div>
+          <div class="tag-box-body">
+            <p class="ellipsis">
+              <span class="addr-label">收货人</span>
+              <span class="">
+                <%= address.addressee %>
+              </span>
+            </p>
+            <p class="ellipsis">
+              <span class="addr-label">收货地址</span>
+              <span class="">
+                <%= address.full_address %>
+              </span>
+            </p>
+            <p class="ellipsis">
+              <span class="addr-label">手机</span>
+              <span class="">
+                <%= address.mobile %>
+              </span>
+            </p>
+            <p class="text-right addr-links">
+              <% if ticket_types.present? %>
+                <%= link_to "设为默认地址", default_home_address_path(id: address, ticket_types: ticket_types), method: :put, class: "set-default-address#{address.id}", id: "#{'address-true' if address.is_default }" %>
+              <% else %>
+                <%= link_to "设为默认地址", default_home_address_path(id: address), method: :put, class: "set-default-address#{address.id}", id: "#{'address-true' if address.is_default }" %>
+              <% end %>
+              <%= link_to "编辑", edit_home_address_path(address) %>
+            </p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,82 @@
+<div class="container checkout">
+  <div class="head-highline">
+    <span class="item active">确认订单</span>
+  </div>
+  <div class="head-highline head-gray">
+    <span class="item">选择收货地址</span>
+    <%= link_to '新增收货地址', addresses_home_users_path, target: "_blank", class: "btn btn-default btn-xs pull-right"  %>
+  </div>
+  <%# end %>
+  <%= form_tag buy_welfare_products_path, method: "post", class: "task-in" do %>
+    <% if @addresses.present? %>
+      <%= render partial: 'home/addresses/show_address', locals: {addresses: @addresses, tasks: '', ticket_types: ''} %>
+    <% else %>
+      <p class="text-danger">请先新增收货地址吧，否则您不能进行结算哦，说不定会收到我们的小礼物</p>
+    <% end %>
+    <%# end %>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th width="60%">订单信息</th>
+            <th>单价</th>
+            <th>数量</th>
+            <th>实付款</th>
+          </tr>
+        </thead>
+        <tbody>
+          <div class="">
+            <input type="hidden" name="address_id"  value="<%= @current_user.default_address.try(:id) %>" id="address_id">
+            <input type="hidden" name="ticket_type_id"  value= <%= @ticket_type.id %> >
+            <input type="hidden" name="info"  value="<%= params['info'] %>" >
+            <input type="hidden" name="quantity"  value="<%= params['quantity'] %>" >
+            <input type="hidden" name="shop_task_id"  value="<%= @product.id %>" >
+          </div>
+          <tr>
+            <td class="text-left">
+              <div class="task-in-image pull-left">
+                <%= link_to @product, class: 'thumb-img' do %>
+                  <%= image_tag @product.cover_pic+'?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120'  %>
+                <% end %>
+              </div>
+              <div class="task-in-desc">
+                <h4 class="task-in-title"><%= @product.title %></h4>
+                <div class="task-it-in">
+                  <div class="text-gray">分类: <%= @ticket_type.category %></div>
+                  <div class="text-gray"><%= @product.sale_start_at && @product.sale_start_at.to_date %></div>
+                  <div class="text-gray"><%= @product.address %></div>
+                </div>
+              </div>
+            </td>
+            <td> <%= @ticket_type.fee.to_f.round(2) %> O!元</td>
+            <td><%= params['quantity'] %></td>
+            <td class="text-danger"><%= @fee %> O!元</td>
+          </tr>
+          <tr>
+            <td colspan="4">
+              <div class="ext-infos">
+                <span class="text-gray">附加信息</span>
+                <span class=""><%= params[:show_info] %></span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tag-box sm-tag-box text-right">
+      <span class="block-sm">
+        共<span class="text-danger"><%= params['quantity'] %> </span>件商品
+
+        共计：<span class="text-danger sum_fee"><%= @fee %> O!元</span>
+      </span>
+      <% if @addresses.by_default.present?%>
+        <button name="button" type="submit" class="btn btn-danger space-lg-hor hide-sm">结算</button>
+        <button name="button" type="submit" class="btn btn-danger btn-block show-sm">结算</button>
+      <% else %>
+        <button name="button" type="submit" class="btn btn-danger space-lg-hor hide-sm" disabled="disabled">不支持该地址</button>
+        <button name="button" type="submit" class="btn btn-danger btn-block show-sm" disabled="disabled">不支持该地址</button>
+      <% end %>
+    </div>
+  <% end %>
+</div>

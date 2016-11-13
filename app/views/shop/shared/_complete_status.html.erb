@@ -1,0 +1,8 @@
+<% if task.shop_type.to_s.match(/^Shop|^Qa/) %>
+  <div><i class="icons <%= 'text-highlight' if task.task_state["#{task.shop_type.to_s}:#{@current_user.try(:id)}"].to_i > 0 %>">&#xe6bd;</i> <span>参与得 O!元</span></div>
+<% else %>
+  <div><i class="icons <%= 'text-highlight' if task.task_state["#{task.shop_type.to_s}:#{@current_user.try(:id)}"].to_i > 0 %>">&#xe6bd;</i> <span>需花费 O!元</span></div>
+<% end %>
+<% if task.tries(:shop, :is_share) %>
+  <div><i class="icons <%= 'text-highlight' if task.share_state["#{task.shop_type.to_s}:#{@current_user.try(:id)}"].to_i > 0 %>">&#xe6bd;</i> <span>分享得 O!元</span></div>
+<% end %>

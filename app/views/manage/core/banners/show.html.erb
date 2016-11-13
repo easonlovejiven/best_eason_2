@@ -1,0 +1,58 @@
+<% show = !%w[new edit].include?(params[:action]) && @record.valid? %>
+<% options_class = show ? {disabled: 'true'} : {} %>
+
+<%= form_for @record, url: [:manage, @record], method: @record.new_record? ? :post : :put, html: {class: 'form-horizontal readonly-form'} do |f| %>
+  <% f.options.merge!(options_class: options_class) %>
+
+  <div class="modal-body">
+    <%= render 'manage/shared/modal/id', {f: f} if show %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :title, required: true} %>
+    <%= render 'manage/shared/modal/text_area', {f: f, field: :description } %>
+    <%= render 'manage/shared/modal/select_tag', {f: f, field: :genre, include_blank: false, options: [["app","phone"], ["网页","web"]] } %>
+    <%= render 'manage/shared/modal/file_field', {f: f, field: :pic, maxsize: 10, required: true, picture_url: @record.picture_url, image: {:width => '200px', :hight => '200px'}, p_field: '支持jpg/jpeg/png格式,app（846 x 476），网页（1036 x 340）' } %>
+    <%= render 'manage/shared/modal/file_field', {f: f, field: :pic2, maxsize: 10, required: true, picture_url: @record.pic2_url, image: {:width => '200px', :hight => '200px'}, p_field: '支持jpg/jpeg/png格式,app（1200 x 400），网页（1200 x 400）' } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :link} %>
+    <%= render 'manage/shared/modal/select_tag', {f: f, field: :position, include_blank: false, options: [["焦点图",'home'],["发现","find"],["应援榜","funding"],["任务推荐",'hot']] } %>
+    <%= render 'manage/shared/modal/select_tag', {f: f, field: :template, options: Core::Banner::TEMPLATE } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :template_id} %>
+    <%= render 'manage/shared/modal/date_field', {f: f, field: :start_at, required: true} %>
+    <%= render 'manage/shared/modal/date_field', {f: f, field: :end_at, required: true} %>
+    <%= render 'manage/shared/modal/timestamps', {f: f} if show %>
+    <%= render 'manage/shared/modal/select_tag', {f: f, field: :sequence, required: true, options: (1..Core::Banner::SEQUENCE_LIMIT).map{|c| ["第#{c}张",c]}} %>
+  </div>
+
+  <div class="modal-footer">
+    <%= render 'manage/shared/modal/footer', {f: f} unless show %>
+  </div>
+<% end %>
+
+ <% content_for :tail do %>
+   <script type="text/javascript">
+   if($("#core_banner_genre").length){
+     $('#core_banner_genre').change(function(){
+        if($('#core_banner_genre').val()!='phone'){
+          $('#core_banner_pic').parents('fieldset').css('display','none');
+          $('#core_banner_pic').removeAttr('required');
+          $('#core_banner_template').parents('fieldset').css('display','none');
+          $('#core_banner_template_id').parents('fieldset').css('display','none');
+        }else{
+          $('#core_banner_pic').parents('fieldset').css('display','block');
+          $('#core_banner_pic').attr('required','required');
+          $('#core_banner_template').parents('fieldset').css('display','block');
+          $('#core_banner_template_id').parents('fieldset').css('display','block');
+        }
+     });
+   }
+   if($('#core_banner_genre').val()!='phone'){
+     $('#core_banner_pic').parents('fieldset').css('display','none');
+     $('#core_banner_pic').removeAttr('required');
+     $('#core_banner_template').parents('fieldset').css('display','none');
+     $('#core_banner_template_id').parents('fieldset').css('display','none');
+   }else{
+     $('#core_banner_pic').parents('fieldset').css('display','block');
+     $('#core_banner_pic').attr('required','required');
+     $('#core_banner_template').parents('fieldset').css('display','block');
+     $('#core_banner_template_id').parents('fieldset').css('display','block');
+   }
+   </script>
+ <% end %>

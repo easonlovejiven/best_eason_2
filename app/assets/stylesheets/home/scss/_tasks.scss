@@ -1,0 +1,273 @@
+// 任务详情
+.task-product{
+  color: #666666;
+  @extend .block-area;
+  .task-title{
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: normal;
+    margin-top: 0;
+    margin-bottom: 15px;
+    @extend .word-bread;
+  }
+  span.text-highlight-r{
+    font-size: 20px;
+    font-weight: normal;
+  }
+  .funding-label{
+    display: inline-block;
+    width: 80px;
+  }
+  .list-inline{
+    > li{
+      vertical-align: middle;
+    }
+  }
+  // 附加信息
+  .ext-infos-edit{
+    line-height: 38px;
+    margin: 20px 0;
+    label{
+      margin-bottom: 0;
+    }
+    .form-group{
+      margin-bottom: 15px;
+    }
+  }
+  //  商品、活动
+  .label-icon{
+    // color: #9a9a9a;
+    font-size: 18px;
+    margin-right: 27px;
+  }
+  // 多个按钮
+  .btn + .btn{
+    margin-left: 16px;
+  }
+  // 卖完
+  .quantity-button[disabled="disabled"]{
+    color: #ccc;
+  }
+  .btn[disabled="disabled"]{
+    background-color: #ccc;
+  }
+}
+.task-main{
+  margin-bottom: 15px;
+}
+.detail-left{
+  .square-article{
+    margin-bottom: 10px;
+    div{
+      display: inline-block;
+      &+div{
+        margin-left: 10px;
+      }
+    }
+  }
+}
+// 任务详情描述
+.article-area{
+  color: #666666;
+  line-height: 30px;
+  word-wrap: break-word;
+  @extend .block-area;
+  p:last-child{
+    margin-bottom: 0;
+  }
+}
+//  选项
+.otag-type{
+  background-color: #F0F0F0;
+  border: 1px solid #F0F0F0;
+  border-radius: 2px;
+  overflow: hidden;
+  padding: 4px 5px;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  min-width: 50px;
+  text-align: center;
+  position: relative;
+  cursor: pointer;
+  .otag-state{
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border: 9px solid #d0d0d0;
+    border-color: #d0d0d0 #d0d0d0 transparent transparent;
+    position: absolute;
+    right: 0;
+    top: 0;
+    &:before{
+      content: '';
+      width: 5px;
+      height: 3px;
+      border: 1px solid #fff;
+      border-width: 0 0 1px 1px;
+      display: inline-block;
+      position: absolute;
+      top: -6px;
+      left: 0px;
+      -webkit-transform: rotate(-45deg);
+      -moz-transform: rotate(-45deg);
+      transform: rotate(-45deg);
+    }
+  }
+  input{
+    display: none;
+  }
+  &.selected{
+    border-color: $colorHighLightR;
+    color: $colorHighLightR;
+    .otag-state{
+      border-color: $colorHighLightR $colorHighLightR transparent transparent;
+    }
+  }
+  .task-label{
+    font-size: 12px;
+    line-height: 16px;
+    display: block;
+    cursor: pointer;
+    font-weight: normal;
+    margin-bottom: 0;
+    width: auto;
+    padding: 0;
+  }
+}
+ // 修改数量
+.product-quantity{
+  white-space: nowrap;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-left: -5px;
+  margin-right: -5px;
+}
+.quantity-field,
+.quantity-button{
+  height: 36px;
+  font-size: 20px;
+  line-height: 24px;
+  border: 1px solid #E0E0E0;
+  text-align: center;
+  outline: none;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+}
+.quantity-field{
+  width: 50px;
+  margin: 0 -5px;
+  z-index: 0;
+}
+.quantity-button{
+  color: #555;
+  width: 36px;
+  padding: 5px;
+  cursor: pointer;
+  background: #F0F0F0;
+  font-weight: normal;
+  white-space: nowrap;
+  background-image: none;
+  z-index: 1;
+}
+input.quantity-field::-webkit-outer-spin-button,
+input.quantity-field::-webkit-inner-spin-button{
+  -webkit-appearance: none !important;
+  margin: 0;
+}
+input.quantity-field[type="number"]{-moz-appearance:textfield;}
+ // 配送
+.distribute{
+  display: inline-block;
+  position: relative;
+  .distribute-btn{
+    color: #7E8F9A;
+  }
+}
+.distribute-modal{
+  position: absolute;
+  z-index: 100;
+  width: 500px;
+  left: 50%;
+  top: 100%;
+  margin-left: -250px;
+  input{
+    display: none;
+  }
+  .city{
+    padding-right: 15px;
+  }
+}
+// 应援详情进度条
+.progress-box{
+  position: relative;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  .fish{
+    display: inline-block;
+    width: 25px;
+    height: 10px;
+    background: asset-url("home/progress-fish.png") no-repeat center center;
+    position: absolute;
+    top: -1px;
+    margin-left: -12px;
+  }
+}
+.progress{
+  height: 10px;
+  background-color: #e9e9e9;
+  border-radius: 30px;
+  position: relative;
+  margin-bottom: 10px;
+  .progress-bar{
+    position: absolute;
+    background-color: #0ef1ea;
+    height: 100%;
+    max-width: 100%;
+    box-shadow: none;
+  }
+}
+// 应援详情进度条 ends
+// 预览
+.preview-container{
+  max-width: 840px;
+}
+// 预览buttons
+.task-preview{
+  width: 100%;
+  // height: 60px;
+  padding: 12px 0;
+  background-color: #fff;
+  box-shadow: 0 -1px 0 0 #F0F0F0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  .btn{
+    padding-top: 7px;
+    padding-bottom: 7px;
+    &+.btn{
+      margin-left: 16px;
+    }
+  }
+}
+// 预览buttons ends
+.sm-col-sm-6{
+  display: inline-block;
+  vertical-align: middle;
+}
+@media (max-width: 767px){
+  .sm-row {
+    margin-left: -7px;
+    margin-right: -7px;
+  }
+  .sm-col-sm-6 {
+    float: left;
+    width: 50%;
+    padding-left: 7px;
+    padding-right: 7px;
+    .btn{
+      width: 100%;
+    }
+  }
+}

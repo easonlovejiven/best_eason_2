@@ -1,0 +1,20 @@
+.footer{
+  min-height: $footerHeight;
+  font-size: 12px;
+  background-color: #FAFAF9;
+  padding: 10px 15px;
+
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid #f0f0f0;
+  &,a{
+    color: #BABBBE;
+    line-height: 20px;
+  }
+  .container{
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

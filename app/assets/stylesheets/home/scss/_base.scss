@@ -1,0 +1,165 @@
+// set html & body for footer
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+body {
+  position: relative;
+  margin: 0;
+  min-height: 100%;
+  font-family:  Arial, "Heiti SC", "Microsoft YaHei", "微软雅黑", "SimSun", "宋体", "华文黑体", Helvetica, Tahoma, Arial sans-serif;
+  padding-top: 80px;
+  padding-bottom: $footerHeight;
+  color: $colorDefault;
+  background-color: #F5F7F7;
+}
+//
+img{
+  max-width: 100%;
+}
+textarea{
+  resize: none;
+}
+a{
+  color: $colorDefault;
+}
+a:hover{
+  color: inherit;
+}
+a:hover,
+a:focus{
+  text-decoration: none;
+  outline: none;
+  color: inherit;
+}
+button:focus{
+  outline: none;
+}
+// 文本\按钮颜色3.1
+.space-lg-hor{
+  min-width: 116px;
+}
+.text-highlight{
+  color: $colorHighLight;
+}
+.text-highlight-r{
+  color: $colorHighLightR;
+}
+.text-gray{
+  color: $colorGrayLight;
+}
+a.text-gray:hover{
+  color: #333;
+}
+.text-green{
+  color: #4FC358;
+}
+.text-pink{
+  color: $colorExpert;
+}
+.text-yellow{
+  color: $colorStar;
+}
+// button
+.btn-default-outline{
+  border: 1px solid #CCCCCC;
+  background-color: #fff;
+  color: #6a6a6a;
+}
+.btn-highlight-outline{
+  border-color: $colorHighLight;
+  color: $colorHighLight;
+  background-color: #fff;
+  &:hover{
+    color: $colorHighLight;
+  }
+}
+.btn-highlight{
+  background-color: $colorHighLight;
+  color: #fff;
+  &:hover{
+    color: #fff;
+  }
+}
+.btn-highlight-r{
+  background-color: $colorHighLightR;
+  color: #fff;
+  &:hover{
+    color: #fff;
+  }
+}
+.btn-r-outline{
+  border-color: $colorHighLightR;
+  color: $colorHighLightR;
+  background-color: #fff;
+  &:hover{
+    color: $colorHighLightR;
+  }
+  .star-followers &.follow,
+  &.unfollow{
+    border-color: #E0E0E0;
+    color: #4A4A4A;
+    background-color: #fff;
+    &:hover{
+      opacity: .95;
+    }
+  }
+}
+.btn-default{
+  color: $colorDefault;
+}
+.btn-gray{
+  background-color: #F0F0F0;
+}
+
+.btn-yellow{
+  background-color: #ffc130;
+  &, &:hover, &:focus{
+    color: #fff;
+  }
+}
+// badge
+.badge{
+  padding: 3px 6px;
+  vertical-align: middle;
+  font-weight: normal;
+  // 收货地址管理
+  .address-item &{
+    margin-left: 26px;
+  }
+  // 草稿箱
+  .publish-item &{
+    position: absolute;
+    right: 15px;
+    top: 15px;
+  }
+}
+.badge-yellow{
+  background-color: $colorYellow;
+  color: #fff;
+}
+.badge-yellow-light{
+  background-color: $colorYellowLight;
+  color: #fff;
+}
+.badge-highlight-outline{
+  background-color: #fff;
+  color: $colorHighLight;
+  border: 1px solid $colorHighLight;
+}
+// 文本\按钮颜色3.1 ends
+
+.breadcrumb{
+  font-size: 16px;
+  background-color: transparent;
+  margin-bottom: 12px;
+  padding-left: 0;
+  padding-right: 0;
+  &>li+li:before{
+    content: '>';
+    color: #4A4A4A;
+  }
+}
+.hr-xs{
+  margin: 10px 0;
+}

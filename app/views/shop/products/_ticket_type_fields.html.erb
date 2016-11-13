@@ -1,0 +1,26 @@
+<tr class="nested-fields">
+  <td>
+    <%= f.input :category, label: false, class: "form-control", placeholder: "没有请填默认", input_html: {class: "js_danger_val js-symbol",maxlength: "20"} %>
+  </td>
+  <td>
+    <%= f.input :second_category, label: false, class: "form-control", placeholder: "必填", input_html: {class: "js_danger_val js-symbol", maxlength: "20"} %>
+  </td>
+  <td>
+    <%= f.input :fee, label: false, class: "form-control", placeholder: "现价必填", input_html: {class: 'js-salePrice required', min: "0",max: "65000", style: "width: 80px;"} %>
+  </td>
+  <td>
+    <%= f.input :is_limit, :as => :boolean, label: false, class: "form-control",input_html:{class:'js-isChecked'} %>
+  </td>  
+  <td>
+    <%= f.input :ticket_limit, label: false, class: "form-control", placeholder: "0", input_html: {class: "required js-limitNum", min: "0",max: "999999999", style: "width: 80px;"} %>
+  </td>
+  <td>
+    <%= f.input :is_each_limit, :as => :boolean, label: false, class: "form-control" ,input_html:{class:'js-isChecked'}%>
+  </td>
+  <td>
+    <%= f.input :each_limit, label: false, class: "form-control", placeholder: "0", input_html: {class: "required js-limitNum", min: "0",max: "999999999", style: "width: 80px;"} %>
+  </td>
+  <td>
+    <%= link_to_remove_association "删除", f, class: 'btn btn-link text-highlight-r' %>
+  </td>
+</tr>

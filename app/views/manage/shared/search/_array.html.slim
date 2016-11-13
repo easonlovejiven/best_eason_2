@@ -1,0 +1,9 @@
+- name = model.human_attribute_name(field)
+= label_tag "where[#{field}][]", name
+- inputs = [(params[:where]||{})[field]].flatten
+= text_field_tag "where[#{field}][]", inputs.size == 1 ? inputs.first : nil, calss: 'w-arrayinputsize'
+= shared 'select', select if select ||= nil
+span
+	- inputs.size > 1 && inputs.each do |input|
+		= hidden_field_tag "where[#{field}][]", input
+| &nbsp;

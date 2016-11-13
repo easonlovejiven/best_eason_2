@@ -1,0 +1,5 @@
+<ol class="breadcrumb">
+  <li><%= link_to '发布任务', personal_center_home_users_path %></li>
+  <% lists = { 'shop/events' => '活动', 'shop/products' => '商品', 'shop/fundings' => '应援', 'shop/topics' => '话题', 'shop/subjects' => '直播', 'shop/questions' => '问答', 'shop/medias' => 'O妹精选', 'welfare/events' => '活动福利', 'welfare/products' => '商品福利'} %>
+  <li>发布<%= lists["#{params[:controller]}"]%></li>
+</ol>

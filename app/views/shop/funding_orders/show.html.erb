@@ -1,0 +1,129 @@
+<div class="container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <div class="head-highline">
+        <span class="item active">订单详情</span>
+      </div>
+
+      <div class="table-responsive block-area">
+        <p>
+          订单信息
+        </p>
+        <table class="table table-bordered table-condensed">
+          <tbody>
+            <tr>
+              <th class="col-md-2">
+                订单号
+              </th>
+              <td>
+                <%= @order.order_no %>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                商品名称
+              </th>
+              <td>
+                <%= @order.owhat_product.title %>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                成交时间
+              </th>
+              <td>
+                <%= @order.paid_at && @order.paid_at.to_s(:db)  %>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                报名时间
+              </th>
+              <td>
+                <%= @order.created_at && @order.created_at.to_s(:db)  %>
+              </td>
+            </tr>
+            </tr>
+            <tr>
+              <th>
+                付款时间
+              </th>
+              <td>
+                <%= @order.paid_at && @order.paid_at.to_s(:db)  %>
+              </td>
+            </tr>
+            </tr>
+            <tr>
+              <th>
+                支付金额
+              </th>
+              <td>
+                <%= @order.payment || ''  %>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                支付平台
+              </th>
+              <td>
+                <%= Shop::OrderItem::PAY_TYPES["#{@order.pay_type}".to_sym]  %>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+          收货人信息
+        </p>
+        <table class="table table-bordered table-condensed">
+          <tbody>
+            <tr>
+              <th class="col-md-2">
+                收货人姓名
+              </th>
+              <td>
+                <%= @order.try(:user_name) %>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                手机
+              </th>
+              <td>
+                <%= @order.try(:phone) %>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                地址
+              </th>
+              <td>
+                <%= @order.try(:address) %>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+          附加信息
+        </p>
+        <table class="table table-bordered table-condensed">
+          <tbody>
+            <tr>
+              <th class="col-md-2">
+                附加信息
+              </th>
+              <td>
+                <%= @order.try(:memo) %>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

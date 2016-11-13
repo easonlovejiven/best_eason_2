@@ -1,0 +1,17 @@
+zh-CN:
+  activerecord:
+    models:
+      shop/media: 精选
+    attributes:
+      shop/media:
+        title: 名称
+        pic: 封面
+        url: 外链地址
+        description: 描述
+        user_id: 发布人
+        creator_id: 创建人
+        updater_id: 更新人
+        star_list: 关联明星
+        start_at: 开始时间
+        end_at: 结束时间
+        kind: 类型

@@ -1,0 +1,10 @@
+- field_class = field.to_s.match(/_at$|_on$|date_time|created_time$/) ? {class: 'form-control hasDatepicker', data: {provide: provide ||= 'datepicker-inline' }} : {class: 'form-control'}
+
+.form-group
+	= label_tag "where[#{field}][>=]", model.human_attribute_name(field)
+	.input-group
+		= text_field_tag "where[#{field}][>=]", ((params[:where] || {})["#{field}"] || {})[">="], field_class.merge(id: "where_#{field}_start")
+
+	= label_tag "where[#{field}][<=]", '~'
+	.input-group
+		= text_field_tag "where[#{field}][<=]", ((params[:where] || {})["#{field}"] || {})["<="], field_class.merge(id: "where_#{field}_end")

@@ -1,0 +1,354 @@
+<%= content_for :title do %>
+  <%= @topic.title %>
+<% end %>
+<div class="container topics">
+  <ol class="breadcrumb">
+    <li><a href="/home">首页</a></li>
+    <li><%= link_to '任务', shop_tasks_path %></li>
+    <li><a href="/shop/tasks?category=topics">话题任务</a></li>
+    <li class="active"><%= @topic.title %></li>
+  </ol>
+  <div class="clearfix">
+    <div class="content-left block-area">
+      <div class="topics-cover text-center">
+        <img src="<%= @topic.picture_url %>">
+      </div>
+
+      <h5 class="h4 aside-title">
+        <span class="border-l">关联明星</span>
+      </h5>
+      <div class="block-area">
+        <% @task.core_stars.each do |star| %>
+          <%= link_to star.name, home_star_path(star) ? home_star_path(star) : 'javascript:;' %>&nbsp;&nbsp;
+        <% end %>
+      </div>
+
+      <h5 class="h4 aside-title">
+        <span class="border-l">话题详情</span>
+      </h5>
+      <div class="block-area word-bread">
+        <% if @topic.kinder_description.present? %>
+          <%= @topic.kinder_description.html_safe %>
+        <% else %>
+          <%= simple_format h @topic.description %>
+        <% end %>
+      </div>
+
+      <div class="share-box text-center">
+        <%= render partial: "shop/shared/share", locals: {object: @topic, type: 'task', text: '我喜欢这个话题', task: @task}%>
+      </div>
+
+      <h5 class="h4 aside-title">
+        <span class="line-main padding-s">|</span>
+        <div class="js_showArea text-hover block-i">来写我的动态</div>
+        <span class="padding-s">|</span>
+        <% if @current_user %>
+         <div class="js_showVote block-i">发起投票</div>
+        <% else %>
+          <a class="block-i" href="/sessions/new?redirect=/shop/topics/<%= params[:id] %>">发起投票</a>
+        <% end %>
+      </h5>
+      <div class="block-area js_showArea_box">
+        <div class="clearfix">
+          <div class="avatar-head pull-left">
+            <% if @current_user %>
+              <a class="avatar-round avatar-xs" href="/home/users/<%= @current_user.id %>">
+                <%= image_tag @current_user.picture_url, class: "img-circle"  %>
+              </a>
+            <% else %>
+              <img class="img-circle" alt="" src="http://7xlmj0.com1.z0.glb.clouddn.com/uploads/core/star/pic/171/1d12a3f2b13823d8b650130e41a2dcb8f47add11?imageMogr2/auto-orient/thumbnail/!40x40r/gravity/Center/crop/40x40">
+            <% end %>
+          </div>
+
+          <%= form_for @dynamic, url: create_dynamic_shop_topic_path, method: :post, html: {class: 'comment-form topics-form', name: 'dynamic-form'} do |f| %>
+            <div class="hidden_field">
+              <%= f.hidden_field :user_id, value: @current_user.id if @current_user %>
+              <%= f.hidden_field :shop_topic_id, value: @topic.id %>
+            </div>
+            <div class="form-group">
+              <%= f.text_area :content, placeholder: '随便说几句呗 （不超过200字）', class: "form-control comment-textarea js-topicTextarea js_danger_val", maxlength: 200 %>
+            </div>
+            <div style="display:none"  data-name="shop_topic_dynamic[pictures_attributes]" class="js-name"></div>
+            <div class="topics-botton">
+              <a class="btn btn-default btnphoto"><i class="icons">&#xe60a;</i> 图片</a>
+              <a class="btn btn-default btnvideo"><i class="icons">&#xe642;</i> 视频</a>
+              <% if @current_user %>
+                <button type="button" class="btn btn-default pull-right dynamic-publish">评论</button>
+              <% else %>
+                <a class="btn btn-default pull-right" href="/sessions/new?redirect=/shop/topics/<%= params[:id] %>">评论</a>
+              <% end %>
+            </div>
+            <div class="topics-photo">
+              <a href="javascript:;" class="close closephoto">&times;</a>
+              <div>本地上传</div>
+              <p><small>已上传<span class="topics-num">0</span>张</small><small class="text-gray">(支持jpg/jpeg/gif/png格式，大小 &lt; 2M，最多上传9张)</small></p>
+
+              <div class="topics-list formPhoto">
+                <div class="thumb-img-add topics-btn photoadd">
+                </div>
+              </div>
+            </div>
+            <div class="topics-video">
+              <span class="close closevideo">&times;</span>
+              <div>本地上传</div>
+              <p><small>已上传<span class="topics-video-num">0</span>%</small></p>
+              <div class="topics-list formVideo">
+                <div class="thumb-img-add topics-btn videoadd">
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="block-area js_showVote_box" style="display:none;">
+        <div class="clearfix">
+          <form action="" class="validata-form form">
+            <div class="form-group">
+              <label for="">投票主题</label>
+              <input type="text" class="form-control js_vote_title" placeholder="必填,最多200字" maxlength="200"/>
+              <p class="hide error">需填写</p>
+            </div>
+            <div class="js_voteText_box form-group">
+              <label for="">投票选项</label>
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="text" class="form-control js_vote_text" placeholder="选项:必填,10字以内" maxlength="10" />
+                  <div class="input-group-btn box-hiden js_voteText_delete">
+                    <a class="btn btn-default"><span class="text-highlight-r">删除</span></a>
+                  </div>
+                </div>
+                <p class="hide error">需填写</p>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="text" class="form-control js_vote_text" placeholder="选项:必填,10字以内" maxlength="10" />
+                  <div class="input-group-btn box-hiden js_voteText_delete">
+                    <a class="btn btn-default"><span class="text-highlight-r">删除</span></a>
+                  </div>
+                </div>
+                <p class="hide error">需填写</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <a class="btn btn-default js_voteText_add" style="display:inline-block;">再加一项</a><span class="padding-s">最多10个选项哦~</span>
+            </div>
+            <div class="form-group">
+            <% if @current_user %>
+              <a class="btn btn-default pull-right js_vote_submit">投票发出</a>
+            <% else %>
+              <a class="btn btn-default pull-right js_vote_submit" href="/sessions/new?redirect=/shop/topics/<%= params[:id] %>">投票发出</a>
+            <% end %>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <h5 class="h4 aside-title">
+        <div class="pull-right sort-type">
+          <%= link_to '按楼层', shop_topic_path, class: "#{'text-highlight-r' unless params[:status] == 'high'}" %>
+          &nbsp;&nbsp;
+          <%= link_to '按人气', shop_topic_path(status: 'high'), class: "#{'text-highlight-r' if params[:status] == 'high'}" %>
+        </div>
+        <span class="border-l">他们的动态</span>
+      </h5>
+      <div class="block-area">
+        <% if @dynamics.present? %>
+          <div class="topic-list">
+            <% @dynamics.each_with_index do |dynamic, index| %>
+            <%= render partial: 'dynamic', locals: { dynamic: dynamic, index: (index+1)+(params[:page].present? ? params[:page].to_i-1 : 0 )*10, sort: true } %>
+            <% end %>
+          </div>
+          <div class="text-center">
+            <%= will_paginate @dynamics, renderer: 'WillPaginate::ThrustLinkRenderer' %>
+          </div>
+        <% else %>
+          <div class="null-content">
+            <div class="text-center translate-middle-y">
+              <p>
+                <%= image_tag 'home/null-content.png', alt: '' %>
+              </p>
+              <p>还没有动态, 赶快来写吧!</p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- 右侧边栏 -->
+    <%= render partial: "layouts/home/aside", locals: {publish_user: @topic.user} %>
+  </div>
+</div>
+
+<% content_for :head do %>
+  <%= stylesheet_link_tag "lightbox/lightbox.css" %>
+<% end %>
+<% content_for :tail do %>
+  <%= javascript_include_tag "lightbox.js" %>
+
+  <script type="text/javascript">
+    $(function(){
+      $('.dynamic-publish').on('click',function(){
+        var oName=$('.js-name').attr('data-name');
+        $('.topics-form').find('.js-inputImg').each(function(index){
+          $('.topics-form').append('<input type="hidden" name="'+oName+'['+index+'][key]" class="js-inputkey" value="'+$(this).attr('data-src')+'"/>');
+        });
+        $("form[name='dynamic-form']").submit();
+      });
+      $('.js-myTopicsShareBtn').click(function(){
+        $(this).parent().find('.js-myTopicsShare').toggleClass('hide');
+      });
+
+
+      // lightbox 图片预览js
+      lightbox.option({
+        positionFromTop: 0,
+        fadeDuration: 300,
+        resizeDuration: 300,
+        showImageNumberLabel:false
+      })
+
+      $("input[name='page']").keypress(function(event){
+        if(event.keyCode<48||event.keyCode >57){
+          return false;
+        }
+      });
+      $("input[name='page']").change(function(){
+        var pageVal = parseInt($(this).val());
+        var pageLength = parseInt($('.js_pageLength').text());
+        if(pageVal > pageLength){
+          pageVal = pageLength;
+        }
+        if(isNaN(pageVal)){
+          pageVal = 1;
+        }
+        if(pageVal < 1){
+          pageVal = 1;
+        }
+        $(this).val(pageVal);
+      });
+      $('.js_pageJump').click(function(){
+        pageJump();
+      });
+      function pageJump(){
+        var pageVal = $('.js_pageVal').val();
+        var localSearch = window.location.search;
+        var RSearch = new RegExp('status=high');
+        var bSearch = RSearch.test(localSearch);
+        if(!bSearch){
+          //按楼层
+          window.location.search = '?page='+pageVal+'';
+        }else{
+          //按人气
+          window.location.search = '?page='+pageVal+'&status=high';
+        }
+      }
+    var progressW = $('.progress-default').width()+20;
+    $('.progressBox').on('click','.js_progress_btn',function(){
+      var choseId = $(this).find('.js_show').attr('data-id');
+      var self = this;
+      console.log(self);
+      $.ajax({
+        type:'post',
+        url:' /shop/vote_options/'+choseId+'/vote_dynamic.json',
+        success:function(msg){
+          if(msg.error){
+            if(msg.unlogin){
+              window.location.href = window.location.origin+'/sessions/new?redirect='+window.location.pathname;
+              return;
+            }
+            alert(msg.error);
+            if(msg.refresh){
+              window.location.reload();
+            }
+           
+          }else{
+            var all = parseInt($(self).parents('.progressBox').next('.js_vote_next').find('.js_vote_all').html())+1;
+            var now = parseInt($(self).find('.js_vote_now').html())+1;
+            $(self).find('.js_vote_now').html(now).next('span').html(changeVoteStr(((now/all).toFixed(3)*100).toFixed(1))+'%');
+            $(self).parents('.progressBox').next('.js_vote_next').find('.js_vote_all').html(all);
+            var nowWidth = (now/all).toFixed(3)*progressW+'px';
+            $(self).parents('.progressBox').find('.js_show_progress').each(function(index){
+              var otherWidth = parseInt($(this).next('.progress-world-right').find('.js_vote_now').html());
+              $(this).addClass('progress-show-other').css('width',(otherWidth/all).toFixed(3)*progressW+'px').next('span').find('.js_vote_now').html(otherWidth).next('span').html(changeVoteStr(((otherWidth/all).toFixed(3)*100).toFixed(1))+'%').parent().removeClass('hide');
+            });
+            $(self).find('.js_show_progress').removeClass('progress-show-other').addClass('progress-show-you').css('width',nowWidth);
+            $(self).parents('.progressBox').find('.js_progress_btn').each(function(index){
+              $(this).removeClass('js_progress_btn');
+            });
+          }
+        },
+        error:function(){}
+      });
+    });
+    window.onload=function(){
+      $('.js_show_progress').each(function(index, el) {
+        if($(this).hasClass('progress-show-you') || $(this).hasClass('progress-show-other')){
+          var currentPro = $(this).next('span').find('.progress-world').html();
+          $(this).width(currentPro.replace('%','')/100*progressW);
+        }
+      });
+    }
+    function changeVoteStr(num){
+      var str = ''+num;
+      if(str.slice(-1)==0){
+        str = str.substring(0,str.length-2);
+      }
+      return str;
+    }
+
+
+  //话题投票提交接口
+    $('.js_vote_submit').click(function(){
+      var voteTitle = '我发起了投票,快来参加O~! '+$('.js_vote_title').val();
+      var vote_obj = [];
+      $('.js_error_length').each(function(){
+        $(this).removeClass('js_error_length');
+      });
+      $('.error').each(function(){
+        $(this).addClass('hide');
+      });
+      $('.js_vote_title').css('border','');
+      $('.js_vote_text').each(function(index){
+        $(this).css('border','');
+        var str = $(this).val();
+        if(str != ''){
+          vote_obj.push({"content":str});
+        }else{
+          $(this).closest('.form-group').find('.error').removeClass('hide').addClass('js_error_length');
+          $(this).css('border','1px solid #FF472D');
+        }
+      });
+      if($('.js_vote_title').val() == ''){
+        $('.js_vote_title').addClass('js_error_length');
+        $('.js_vote_title').css('border','1px solid #FF472D').closest('.form-group').find('.error').removeClass('hide');
+      }
+      if($('.js_error_length').length == 0){
+        $.ajax({
+          url:"/shop/topics/<%= params[:id]%>/create_dynamic_vote.json",
+          type:'post',
+          data:{
+            title:voteTitle,
+            vote_option : vote_obj
+          },
+          success:function(msg){
+            console.log(msg);
+            $('.js_vote_submit').attr('disabled','true'); 
+            if(msg.error){
+              $('.js_vote_submit').attr('disabled','false'); 
+              if(msg.unlogin){
+                window.location.href = window.location.origin+'/sessions/new?redirect='+window.location.pathname;
+                return;
+              }
+              alert(msg.error);
+                   
+            }else{
+              window.location.reload();
+            }
+          }
+        });        
+      }
+    });
+    });
+  </script>
+<% end %>

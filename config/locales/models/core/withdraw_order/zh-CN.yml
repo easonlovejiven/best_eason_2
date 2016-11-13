@@ -1,0 +1,28 @@
+zh-CN:
+  enums:
+    core/withdraw_order:
+      status:
+        pending: 待审核
+        rejected: 审核不通过
+        paid: 已通过
+        canceled: 已取消
+  activerecord:
+    models:
+      core/withdraw_order: 提现管理
+    attributes:
+      core/withdraw_order:
+        task_type: 任务类型
+        amount: 提现金额
+        receiver_name: 收款人姓名
+        receiver_account: 收款人账号
+        bank_name: 银行名称
+        requestor_remark: 收款备注
+        requested_by: 申请人
+        requested_at: 申请时间
+        verifier_remark: 通过备注
+        verified_at: 审核通过时间
+        verified_by: 审核人
+        task_id: 任务ID
+        mobile: 电话
+        email: 邮件
+        status: 状态

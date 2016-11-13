@@ -1,0 +1,23 @@
+zh-CN:
+  attributes:
+    id: ID
+    name: 名称
+    creator_id: 创建人
+    updater_id: 更新人
+    created_at: 创建时间
+    updated_at: 更新时间
+    actions: 操作
+    download: 下载
+    manual_download: 去下载
+    published: 发布
+    position: 权重
+  pending: 待付款
+  paid: 已付款
+  rejected: 未通过审核
+  checked: 已完成
+  deleted: 已删除
+  canceled: 已取消
+  china: 华语
+  japan_korea: 日韩
+  europe_america: 欧美
+  other: 其它

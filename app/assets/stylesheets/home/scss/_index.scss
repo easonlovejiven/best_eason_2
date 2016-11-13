@@ -1,0 +1,307 @@
+// 首页
+.index{
+}
+.task-group{
+  > div{
+    margin-bottom: 20px;
+  }
+}
+.task-A,
+.task-B,
+.task-C,
+.task-D,
+.task-E,
+.task-F{
+  float: left;
+  padding: 0 10px;
+}
+.task-item-thumb{
+  display: block;
+  overflow: hidden;
+  position: relative;
+}
+// .task-C{
+//   width: 50%;
+// }
+.task-item{
+  background-color: #fff;
+  img{
+    width: 100%;
+  }
+  .limit-height{
+    padding: 14px;
+    min-height: 92px;
+  }
+  .title{
+    font-size: 16px;
+  }
+}
+// 推荐关注明星
+.star-item{
+  width: 16.6%;
+  float: left;
+  text-align: center;
+  .avatar-round{
+    margin-bottom: 10px;
+  }
+}
+// 首页－发现
+.current-user{
+  .row-10.row{
+    margin-left: -5px;
+    margin-right: -5px;
+    .col-xs-6,
+    .col-md-6{
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+  }
+  a.col-sm-6 + a.col-sm-6{
+    border-left: 1px solid #eee;
+  }
+  .btn{
+    border-radius: 2px;
+    margin-top: 5px;
+    padding: 6px;
+    .icons{
+      font-size: 16px;
+      margin-right: 4px;
+    }
+  }
+}
+// 下载app
+.download-app{
+  margin-bottom: 20px;
+  > a{
+    display: block;
+    padding: 10px;
+    line-height: 29px;
+    color: #089696;
+    text-align: center;
+    background-color: $colorHighLight;
+    // & + a{
+    //   margin-left: 65px;
+    // }
+  }
+  .icons{
+    font-size: 30px;
+  }
+  &.open{
+    padding-top: 20px;
+    background-color: #53E8E8;
+    margin-top: -20px;
+    > a{
+      color: #fff;
+    }
+    .download-app-pop{
+      top: 0;
+      opacity: 1;
+      display: block;
+    }
+  }
+}
+.download-app-pop{
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1032;
+  background-color: $colorHighLight;
+
+  padding-top: 20px;
+  opacity: 0;
+  display: none;
+  -webkit-transition: 0.5s all;
+  -moz-transition: 0.5s all;
+  -ms-transition: 0.5s all;
+  -o-transition: 0.5s all;
+  transition: 0.5s all;
+  .container{
+    background: asset-url("home/download/download-img.png") no-repeat right center;
+    background-size: 50% auto;
+  }
+  .logo{
+    margin-bottom: 10px;
+    img{
+      width: 203px;
+    }
+  }
+  .h4{
+    font-size: 20px;
+    margin-bottom: 60px;
+  }
+  .download-left{
+    float: left;
+    width: 240px;
+    margin-right: 20px;
+  }
+  &,
+  .btn-iphone,
+  .btn-android{
+    color: #fff;
+  }
+  .btn-iphone,
+  .btn-android{
+    height: 60px;
+    max-width: 240px;
+    font-size: 20px;
+    line-height: 46px;
+  }
+  .btn-iphone{
+    background-color: #443F3F;
+  }
+  .btn-android{
+    background-color: #77C159;
+    margin-top: 26px;
+  }
+  .download-label{
+    margin-bottom: 16px;
+  }
+}
+// 下载app ends
+// 空白区域样式
+.null-content{
+  min-height: 400px;
+  position: relative;
+  background-color: #fff;
+}
+//
+@media (max-width: 767px){
+  .task-A,
+  .task-B,
+  .task-C,
+  .task-D,
+  .task-E,
+  .task-F{
+    width: 100%;
+  }
+}
+@media (min-width: 768px){
+  .task-A{
+    width: 100%;
+    .task-item-thumb{
+      height: 405px;
+    }
+  }
+  .task-B,
+  .task-C,
+  .task-D,
+  .task-E,
+  .task-F{
+    width: 50%;
+    .task-item-thumb{
+      height: 195px;
+    }
+  }
+}
+@media (min-width: 992px){
+  .task-A{
+    // width: 100%;
+    .task-item-thumb{
+      height: 529px;
+    }
+  }
+  .task-B,
+  .task-C,
+  .task-D,
+  .task-E,
+  .task-F{
+    // width: 50%;
+    .task-item-thumb{
+      height: 257px;
+    }
+  }
+}
+@media (min-width: 1200px) and (max-width: 1229px){
+  .task-A{
+    width: 72.3%;
+    .task-item-thumb{
+      height: 403px;
+    }
+  }
+  .task-B{
+    width: 27.7%;
+    .task-item-thumb{
+      height: 145px;
+    }
+  }
+  .task-C{
+    width: 50%;
+    .task-item-thumb{
+      height: 274px;
+    }
+  }
+  .task-D{
+    width: 58.4%;
+    .task-item-thumb{
+      height: 322px;
+    }
+  }
+  .task-E{
+    width: 20.8%;
+    .task-item-thumb{
+      height: 105px;
+    }
+  }
+  .task-F{
+    width: 33.33333333333%;
+    .task-item-thumb{
+      height: 177px;
+    }
+  }
+}
+@media (min-width: 1230px) {
+  $indexTaskA: 71.3%;
+  .task-A{
+    width: $indexTaskA;
+    .task-item-thumb{
+      height: 477px;
+    }
+  }
+  .task-B{
+    width: 100% - $indexTaskA;
+    .task-item-thumb{
+      height: 183px;
+    }
+  }
+  .task-C{
+    width: 50%;
+    .task-item-thumb{
+      height: 330px;
+    }
+  }
+  .task-D{
+    width: 57%;
+    .task-item-thumb{
+      height: 378px;
+    }
+  }
+  .task-E{
+    width: 21.5%;
+    .task-item-thumb{
+      height: 133px;
+    }
+  }
+  .task-F{
+    width: 33.33333333333%;
+    .task-item-thumb{
+      height: 215px;
+    }
+  }
+}
+.download-app-sm{
+  display: none;
+}
+@media (min-width: 768px) and (max-width: 1199px) {
+  .download-app-sm{
+    display: block;
+  }
+  .download-app.hide-sm{
+    display: none;
+  }
+  .download-app > a.btn-block {
+    margin-top: 10px;
+    & + a.btn-block{
+      margin-left: 0;
+    }
+  }
+}

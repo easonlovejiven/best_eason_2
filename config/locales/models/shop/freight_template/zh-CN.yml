@@ -1,0 +1,10 @@
+zh-CN:
+  activerecord:
+    models:
+      shop/freight_template: 运费模板
+    attributes:
+      shop/freight_template:
+        name: 名称
+        user_id: 用户
+        freights: 模板信息
+        start_position: 首发地

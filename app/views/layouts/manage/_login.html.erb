@@ -1,0 +1,98 @@
+
+<div class="panel panel-default panel-sm">
+  <!-- 登录 -->
+  <div class="panel-body">
+    <h4>登录</h4>
+    <!--id userlogin 用于登录的js ajax-->
+    <form>
+      <div class="form-group">
+        <div class="input-group">
+          <span class="input-group-addon">用户</span>
+          <input type="text" class="form-control" placeholder="请输入手机号或邮箱">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <span class="input-group-addon">密码</span>
+          <input type="password" class="form-control" placeholder="请输入密码">
+        </div>
+      </div>
+      <div class="text-right">
+        <a href="#">忘记密码</a>
+      </div>
+      <input type="button" class="btn btn-block btn-danger" value="登录"/>
+    </form>
+  </div>
+  <!-- 登录 end/ -->
+</div>
+ 
+<br>
+
+<div class="panel panel-default panel-sm">
+  <!-- 注册 -->
+  <div class="panel-body">
+    <h4>注册</h4>
+    <form class="register-box">
+      <div class="form-group">
+        <label class="control-label">
+          <abbr title="必须">*</abbr>手机
+        </label>
+        <input class="form-control" placeholder="请输入手机号" type="text"/>
+      </div>
+      <div class="form-group">
+        <label class="control-label">
+          <abbr title="必须">*</abbr>密码
+        </label>
+        <input class="form-control" placeholder="请输入密码" type="password"/>
+      </div>
+      <div class="form-group">
+        <label class="control-label">
+          <abbr title="必须">*</abbr>确认密码
+        </label>
+        <input class="form-control" placeholder="请再次输入密码" type="password"/>
+      </div>
+      <input type="submit" class="btn btn-block btn-danger" value="注册"/>
+    </form>
+  </div>
+  <!-- 注册 end/ -->
+</div>
+
+
+<h3>角色权限管理</h3>
+<div class="well well-sm">
+  <a href="#" class="btn btn-primary">新建角色</a>
+</div>
+<!-- 角色权限管理 -->
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th width="">角色名称</th>
+      <th width="">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% 5.times do %>
+    <tr>
+      <td>admin</td>
+      <td>
+        <a href="#" class="btn btn-default btn-sm">编辑</a>
+        <a href="#" class="btn btn-danger btn-sm">删除</a>
+        <a href="#" class="btn btn-default btn-sm">权限管理</a>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+<!-- 角色权限管理 end/ -->
+
+<!-- 新建角色 -->
+<form class="form-inline">
+  <div class="form-group">
+    <label for="">角色名称</label>
+    <input type="text" class="form-control" id="" placeholder="admin">
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary">保存</button>
+  </div>
+</form>
+

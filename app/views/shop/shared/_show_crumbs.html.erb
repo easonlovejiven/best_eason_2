@@ -1,0 +1,8 @@
+<ol class="breadcrumb">
+  <li><a href="/">首页</a></li>
+  <li><%= link_to '任务', shop_tasks_path %></li>
+  <% lists = { 'shop/events' => '活动', 'shop/products' => '商品', 'shop/fundings' => '应援', 'shop/topics' => '话题', 'shop/subjects' => '直播', 'shop/questions' => '问答', 'shop/medias' => 'O妹精选', 'welfare/events' => '免费活动', 'welfare/products' => '免费商品'} %>
+  <% urls = { 'shop/events' => '/shop/tasks?category=events', 'shop/products' => '/shop/tasks?category=events', 'shop/fundings' => '/shop/tasks?category=fundings', 'shop/topics' => '/shop/tasks?category=topics', 'shop/subjects' => '/shop/tasks?category=subjects', 'shop/questions' => '/shop/tasks?category=questions', 'shop/medias' => '/shop/tasks?category=media', 'welfare/events' => '/welfare/letters?type=event', 'welfare/products' => '/welfare/letters?type=product'} %>
+  <li><a href="<%= urls["#{params[:controller]}"]%>"><%= lists["#{params[:controller]}"]%>任务</a></li>
+  <li class="active">任务详情</li>
+</ol>

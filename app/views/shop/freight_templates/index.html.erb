@@ -1,0 +1,31 @@
+<div class="container m-container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <div class="head-highline">
+        <span class="item">运费模板</span>
+        <a href="<%= new_shop_freight_template_path %>" class="pull-right btn btn-highlight-outline">新建模版</a>
+      </div>
+      <div class="row row-10">
+        <% @templates.includes(:user).each do |t| %>
+        <div class="col-sm-4">
+          <div class="block-area block-area-radius">
+            <p class="text-gray">
+              #<%= t.id%>
+            </p>
+            <p class="text-center ellipsis">
+              <%= t.name%>
+            </p>
+            <h3 class="start-position text-center ellipsis text-highlight">
+              <%= t.start_position %>
+            </h3>
+            <%= link_to '详情', shop_freight_template_path(t), class: 'btn btn-default btn-block' %>
+          </div>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

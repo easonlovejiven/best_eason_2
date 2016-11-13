@@ -1,0 +1,78 @@
+<div class="container m-container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <%= form_for @withdraw_order, url: withdraw_create_home_backend_index_path, method: :post, html: {class: 'block-area validate-form'} do |f| %>
+        <%= f.hidden_field :requested_by, value: @current_user.id %>
+        <%= f.hidden_field :requested_at, value: @requested_at %>
+        <%= f.hidden_field :task_id, value: @task_id %>
+        <%= f.hidden_field :task_type, value: @task_type %>
+        <%= f.hidden_field :amount, value: @amount %>
+        <h3>可提现余额：<%= @amount %> | 订单数：<%= @size %></h3>
+        <hr>
+        <div class="form-group">
+          <label class="control-label">申请截止时间</label>
+          <%= f.text_field :requested_at, label: false, class: "form-control", value: @requested_at, disabled: true %>
+        </div>
+        <div class="form-group">
+          <label class="control-label">任务id</label>
+          <%= f.text_field :task_id, label: false, class: "form-control", value: @task_id, disabled: true %>
+        </div>
+        <div class="form-group">
+          <label class="control-label">任务类型</label>
+          <%= f.text_field :task_type, label: false, class: "form-control", value: @task_type == 'Shop::Product' ? '商品' : @task_type == 'Shop::Event' ? '活动' : '应援' , disabled: true %>
+        </div>
+        <div class="form-group">
+          <label class="control-label">收款人姓名<span class="text-highlight-r">*</span></label>
+          <%= f.text_field :receiver_name, label: false, class: "form-control" ,required: "required"%>
+        </div>
+        <div class="form-group">
+          <label class="control-label">收款人手机号</label>
+          <%= f.text_field :mobile, label: false, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <label class="control-label">收款人邮箱</label>
+          <%= f.text_field :email, label: false, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <label class="control-label">收款人银行账号或支付宝<span class="text-highlight-r">*</span></label>
+          <%= f.text_field :receiver_account, label: false, class: "form-control",required: "required"%>
+        </div>
+        <div class="form-group">
+          <label class="control-label">开户行名称</label>
+          <%= f.text_field :bank_name, label: false, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <label class="control-label">备注</label>
+          <%= f.text_field :requestor_remark, label: false, class: "form-control" %>
+        </div>
+
+        <div class="form-group withdraw-add-pic">
+          <fieldset class="form-group well well-sm">
+            <div id="ticket_types">
+              <%= f.simple_fields_for :pictures do |info| %>
+                <%= render 'picture_fields', {f: info } %>
+              <% end %>
+            </div>
+            <div class="js_upload_text">
+              <%= link_to_add_association '上传身份证图片',  f, :pictures %>
+            </div>
+          </fieldset>
+        </div>
+        <hr>
+        <div class="text-right">
+          <button type="submit" class="btn btn-highlight-outline js-checkButton">提交申请</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% content_for :tail do %>
+  <script type="text/javascript">
+  $('.js_upload_text').click(function(){
+    $(this).find('a').html('继续上传身份认证图片');
+  });
+  </script>
+<% end %>

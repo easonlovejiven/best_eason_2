@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>404</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <link rel="stylesheet" type="text/css" href="/css/error.css">
+</head>
+<style media="screen">
+  img{
+    max-width: 100%;
+  }
+</style>
+
+<body>
+  <!-- This file lives in public/404.html -->
+  <div class="header">
+    <div class="container">
+      <!-- Logo -->
+      <a class="logo" data-no-turbolink="true" href="/home"><img height="32" src="http://7oxirl.com1.z0.glb.clouddn.com/logo.png" alt="Logo"></a>
+      <!-- End Logo -->
+
+    </div>
+  </div>
+  <div class="null-result text-center">
+    <p>
+      <img src="http://7oxirl.com1.z0.glb.clouddn.com/404.jpg" alt="404" class="">
+    </p>
+    <div class="">
+      <span id="jumpTo">5</span>秒后返回首页
+    </div>
+    <a class="gohome-link" href="/home">返回首页</a>
+  </div>
+
+  <script type="text/javascript">
+    function counter (secs, surl){
+      var counterNum = document.getElementById('jumpTo');
+      counterNum.innerHTML = secs;
+      if (--secs > 0) {
+        var timer = setTimeout("counter(" + secs + ",'" + surl + "')", 1000);
+      }else{
+        clearTimeout(timer);
+        location.href = surl;
+      }
+    }
+    counter('5', '/home');
+  </script>
+</body>
+</html>

@@ -1,0 +1,445 @@
+$icons:         20px;
+$iconsShow:     22px;
+$navicons:      33px;
+$abouticons:    28px;
+// iconfont
+@font-face {font-family: "iconfont";
+  src: asset-url('home/fonts/iconfont.eot?t=1459320895'); /* IE9*/
+  src: asset-url('home/fonts/iconfont.eot?t=1459320895#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  asset-url('home/fonts/iconfont.woff?t=1459320895') format('woff'), /* chrome, firefox */
+  asset-url('home/fonts/iconfont.ttf?t=1459320895') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  asset-url('home/fonts/iconfont.svg?t=1459320895#iconfont') format('svg'); /* iOS 4.1- */
+}
+.icon-baidu:before { content: "\e600"; }
+.icon-zhifubao:before { content: "\e676"; }
+.icon-diqiu:before { content: "\e646"; }
+.icon-weibo:before { content: "\e601"; }
+.icon-qq:before { content: "\e602"; }
+.icon-weibo1:before { content: "\e603"; }
+.icon-weixin:before { content: "\e604"; }
+.icon-browser:before { content: "\e647"; }
+.icon-zhifubao1:before { content: "\e677"; }
+.icon-baidu1:before { content: "\e605"; }
+.icon-kongjian:before { content: "\e653"; }
+.icon-qq1:before { content: "\e606"; }
+.icon-kongjian1:before { content: "\e654"; }
+.icon-weixinzhifu:before { content: "\e67a"; }
+.icon-kongjian2:before { content: "\e655"; }
+.icon-zhifubao2:before { content: "\e678"; }
+.icon-weixin1:before { content: "\e607"; }
+.icon-zhifubao-copy:before { content: "\e679"; }
+.icon-wepaylogo:before { content: "\e67b"; }
+.icon-qq2:before { content: "\e659"; }
+.icon-star:before { content: "\e608"; }
+.icon-publish:before { content: "\e60b"; }
+.icon-phone:before { content: "\e60c"; }
+.icon-cart:before { content: "\e60d"; }
+.icon-user:before { content: "\e610"; }
+.icon-gift:before { content: "\e611"; }
+.icon-imgline:before { content: "\e60a"; }
+.icon-voiceline:before { content: "\e612"; }
+.icon-v-o:before { content: "\e609"; }
+.icon-v:before { content: "\e60e"; }
+.icon-owhatoline:before { content: "\e60f"; }
+.icon-owhatlogo:before { content: "\e613"; }
+.icon-owhatoo:before { content: "\e614"; }
+.icon-yen:before { content: "\e615"; }
+.icon-yeno:before { content: "\e616"; }
+.icon-search:before { content: "\e617"; }
+.icon-home:before { content: "\e618"; }
+.icon-toplist:before { content: "\e61a"; }
+.icon-toplistchartfuzhi:before { content: "\e61b"; }
+.icon-toplistfubenfuzhi:before { content: "\e61d"; }
+.icon-pluslarge:before { content: "\e61e"; }
+.icon-plus:before { content: "\e61f"; }
+.icon-miunslarge:before { content: "\e620"; }
+.icon-minus:before { content: "\e621"; }
+.icon-wrong:before { content: "\e623"; }
+.icon-check:before { content: "\e625"; }
+.icon-checksquarefuzhi:before { content: "\e622"; }
+.icon-wrongsquare:before { content: "\e624"; }
+.icon-checksquareline:before { content: "\e628"; }
+.icon-wrongsquareline:before { content: "\e629"; }
+.icon-mail:before { content: "\e62c"; }
+.icon-angelright:before { content: "\e62a"; }
+.icon-angelleft:before { content: "\e62d"; }
+.icon-angeldown:before { content: "\e62e"; }
+.icon-angelup:before { content: "\e62f"; }
+.icon-consel:before { content: "\e630"; }
+.icon-wallet:before { content: "\e631"; }
+.icon-order:before { content: "\e632"; }
+.icon-password:before { content: "\e634"; }
+.icon-activity:before { content: "\e637"; }
+.icon-goods:before { content: "\e638"; }
+.icon-subject:before { content: "\e639"; }
+.icon-live:before { content: "\e63a"; }
+.icon-questionfuzhi:before { content: "\e63b"; }
+.icon-star1:before { content: "\e63c"; }
+.icon-starblock:before { content: "\e63d"; }
+.icon-group:before { content: "\e63e"; }
+.icon-location:before { content: "\e63f"; }
+.icon-locationblock:before { content: "\e62b"; }
+.icon-calander:before { content: "\e640"; }
+.icon-heart:before { content: "\e61c"; }
+.icon-heartblock:before { content: "\e641"; }
+.icon-video:before { content: "\e642"; }
+.icon-oplink:before { content: "\e643"; }
+.icon-browser1:before { content: "\e648"; }
+.icon-hot:before { content: "\e649"; }
+.icon-copy:before { content: "\e64a"; }
+.icon-gift1:before { content: "\e64b"; }
+.icon-doc:before { content: "\e64c"; }
+.icon-menu:before { content: "\e64d"; }
+.icon-aligncenter:before { content: "\e64e"; }
+.icon-upload:before { content: "\e64f"; }
+.icon-downloadfuzhi:before { content: "\e650"; }
+.icon-cloud:before { content: "\e651"; }
+.icon-cog:before { content: "\e652"; }
+.icon-camera:before { content: "\e644"; }
+.icon-miaopailogo:before { content: "\e645"; }
+.icon-miaopaio:before { content: "\e657"; }
+.icon-qqqun:before { content: "\e656"; }
+.icon-qqquno:before { content: "\e658"; }
+.icon-safe:before { content: "\e65c"; }
+.icon-saferight:before { content: "\e65d"; }
+.icon-bell:before { content: "\e65b"; }
+.icon-medal:before { content: "\e65a"; }
+.icon-medallevel1:before { content: "\e65e"; }
+.icon-medallevel3:before { content: "\e65f"; }
+.icon-medallevel2:before { content: "\e660"; }
+.icon-radio:before { content: "\e661"; }
+.icon-messageblank:before { content: "\e662"; }
+.icon-crown:before { content: "\e663"; }
+.icon-crownblock:before { content: "\e664"; }
+.icon-setting:before { content: "\e665"; }
+.icon-qa:before { content: "\e666"; }
+.icon-toplist2:before { content: "\e667"; }
+.icon-activityblock:before { content: "\e668"; }
+.icon-balloon:before { content: "\e669"; }
+.icon-balloon1:before { content: "\e66a"; }
+.icon-delete:before { content: "\e66b"; }
+.icon-open:before { content: "\e66c"; }
+.icon-clock:before { content: "\e66d"; }
+.icon-watch:before { content: "\e66e"; }
+.icon-calendarline2:before { content: "\e66f"; }
+.icon-movie:before { content: "\e670"; }
+.icon-phone1:before { content: "\e671"; }
+.icon-qrcode:before { content: "\e672"; }
+.icon-emotion:before { content: "\e673"; }
+.icon-phoneline:before { content: "\e674"; }
+.icon-phoneo:before { content: "\e675"; }
+.icon-fans:before { content: "\e67c"; }
+.icon-organization:before { content: "\e67d"; }
+.icon-fansgroup:before { content: "\e67e"; }
+.icon-view:before { content: "\e67f"; }
+.icon-followblock:before { content: "\e681"; }
+.icon-follow:before { content: "\e682"; }
+.icon-fans1:before { content: "\e683"; }
+.icon-linkhorizontal:before { content: "\e684"; }
+.icon-linkbreakhorizontal:before { content: "\e685"; }
+.icon-link:before { content: "\e686"; }
+.icon-linkbreak:before { content: "\e687"; }
+.icon-connect:before { content: "\e635"; }
+.icon-connectdis:before { content: "\e688"; }
+.icon-visa:before { content: "\e689"; }
+.icon-imgblock:before { content: "\e68a"; }
+.icon-more:before { content: "\e68b"; }
+.icon-tuijianfuzhi:before { content: "\e68c"; }
+.icon-questionblock:before { content: "\e68d"; }
+.icon-goods2block:before { content: "\e68e"; }
+.icon-fansblock:before { content: "\e68f"; }
+.icon-chosenblock:before { content: "\e690"; }
+.icon-balloonsblock:before { content: "\e691"; }
+.icon-voiceblock:before { content: "\e692"; }
+.icon-videoblock:before { content: "\e693"; }
+.icon-freeblock:before { content: "\e694"; }
+.icon-subjectblock:before { content: "\e695"; }
+.icon-discover:before { content: "\e619"; }
+.icon-freeo:before { content: "\e696"; }
+.icon-jigouxuanzhong:before { content: "\e697"; }
+.icon-fensihuixuanzhong:before { content: "\e698"; }
+.icon-omei:before { content: "\e699"; }
+.icon-distask:before { content: "\e69a"; }
+.icon-dissuperstar:before { content: "\e69b"; }
+.icon-disorganization:before { content: "\e69c"; }
+.icon-disfans:before { content: "\e69d"; }
+.icon-lineangelup:before { content: "\e69e"; }
+.icon-lineangelright:before { content: "\e69f"; }
+.icon-lineangelleft:before { content: "\e6a0"; }
+.icon-lineangeldown:before { content: "\e6a1"; }
+.icon-infoo:before { content: "\e6a2"; }
+.icon-caogaoline:before { content: "\e6a3"; }
+.icon-huatiline:before { content: "\e6a4"; }
+.icon-zhiboline:before { content: "\e6a5"; }
+.icon-jingxuanline:before { content: "\e6a6"; }
+.icon-shopline:before { content: "\e6a7"; }
+.icon-fuliline:before { content: "\e6a8"; }
+.icon-huodongfuliline:before { content: "\e6a9"; }
+.icon-tupianfuliline:before { content: "\e6aa"; }
+.icon-freeline:before { content: "\e6ab"; }
+.icon-huodongline:before { content: "\e6ac"; }
+.icon-wendaline:before { content: "\e6ad"; }
+.icon-yingyuanline:before { content: "\e6ae"; }
+.icon-yuyinfuliline:before { content: "\e6af"; }
+.icon-playblock:before { content: "\e6b0"; }
+.icon-guanzhu:before { content: "\e6b1"; }
+.icon-tuijian:before { content: "\e6b2"; }
+.icon-fuliline1:before { content: "\e6b3"; }
+.icon-kuaidi:before { content: "\e6b4"; }
+.icon-angelleftblock:before { content: "\e6b5"; }
+.icon-angelrightblock:before { content: "\e6b6"; }
+.icon-angelupblock:before { content: "\e6b7"; }
+.icon-angeldownblock:before { content: "\e6b8"; }
+.icon-checkoffline:before { content: "\e6b9"; }
+.icon-checkonline:before { content: "\e6ba"; }
+.icon-checkwrongblock:before { content: "\e6bb"; }
+.icon-checkwrongline:before { content: "\e6bc"; }
+.icon-checkonblock:before { content: "\e6bd"; }
+.icon-paimingbg:before { content: "\e626"; }
+.icon-set:before { content: "\e627"; }
+.icon-pauseblock:before { content: "\e6be"; }
+.icon-renwu:before { content: "\e6bf"; }
+.icon-cart1:before { content: "\e6c0"; }
+.icon-huangguan:before { content: "\e6c1"; }
+.icon-bag:before { content: "\e6c2"; }
+.icon-iconpeople:before { content: "\e6c3"; }
+
+// iconfont ending
+.icons{
+  font-family:"iconfont" !important;
+  font-style:normal;
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-transition: font-size 0.25s ease-out 0s;
+  -moz-transition: font-size 0.25s ease-out 0s;
+  transition: font-size 0.25s ease-out 0s;
+  .overlay-share &{
+    font-size: $navicons;
+    line-height: $navicons;
+    margin-bottom: 5px;
+  }
+  .sns-icons &{
+    font-size: 30px;
+    line-height: 30px;
+    + .icons{
+      margin-left: 15px;
+    }
+    &:hover,
+    &:focus{
+      color: $colorGray;
+      opacity: 0.8;
+    }
+    &.text-highlight-r{
+      &:hover,
+      &:focus{
+        color: $colorHighLightR;
+        opacity: 1;
+      }
+    }
+  }
+  .wan-list &{
+    font-size: 20px;
+    margin-right: 10px;
+  }
+  .list-profile .caption &{
+    font-size: 16px;
+    // margin-top: -2px;
+    margin-right: 5px;
+  }
+  // 导航入口
+  .entrance-links &{
+    font-size: $icons;
+    line-height: $icons;
+    margin-right: 10px;
+  }
+  // task-card
+  .link-caption &{
+    font-size: 15px;
+    line-height: 15px;
+  }
+  // 钱包
+  .overall &{
+    font-size: 14px;
+  }
+  // 发任务
+  .publish-item &{
+    font-size: 50px;
+  }
+}
+// 认证icon-圆形
+.v-icon{
+  min-width: 16px;
+  min-height: 16px;
+  font-size: 19px;
+  line-height: 16px;
+  /* 黄色为明星用户 */
+  &.v-star{
+    color: $colorStar;
+  }
+  /* 蓝色为娱乐机构 */
+  &.v-organ{
+    color: $colorOrgan;
+  }
+  /* 粉色为粉丝会 */
+  &.v-expert{
+    color: $colorExpert;
+  }
+}
+.v-bordered{
+  width: 24px;
+  height: 24px;
+  font-size: 24px;
+  line-height: 24px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background-color: $colorStar;
+  color: #fff;
+  span{
+    margin-left: -2px;
+  }
+}
+// 普通用户icons
+.v-lv{
+  font-style: normal;
+  &.badge-yellow-light{
+    padding: 3px 4px;
+    border-radius: 2px;
+  }
+}
+// 活动类型标签
+$taskMark:        60px;
+$taskMarkWelfare: 75px;
+.task-mark{
+  display: inline-block;
+  width: $taskMark;
+  height: $taskMark;
+  background-image: asset-url("home/task-marks.png");
+  background-size: auto 100%;
+  text-indent: -9999px;
+  .thumb-img &,
+  .task-item-thumb &{
+    position: absolute;
+    right: 2px;
+    top: 0;
+    text-align: center;
+  }
+}
+.task-mark-FAQ{
+  background-position: -($taskMark*0) center;
+}
+.task-mark-news{
+  background-position: -($taskMark*1) center;
+}
+
+.task-mark-shop{
+  background-position: -($taskMark*2) center;
+}
+.task-mark-media{
+  background-position: -($taskMark*3) center;
+}
+.task-mark-topic{
+  background-position: -($taskMark*4) center;
+}
+.task-mark-funding{
+  background-position: -($taskMark*5) center;
+}
+// 免费活动icon
+.task-mark-free{
+  background-position: -($taskMark*6) center;
+}
+// 书信icon
+.task-mark-letter,
+.task-mark-voice,
+.task-mark-event,
+.task-mark-product{
+  width: $taskMarkWelfare;
+  height: $taskMarkWelfare;
+  .thumb-img &.task-mark,
+  .task-item-thumb &.task-mark{
+    top: -18px;
+  }
+}
+.task-mark-letter{
+  background-position: -($taskMarkWelfare*7) center;
+}
+// 语音icon
+.task-mark-voice{
+  background-position: -($taskMarkWelfare*8) center;
+}
+// 活动福利icon
+.task-mark-event{
+  background-position: -($taskMarkWelfare*9) center;
+}
+// 商品福利icon
+.task-mark-product{
+  background-position: -($taskMarkWelfare*10) center;
+}
+// 上传图片
+.close-rounded-sm.close{
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 21px;
+  height: 21px;
+  font-size: 18px;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid #898989;
+  color: #898989;
+  background-color: #eeeeee;
+  opacity: 1;
+  // margin-top: -5px;
+  padding-left: 1px;
+  line-height: 20px;
+  font-weight: normal;
+  z-index: 1;
+  &:hover{
+    border: 1px solid $colorRed;
+    color: $colorRed;
+    background-color: #eeeeee;
+  }
+}
+// 赞 评论 分享 icons
+.like-num,
+.comment-num{
+  margin-right: 20px;
+}
+.comment-num .icons{
+  margin-right: 2px;
+}
+.like-num,
+.comment-num,
+.share-num{
+  font-size: 12px;
+  color: #C9C9C9;
+  min-width: 80px;
+  display: inline-block;
+  &:hover{
+    color: #4a4a4a;
+    text-decoration: none;
+  }
+  .icons{
+    font-size: 20px;
+    margin-top: -2px;
+  }
+}
+//关联账号
+$connectAvatar: 39px;
+.connect-icons{
+  // display: inline-block;
+  width: $connectAvatar;
+  height: $connectAvatar;
+  background-image: asset-url("home/connect-icons.png");
+  background-size: auto 100%;
+  text-indent: -9999px;
+}
+.connect-avatar-1{
+  background-position: -($connectAvatar*0) center;
+}
+.connect-avatar-2{
+  background-position: -($connectAvatar*1) center;
+}
+// 关联账号 ends

@@ -1,0 +1,43 @@
+<% show = !%w[new edit].include?(params[:action]) && @record.valid? %>
+<% auto_suppl = %w[edit show].include?(params[:action]) && @record.present? %>
+<% options_class = show ? {disabled: 'true'} : {} %>
+<%= simple_form_for @record, url: @record.new_record? ? manage_shop_medias_path(@record) : manage_shop_media_path(@record), method: @record.new_record? ? :post : :put, html: {class: 'form-horizontal validate-form'} do |f| %>
+  <% f.options.merge!(options_class: options_class) %>
+
+  <div class="modal-body">
+    <%= render 'manage/shared/modal/select_tag', {f: f, field: :kind, include_blank: false, options: options_for_select(Shop::Media::KIND_TYPES.map(&:reverse), @record.kind) } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :title, required: true, maxlength: "30", p_field: '最多输入30个字符，请勿包含 ＃＊<> & % ^‘集资等非法字符' } %>
+    <%= render 'manage/shared/modal/kindeditor_area', {f: f, field: :description, required: true } %>
+    <%= render 'manage/shared/modal/date_field', {f: f, field: :start_at, required: true } %>
+    <%= render 'manage/shared/modal/date_field', {f: f, field: :end_at, required: true } %>
+    <%= render 'manage/shared/modal/select2_tag', {f: f, field: :star_list, options: { selects: Core::Star.where(published: true).select("id, name"), url: '/manage/shop/search_star', multiple_class: true, tag: true, auto_suppl: auto_suppl, auto_url: "/manage/shop/get_star?id=#{@record.shop_task.try(:id)}"}, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :url, required: true } %>
+    <%= render 'manage/shared/modal/file2_field', {f: f, field: :pic, maxsize: 2, required: true, picture_url: @record.picture_url, image: {:width => '200px', :hight => '200px'} } %>
+    <%= render 'manage/shared/modal/select2_tag', {f: f, field: :user_id, options: { selects: Core::User.where(identity: 1).select("id, name"), url: '/manage/core/search_user' , multiple_class: false, auto_suppl: auto_suppl, auto_url: "/manage/core/get_user?id=#{@record.try(:user_id)}'" }, required: true } %>
+    <%#= render 'manage/shared/modal/check_box', {f: f, field: :is_share } %>
+    <%= render 'manage/shared/modal/hidden_field', {f: f, field: :creator_id, value: @record.try(:creator_id).present? ? @record.try(:creator_id) : @current_user.id } %>
+    <%= render 'manage/shared/modal/hidden_field', {f: f, field: :updater_id, value: @current_user.id } %>
+
+  </div>
+
+  <div class="modal-footer">
+    <% unless show %>
+      <%= link_to '返回', manage_shop_medias_path, class: 'btn btn-default redirect-back' %>
+      <%= f.submit class: 'btn btn-info back_submit' %>
+    <% end %>
+  </div>
+<% end %>
+<% content_for :tail do %>
+  <script type="text/javascript">
+  if($('#shop_media_kind').val()=='url'){
+    $('#shop_media_description').parents('fieldset').css('display','none');
+  }
+  $('#shop_media_kind').change(function(){
+    if($(this).val()=='url'){
+      $('#shop_media_description').parents('fieldset').css('display','none');
+    }else{
+      $('#shop_media_description').parents('fieldset').css('display','block');
+    }
+  });
+  </script>
+<% end %>

@@ -1,0 +1,42 @@
+<% show = !%w[new edit].include?(params[:action]) && @record.valid? %>
+<% auto_suppl = %w[edit show].include?(params[:action]) && @record.present? %>
+<% options_class = show ? {disabled: 'true'} : {} %>
+<%= simple_form_for @record, url: [:manage, @record], method: @record.new_record? ? :post : :put, html: {class: 'form-horizontal'} do |f| %>
+  <% f.options.merge!(options_class: options_class) %>
+
+  <div class="modal-body">
+
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :amount, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :task_id, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :task_type, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :receiver_name, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :receiver_account, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :bank_name, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :requestor_remark, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :requested_by, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :requested_at, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :mobile, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :email, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :verifier_remark, required: true } %>
+    <%= render 'manage/shared/modal/date_field', {f: f, field: :verified_at, required: true} %>
+    <%= render 'manage/shared/modal/hidden_field', {f: f, field: :verified_by, value: @current_user.id } %>
+    <%= render 'manage/shared/modal/select_tag', {f: f, field: :status, required: true, options: Core::WithdrawOrder.statuses.to_a.map { |w| [t(w[0]), w[0]] } } %>
+    <% if params[:action] == 'show' %>
+      <div class="form-group">
+        <label class="col-md-1 control-label">图片</label>
+        <div class="col-md-11">
+          <div class="row">
+            <% @record.pictures && @record.pictures.each do |c| %>
+              <div class="col-md-4 withdraw-img-item">
+                <%= image_tag c.picture_url, class: ""  %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div class="modal-footer">
+    <%= render 'manage/shared/modal/footer', {f: f} unless show %>
+  </div>
+<% end %>

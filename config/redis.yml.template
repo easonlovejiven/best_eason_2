@@ -1,0 +1,9 @@
+development:
+  host: 127.0.0.1
+  port: 6379
+  db: 'owhat3'
+  
+production:
+  host: 101.200.73.14
+  port: 6379
+  db: 'owhat3'

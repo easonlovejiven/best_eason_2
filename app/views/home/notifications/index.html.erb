@@ -1,0 +1,46 @@
+<!-- O!妹电台 -->
+<div class="container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <div class="head-highline">
+        <span class="item">O妹电台</span>
+      </div>
+      <% if @sends.blank? %>
+        <!-- 如果没有人参与显示的空白页 -->
+        <div class="null-content block-area">
+          <div class="text-center translate-middle-y">
+            <p>
+              <%= image_tag 'home/null-content.png', alt: '' %>
+            </p>
+            <p>还有没有消息哦!</p>
+          </div>
+        </div>
+      <% else %>
+        <div class="block-area notifacations-list">
+          <% @sends.each do |send| %>
+            <div class="avatar-head has-bordered" href="#">
+              <span class="avatar-round pull-left">
+                <%= image_tag @user.picture_url.to_s + "?imageMogr2/auto-orient/thumbnail/!50x50r/gravity/Center/crop/50x50", class: 'img-circle'  %>
+              </span>
+
+              <div class="name-location name-location-ml">
+                <div class="ellipsis">
+                  <%= send.content[0] == '{' ? eval(send.content)[:content] : send.content %>
+                </div>
+                <p class="name-desc text-gray">
+                  <%= send.created_at.to_s(:db)  %>
+                </p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <div class="text-center">
+          <%= will_paginate @sends %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

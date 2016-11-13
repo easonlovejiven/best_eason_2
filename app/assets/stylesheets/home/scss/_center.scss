@@ -1,0 +1,221 @@
+// 个人中心左侧边栏
+.user-panel{
+  background-color: #fff;
+  margin-bottom: 25px;
+  .item{
+    display: block;
+    // line-height: 40px;
+    padding: 10px 20px;
+    &.active{
+      color: $colorHighLight;
+      border-left: 2px solid $colorHighLight;
+      background-color: #F7FCFC;
+    }
+    .icons{
+      font-size: 26px;
+    }
+  }
+}
+.menu-group{
+  overflow: hidden;
+  ul{
+    li:last-child{
+      padding-bottom: 0;
+    }
+    .item{
+      padding-left: 40px;
+    }
+  }
+  &.panel{
+    margin-bottom: 0;
+    box-shadow: none;
+    border-radius: 0;
+  }
+}
+// 个人中心左侧边栏 ends
+// 资料修改
+$editAvatarSize: 80px;
+.edit-avatar{
+  display: inline-block;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+  height: $editAvatarSize;
+  width: $editAvatarSize;
+  .icons{
+    // content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,.5);
+    color: #fff;
+    text-align: center;
+    font-size: 36px;
+    line-height: $editAvatarSize;
+  }
+}
+// 资料修改 ends
+// 钱包
+.wallets{
+  .table>thead>tr>td,
+  .table>tbody>tr>td{
+    padding: 12px 16px;
+    border: 0;
+  }
+  .table>thead>tr>td{
+    font-size: 16px;
+  }
+}
+.overall{
+  font-size: 30px;
+  color: $colorHighLightR;
+  margin-bottom: 16px;
+  .col-sm-6{
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+  .col-sm-6 + .col-sm-6{
+    border-left: 2px solid #DDDDDD;
+  }
+}
+// 钱包 ends
+// 收货地址管理
+.address-item{
+  .close{
+    font-family: Arial;
+  }
+  .title{
+    font-size: 16px;
+    line-height: 26px;
+    margin-bottom: 15px;
+  }
+  p{
+    &:last-child{
+      margin-bottom: 5px;
+    }
+  }
+  .addr-links{
+    a{
+      @extend .text-gray;
+      & + a{
+        margin-left: 20px;
+      }
+    }
+  }
+}
+// 收货地址管理 ends
+// 玩转Owhat
+.wan-owhat{
+  .title{
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  .tab-content{
+    overflow: hidden;
+  }
+  .progress-box{
+    margin: 0;
+  }
+  .progress{
+    margin-bottom: 0;
+    top: 6px;
+  }
+  .progress-bar{
+    background: linear-gradient(to right, #FAC015, #F65940);
+  }
+  .user-level{
+    margin-right: 10%;
+  }
+}
+.wan-list{
+  margin-bottom: 0;
+  .item{
+    line-height: 28px;
+    margin-bottom: 10px;
+    &:last-child{
+      margin-bottom: 0;
+    }
+  }
+}
+.wan-panel-group{
+  margin-bottom: 0;
+  .panel{
+    border-radius: 0;
+    box-shadow: none;
+    margin-bottom: 0;
+    &+.panel{
+      margin-top: 0;
+    }
+  }
+  .item{
+    display: block;
+    padding: 10px 20px 10px 0;
+    border-bottom: 1px solid #eeeeee;
+    &:hover,
+    &:focus{
+      text-decoration: none;
+    }
+    &:focus{
+      color: $colorHighLight;
+    }
+  }
+  .panel-collapse{
+    border-bottom: 1px solid #eeeeee;
+    padding: 20px 0 10px;
+    p{
+      color: #666666;
+      line-height: 22px;
+    }
+  }
+}
+// 玩转Owhat & 侧边菜单
+.wan-panel-group,
+.user-panel{
+  .item{
+    .arrow{
+      text-indent: -9999px;
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border: solid #c5c5c5;
+      border-width: 2px 2px 0 0;
+      -webkit-transform: rotate(45deg) translateY(5px);
+      // -moz-transform: rotate(45deg) translateY(5px);
+      -ms-transform: rotate(45deg) translateY(5px);
+      transform: rotate(45deg) translateY(5px);
+      -webkit-transition: all 0.2s;
+      -moz-transition: all 0.2s;
+      -ms-transition: all 0.2s;
+      transition: all 0.2s;
+    }
+    &[aria-expanded="true"]{
+      color: $colorHighLight;
+      span{
+        -webkit-transform: rotate(135deg);
+        // -moz-transform: rotate(135deg);
+        -ms-transform: rotate(135deg);
+        transform: rotate(135deg);
+        -webkit-transition: all 0.2s;
+        -moz-transition: all 0.2s;
+        -ms-transition: all 0.2s;
+        transition: all 0.2s;
+      }
+    }
+  }
+}
+// 玩转Owhat ends
+// 草稿箱
+.drafts{
+  .title{
+    height: 40px;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    // text-align: justify;
+    color: #6A6A6A;
+    @extend .word-bread;
+  }
+}
+// 草稿箱 ends

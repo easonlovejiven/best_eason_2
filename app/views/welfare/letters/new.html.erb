@@ -1,0 +1,142 @@
+<div class="container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <%#= render 'shop/shared/crumbs' %>
+      <ol class="breadcrumb">
+        <li><a href="/home/users/personal_center">发布任务</a></li>
+        <li>发布福利</li>
+      </ol>
+
+      <%= simple_form_for @letter, url: welfare_letters_path, method: :post, html: { class: "publish-form block-area validate-form" } do |f| %>
+        <!-- <div class="form-group">
+          <label class="">选取信纸 <span class="text-highlight-r">*</span></label>
+
+          <div class="row envelope-opts">
+            <%# Welfare::Paper.active.published.each_with_index do |paper, i| %>
+              <div class="col-xs-6 col-md-4">
+                <div class="envelope-item">
+                  <div class="envelope-thumb">
+                    <%#= image_tag paper.picture_url.to_s + '?imageMogr2/auto-orient/thumbnail/!208x94r/gravity/Center/crop/208x94', alt: '', class: '' %>
+                  </div>
+                  <label class="input-group-addon">
+                    <%#= f.radio_button :paper_id, paper.id, class: 'set-cover', checked: (i == 0) %>
+                    <%#= image_tag "home/letters/letter-checked.png", alt: "", class: "envelope-checked" %>
+                  </label>
+                </div>
+              </div>
+            <%# end %>
+          </div>
+        </div> -->
+
+        <div class="form-group">
+          <%= f.label :title do %>
+            标题<span class="text-highlight-r">*</span><small class="text-gray">(最多输入30个字,请勿包含 ＃＊<>& % ^‘集资等字符)</small>
+          <% end %>
+          <%= f.input :title, label: false, placeholder: "填写收件人信息,如:亲爱的粉丝们", class: "form-control", input_html: { maxlength: 30, class: "required js_danger_chara js-emoji"} %>
+        </div>
+
+        <!-- <div class="form-group">
+          <%#= f.label :receiver do %>
+            收信人<span class="text-highlight-r">*</span>
+          <%# end %>
+          <%#= f.input :receiver, label: false, placeholder: "填写收件人信息,如:亲爱的粉丝们", class: "form-control", input_html: { maxlength: 10, class: "required js_danger_val" } %>
+        </div> -->
+        <!-- <div class="form-group">
+          <%#= f.label :content do %>
+            写点什么给您的粉丝吧<span class="text-highlight-r">*</span>
+          <%# end %>
+          <%#= f.input :content, label: false, placeholder: '请左对齐书写，每行最前面不要有空格', as: :text, class: "form-control", input_html: { rows: "12", class: "required js_danger_val" } %>
+        </div> -->
+        <!-- <div class="form-group">
+          <%#= f.label :signature do %>
+            署名<span class="text-highlight-r">*</span>
+          <%# end %>
+          <%#= f.input :signature, label: false, placeholder: "请写上姓名，如：王力宏", class: "form-control", input_html: { maxlength: 10, class: "required" } %>
+        </div> -->
+
+        <div class="form-group js-tagbox2">
+          <label class="js-checkKey">
+            添加图片 <span class="text-highlight-r">*</span>
+            <small class="text-gray">支持jpg/jpeg/gif/png格式,RGB模式,单张（长 &lt; 8000,宽 &lt; 2000,大小 &lt; 10M）最多30张</small>
+            <div class="js-textError text-highlight-r"></div>
+          </label>
+          <div class="topics-list js-upload-photo1">
+            <div class="thumb-img-add js-upload-photoadd1">
+            </div>
+            <!--上传图片使用-->
+            <div style="display:none"  data-name="welfare_letter[images_attributes]" class="js-name1"></div>
+          </div>
+        </div>
+        <div class="form-group js-tagbox">
+          <%= f.input :pic, as: :hidden, input_html:{ class: "js-name"} %>
+          <label class="js-checkKey">
+            添加封面图 <span class="text-highlight-r">*</span>
+            <small class="text-gray">(支持jpg/jpeg/gif/png格式,大小 &lt; 2M,建议上传640*480px)</small>
+            <div class="js-textError text-highlight-r"></div>
+          </label>
+          <div class="topics-list js-upload-photo2">
+            <div class="thumb-img-add js-upload-photoadd2">
+            </div>
+            <!--上传图片使用-->
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="">关联明星 <span class="text-highlight-r">*</span><small class="text-gray">(最多关联10位明星)</small></label>
+          <%= render partial: 'shop/shared/select2_tag', locals: {f: f, field: :star_list, options: { selects: Core::Star.where(published: true).select("id, name"), multiple_class: true, url: '/manage/shop/search_star', tag: true } } %>
+        </div>
+
+        <div class="form-group text-right">
+          <button type="submit" class="btn btn-highlight-outline space-lg-hor js-subletter js-checkButton">预览</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<% content_for :tail do %>
+  <script type="text/javascript">
+    $('.js-subletter').on('click',function(event){
+      $('.js-tagbox').find('.js-textError').html('');
+      $('.js-tagbox2').find('.js-textError').html('');
+      var checkImgS = checkImg();
+      switch(checkImgS){
+        case 'allTrue':
+          var oName=$('.js-name1').attr('data-name');
+          $('.js-upload-photo1').find('.js-inputImg').each(function(index){
+            $('.js-upload-photo1').append('<input type="hidden" name="'+oName+'['+index+'][pic]" class="js-inputkey" value="'+$(this).attr('data-src')+'"/>');
+          });
+          // $('form').submit();
+        break;
+        case 'oneFalse':
+          $('.js-tagbox').find('.js-textError').html('请上传图片');
+          event.preventDefault();
+        break;
+        case 'mainFalse':
+          $('.js-tagbox').find('.js-textError').html('请上传图片');
+          event.preventDefault();
+        break;
+        case 'allFalse':
+          $('.js-tagbox').find('.js-textError').html('请上传图片');
+          $('.js-tagbox2').find('.js-textError').html('请上传图片');
+          event.preventDefault();
+        break;
+      }
+      function checkImg(){
+        if($('.js-tagbox2').find('.js-inputImg').length>0 && $('.js-tagbox').find('.js-name').val() !== ''){
+          return 'allTrue';
+        }else if($('.js-tagbox2').find('.js-inputImg').length>0 && $('.js-tagbox').find('.js-name').val() == ''){
+          return 'oneFalse';
+        }else if($('.js-tagbox2').find('.js-inputImg').length<0 && $('.js-tagbox').find('.js-name').val() !== ''){
+          return 'mainFalse';
+        }else{
+          return 'allFalse';
+        }
+      }
+    });
+
+  </script>
+<% end %>

@@ -1,0 +1,26 @@
+<% show = !%w[new edit].include?(params[:action]) && @record.valid? %>
+<% auto_suppl = %w[edit show].include?(params[:action]) && @record.present? %>
+<% options_class = show ? {disabled: 'true'} : {} %>
+<%= simple_form_for @record, url: [:manage, @record], method: @record.new_record? ? :post : :put, html: {class: 'form-horizontal validate-form'} do |f| %>
+  <% f.options.merge!(options_class: options_class) %>
+
+  <div class="modal-body">
+
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :title, required: true, maxlength: 30, p_field: "最多输入30个字 请勿包含 ＃＊<>& % ^‘集资等字符" } %>
+    <%= render 'manage/shared/modal/text_area', {f: f, field: :description, required: true, maxlength: 5000, p_field: '最多输入5000个字，描述这个任务的细节'  } %>
+    <%#= render 'manage/shared/modal/text_area', {f: f, field: :kinder_description, show_type: 'kindeditor' } %>
+    <%= render 'manage/shared/modal/hidden_field', {f: f, field: :creator_id, value: @current_user.id } %>
+    <%= render 'manage/shared/modal/file_field', {f: f, field: :cover1, required: true, maxsize: 2, picture_url: @record.picture_url, image: {:width => '200px', :hight => '200px'}, p_field: '支持jpg/jpeg/gif/png格式,大小<2M,建议上传640*480px' } %>
+    <!-- picture_url: record.cover2.url -->
+    <%= render 'manage/shared/modal/check_box', {f: f, field: :is_share } %>
+    <!-- options: {selects: 可选列表, url: ‘模糊搜索提示，ajax’,multiple_class: '多选', tag: '为ture时，可填写搜索结果没有的记录，不需要时可不填', auto_suppl: "true时可在show、edit等 action动作时自动补全，false时不会自动填充", auto_url: '自动补全时ajax url'} -->
+    <%= render 'manage/shared/modal/select2_tag', {f: f, field: :star_list, options: { selects: Core::Star.where(published: true).select("id, name"), url: '/manage/shop/search_star', multiple_class: true, tag: true, auto_suppl: auto_suppl, auto_url: "/manage/shop/get_star?id=#{@record.shop_task.try(:id)}"}, required: true } %>
+    <%= render 'manage/shared/modal/select2_tag', {f: f, field: :user_id, options: { selects: Core::User.where(identity: 1).select("id, name"), url: '/manage/core/search_user' , multiple_class: false, auto_suppl: auto_suppl, auto_url: "/manage/core/get_user?id=#{@record.try(:user_id)}'" }, required: true } %>
+
+    <%= render 'manage/shared/modal/timestamps', {f: f} if show %>
+  </div>
+
+  <div class="modal-footer">
+    <%= render 'manage/shared/modal/footer', {f: f} unless show %>
+  </div>
+<% end %>

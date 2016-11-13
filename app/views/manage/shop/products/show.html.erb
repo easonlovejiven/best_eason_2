@@ -1,0 +1,68 @@
+<% show = !%w[new edit].include?(params[:action]) && @record.valid? %>
+<% auto_suppl = %w[edit show].include?(params[:action]) && @record.present? %>
+<% options_class = show ? {disabled: 'true'} : {} %>
+<%= simple_form_for @record, url: [:manage, @record], method: @record.new_record? ? :post : :put, html: {class: 'form-horizontal validate-form'} do |f| %>
+  <% f.options.merge!(options_class: options_class) %>
+
+  <div class="modal-body js-price-infos">
+
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :title, required: true, maxlength: 40, placeholder: '最多输入40个字' } %>
+    <%= render 'manage/shared/modal/text_area', {f: f, field: :description, required: true, maxlength: 5000, placeholder: '活动描述，最多输入5000个字' } %>
+    <%= render 'manage/shared/modal/file_field', {f: f, field: :descripe_cover, maxsize: 10, picture_url: @record.descripe_cover_url, image: {:width => '200px', :hight => '200px'}, p_field: '支持jpg/jpeg/gif/png格式，大小<10M' } %>
+    <%= render 'manage/shared/modal/file2_field', {f: f, field: :key1, required: true, picture_url: @record.cover_url(1), image: {:width => '200px', :hight => '200px'} } %>
+    <%= render 'manage/shared/modal/file2_field', {f: f, field: :key2, picture_url: @record.cover_url(2), image: {:width => '200px', :hight => '200px'} } %>
+    <%= render 'manage/shared/modal/file2_field', {f: f, field: :key3, picture_url: @record.cover_url(3), image: {:width => '200px', :hight => '200px'} } %>
+    <%= render 'manage/shared/modal/date_field', {f: f, field: :start_at, required: true} %>
+    <%= render 'manage/shared/modal/date_field', {f: f, field: :end_at, required: true} %>
+    <%= render 'manage/shared/modal/date_field', {f: f, field: :sale_start_at, required: true} %>
+    <%= render 'manage/shared/modal/date_field', {f: f, field: :sale_end_at, required: true} %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :address, maxlength: 20, placeholder: '最多输入20个字' } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :mobile, required: true, number: true, maxlength: 30, options: {:options_class => 'input_number'}, p_field: '最多输入30个数字'} %>
+
+    <!-- options: {selects: 可选列表, url: ‘模糊搜索提示，ajax’,multiple_class: '多选', tag: '为ture时，可填写搜索结果没有的记录，不需要时可不填', auto_suppl: "true时可在show、edit等 action动作时自动补全，false时不会自动填充", auto_url: '自动补全时ajax url'} -->
+    <%= render 'manage/shared/modal/select2_tag', {f: f, field: :star_list, options: { selects: Core::Star.where(published: true).select("id, name"), url: '/manage/shop/search_star', multiple_class: true, tag: false, auto_suppl: auto_suppl, auto_url: "/manage/shop/get_star?id=#{@record.shop_task.try(:id)}"}, required: true, p_field: '最多关联10个明星' } %>
+    <%= render 'manage/shared/modal/select2_tag', {f: f, field: :user_id, options: { selects: Core::User.where(identity: 1).select("id, name"), url: '/manage/core/search_user' , multiple_class: false, auto_suppl: auto_suppl, auto_url: "/manage/core/get_user?id=#{@record.try(:user_id)}'" }, required: true } %>
+    <%= render 'manage/shared/modal/hidden_field', {f: f, field: :creator_id, value: @current_user.id } %>
+    <%= render 'manage/shared/modal/hidden_field', {f: f, field: :shop_category, value: 'shop_products' } %>
+    <%= render 'manage/shared/modal/check_box', {f: f, field: :is_share } %>
+    <%= render 'manage/shared/modal/check_box', {f: f, field: :is_rush } %>
+    <%= render 'manage/shared/modal/check_box2', {f: f, field: :free, options: {:checked => false} } %>
+
+    <fieldset class="form-group well well-sm">
+      <div id="ext_infos">
+        <%= f.simple_fields_for :ext_infos do |info| %>
+          <%= render 'ext_info_fields', {f: info } %>
+        <% end %>
+      </div>
+      <div class="">
+        <%= link_to_add_association '添加报名信息',  f, :ext_infos %>
+      </div>
+    </fieldset>
+
+    <fieldset class="form-group well well-sm">
+      <div id="ticket_types">
+        <%= f.simple_fields_for :ticket_types do |info| %>
+          <%= render 'ticket_type_fields', {f: info, action: params[:action] } %>
+        <% end %>
+      </div>
+      <div class="">
+        <%= link_to_add_association '添加价格信息',  f, :ticket_types %>
+        <% unless @record.errors[:ticket_types].blank? %>
+          <div class="text-highlight-r" style="margin-top: 3px;"><%= @record.errors[:ticket_types].join(', ') %></div>
+        <% end %>
+      </div>
+    </fieldset>
+
+    <div class="form-group well well-sm">
+      <%#= render 'manage/shared/modal/check_box', {f: f, field: :is_need_express } %>
+      <%= render 'manage/shared/modal/select_tag', {f: f, field: :freight_template_id, options: options_from_collection_for_select(@templates, :id, :name, @record.freight_template_id) } %>
+      <%= link_to '新增运费模板',new_manage_shop_freight_template_path, target: "_blank" %>
+      <%= render 'manage/shared/modal/timestamps', {f: f} if show %>
+    </div>
+
+  </div>
+
+  <div class="modal-footer">
+    <%= render 'manage/shared/modal/footer', {f: f} unless show %>
+  </div>
+<% end %>

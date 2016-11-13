@@ -1,0 +1,12 @@
+<% html_class = {class: 'form-control'}.merge!(f.options[:options_class]) %>
+<% html_class.merge!(f.options[:disable_class]) if f.options[:disable_class] %>
+
+<fieldset>
+  <div class="form-group">
+    <%= f.label :id, {class: 'col-md-1 control-label'} %>
+
+    <div class="col-md-11">
+      <%= f.text_field :id, html_class %>
+    </div>
+  </div>
+</fieldset>

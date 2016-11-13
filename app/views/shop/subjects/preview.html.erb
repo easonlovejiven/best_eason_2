@@ -1,0 +1,242 @@
+<%= content_for :title do %>
+  <%= @subject.title %>
+<% end %>
+<!-- 图文直播详情 -->
+<div class="container special preview-container">
+  <ol class="breadcrumb">
+    <li><a href="/">首页</a></li>
+    <li><%= link_to '任务', home_suggestions_path %></li>
+    <li><a href="/home/suggestions?category=subjects">直播任务</a></li>
+    <li class="active"><%= @subject.category %></li>
+  </ol>
+
+  <div class="block-area">
+    <% if @subject.category == '图文直播' %>
+      <h4 class="title"><%= @subject.title %></h4>
+      <div class="word-bread">
+        <%= @subject.description.html_safe %>
+      </div>
+    <% else %>
+      <h4 class="title"><%= @subject.title %></h4>
+      <!-- 安装flash插件 -->
+      <div class="tag-box install-flash hide js-flashHad">
+        <div class="translate-middle-y text-center">
+          请先安装 <a href="http://www.adobe.com/go/getflash" target="_blank"><strong class="text-highlight-r">flash</strong></a> 插件，然后刷新页面后观看视频
+        </div>
+      </div>
+      <div class="js-flashVideo">
+        <% if @subject.start_at > Time.now && @subject.status == 'pending'%>
+          <!-- 未播放 -->
+          <div class="text-center">
+            <img src="<%= @subject.picture_url.to_s + '?imageMogr2/auto-orient/thumbnail/!893x502r/gravity/North/crop/893x502' %>" alt="">
+          </div>
+          <div class="countdown text-center">
+            <div class="time" data-end-at="<%= @subject.start_at %>">
+              <span class="timeblock label label-danger">0</span>
+              <span class="timeblock label label-white">0</span>
+              <span class="label-unit">天</span>
+              <span class="timeblock label label-danger">0</span>
+              <span class="timeblock label label-white">0</span>
+              <span class="label-unit">时</span>
+              <span class="timeblock label label-danger">0</span>
+              <span class="timeblock label label-white">0</span>
+              <span class="label-unit">分</span>
+              <span class="timeblock label label-danger">0</span>
+              <span class="timeblock label label-white">0</span>
+            </div>
+            <div class="countdown-title">直播倒计时</div>
+          </div>
+        <% elsif @subject.start_at <= Time.now && @subject.status == 'living' %>
+          <!-- 播放视频 -->
+          <div class="play-video">
+            <!-- 直播中的视频格式为m3u8 -->
+            <div id="player" style="height: 100%;"></div>
+          </div>
+        <% elsif @subject.status == 'closed' %>
+          <!-- 播放视频结束 -->
+          <% if @subject.storage_url.present? %>
+            <!-- 视频已上传 -->
+            <div id="playered" class="play-video">
+              <!-- 直播结束后的视频格式为MP4 -->
+            </div>
+          <% else %>
+            <!-- 视频未上传 -->
+            <div class="tag-box">
+              <div class="text-center">
+                <%= image_tag 'home/modal/tips-cry.png', alt: '', class: 'origin-img' %>
+              </div>
+              <h3 class="accident-title text-center">视频正在路上,请耐心等待O!~~</h3>
+              <p class="text-right">
+                O!妹<br>
+              </p>
+            </div>
+          <% end %>
+        <% elsif @subject.status == 'accident' %>
+          <!-- 直播意外状况 -->
+          <div class="tag-box">
+            <div class="text-center">
+              <%= image_tag 'home/modal/tips-cry.png', alt: '', class: 'origin-img' %>
+            </div>
+            <h3 class="accident-title text-center">活动推迟公告</h3>
+            <p class="word-bread">
+              亲爱的 O!蜜们，
+              <br>
+              <br>
+              由于主办方的某些原因，原定举行的<%= @subject.title %>活动因故临时取消，由此给您带来的不便，我们深表歉意！活动如再次举办，我们将另行通知，届时请在手机上等待 Owhat APP 的信息推送通知。
+              <br>
+              <br>
+              O!妹<br>
+              <%= @subject.updated_at.to_date %>
+            </p>
+          </div>
+        <% else %>
+          <div class="tag-box">
+            <div class="text-center">
+              <%= image_tag 'home/modal/tips-cry.png', alt: '', class: 'origin-img' %>
+            </div>
+            <p class="text-center">
+              直播已开始, 如遇到问题请刷新页面或联系我们的客服.
+            </p>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div class="readers-number">
+      <span><i class="icons">&#xe6c5;</i> <%= @subject.read_subject_participator.value %></span>
+
+      <span><i class="icons">&#xe6c4;</i> <%= @subject.comments_subject_participator.value %></span>
+
+      <%= link_to like_shop_subject_path(subject_id: @subject.id), method: :put, class: "like-num", id: "subject_like_#{@subject.id}", remote: true do %>
+        <% @list = Redis::List.new "shop_subject_#{@subject.id}_likes"  %>
+        <% if @current_user && @list.values.include?(@current_user.id.to_s) %>
+          <i class="icons text-highlight-r">&#xe641;</i>
+        <% else %>
+          <i class="icons">&#xe61c;</i>
+        <% end %>
+        <%= @subject.like_subject_participator.value %>
+      <% end %>
+    </div>
+
+    <div class="share-box text-center">
+      <%= render partial: "shop/shared/share", locals: {object: @subject, type: 'preview', text: '发现一个不错的专题'} %>
+    </div>
+  </div>
+
+  <% if @subject.category == '视频直播' %>
+    <!-- 详情 -->
+    <h5 class="h4 aside-title">
+      <span class="border-l">直播详情</span>
+    </h5>
+    <div class="block-area">
+      <div class="article-area">
+        <%= @subject.description.html_safe %>
+      </div>
+    </div>
+  <% end %>
+</div>
+<div class="task-preview text-right">
+  <div class="container">
+    <%= link_to '返回编辑', edit_shop_subject_path(@subject), method: :get, class: 'btn btn-highlight space-lg-hor' %>
+    <%= link_to '发布', publish_shop_task_path(@subject.shop_task), method: :put, class: 'btn btn-highlight space-lg-hor' %>
+  </div>
+</div>
+<% content_for :head do %>
+  <style media="screen">
+    body{
+      padding-bottom: 60px;
+    }
+  </style>
+<% end %>
+<% content_for :tail do %>
+  <script type="text/javascript">
+    if($('.time').length){
+      var Timer=null;
+      Timer=setInterval(function(){
+        var endAt = $('.time').attr('data-end-at');
+        var t2=GetRTime(endAt);
+        if(t2<0){
+          clearInterval(Timer);
+          window.location.reload();
+        }
+      },1000);
+    }
+    function flashChecker() {
+      var hasFlash = 0; //是否安装了flash
+      var flashVersion = 0; //flash版本
+      if (document.all) {
+        var swf = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+        if (swf) {
+          hasFlash = 1;
+          VSwf = swf.GetVariable("$version");
+          flashVersion = parseInt(VSwf.split(" ")[1].split(",")[0]);
+        }
+      } else {
+        if (navigator.plugins && navigator.plugins.length > 0) {
+          var swf = navigator.plugins["Shockwave Flash"];
+          if (swf) {
+            hasFlash = 1;
+            var words = swf.description.split(" ");
+            for (var i = 0; i < words.length; ++i) {
+              if (isNaN(parseInt(words[i]))) continue;
+              flashVersion = parseInt(words[i]);
+            }
+          }
+        }
+      }
+      return { f: hasFlash, v: flashVersion };
+    }
+    function IsPc(){
+      var userAgentInfo = navigator.userAgent;
+      var Agents = ['Android','iPhone','SymbianOs','Windows Phone','iPad','iPod'];
+      var flag = true;
+      for(var v=0;v<Agents.length;v++){
+        if(userAgentInfo.indexOf(Agents[v])>0){
+          flag = false;
+          break;
+        }
+      }
+      return flag;
+    }
+    var fls = flashChecker();
+    var flg = IsPc();
+    var s = "";
+    if (fls.f===0 && flg ===true){
+      $('.js-flashHad').removeClass('hide');
+      $('.js-flashVideo').addClass('hide');
+    }
+
+    // 视频直播
+    // 直播中
+    if ($("#player").length) {
+       SewisePlayer.setup({
+        server: "vod",
+        type: "m3u8",
+        autostart: "true",
+        poster: "<%= @subject.picture_url %>",
+        videourl: "<%= @subject.live_url %>",
+        skin: "vodWhite",
+        // logo: "http://owhat.qiniudn.com/assets/logo-4fa22259a11abad745ef71b818ebd6e95cf6a99f35e71b7a3f6948fc5dcec545.png",//logo水印
+        title: "<%= @subject.title %>",
+        lang: "zh_CN",
+        claritybutton: 'disable',
+        buffer: 5
+      }, "player");
+    };
+    // 直播结束
+    if ($("#playered").length) {
+       SewisePlayer.setup({
+        server: "vod",
+        type: "mp4",
+        autostart: "false",
+        poster: "<%= @subject.picture_url %>",
+        videourl: "<%= @subject.storage_url %>",
+        skin: "vodWhite",
+        // logo: "http://owhat.qiniudn.com/assets/logo-4fa22259a11abad745ef71b818ebd6e95cf6a99f35e71b7a3f6948fc5dcec545.png",//logo水印
+        title: "<%= @subject.title %>",
+        lang: "zh_CN",
+        claritybutton: 'disable'
+      }, "playered");
+    };
+  </script>
+<% end %>

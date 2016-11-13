@@ -1,0 +1,28 @@
+<!-- 忘记密码 -->
+<div class="container logon">
+  <div class="block-area" id="mobile-reset">
+    <%= form_for :account, url: reset_accounts_path, html: { class: 'form-horizontal validate-form' } do |f| %>
+      <div class="form-group">
+        <label for="phone" class="col-sm-2 control-label"><abbr title="必须">*</abbr>账号</label>
+        <div class="col-md-6">
+          <%= f.text_field :login, value: params[:login], class: "form-control jqphone required", placeholder: '请输入注册手机号或邮箱' %>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-2 control-label" for=""><abbr title="必须">*</abbr>验证码  </label>
+        <div class="col-md-10">
+          <%= rucaptcha_input_tag(class: 'form-control pull-left jqcaptcha', placeholder: '图片验证码', style: "width:46%") %>
+          <%= rucaptcha_image_tag(class: 'pull-left captcha_image', id: 'captcha_image_phone') %>
+         <a href="#" id="captcha_refresh_phone" title="换一换">换一换</a>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <hr>
+        <div class="col-md-offset-2 col-sm-10">
+          <button class="btn btn-highlight-r space-lg-hor js-restoreChangedPass" type="submit" name="" id=""><span><span>发送</span></span></button>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

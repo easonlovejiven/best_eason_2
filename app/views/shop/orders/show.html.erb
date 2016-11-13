@@ -1,0 +1,132 @@
+<div class="container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+
+    <div class="col-sm-9">
+      <div class="head-highline">
+        <span class="item active">订单详情</span>
+      </div>
+
+      <div class="table-responsive block-area">
+        <% @order.order_items.includes(:owhat_product, :ticket_type).each do |item| %>
+          <p>
+            订单信息
+          </p>
+          <table class="table table-bordered table-condensed">
+            <tbody>
+              <tr>
+                <th class="col-md-2">
+                  子订单号
+                </th>
+                <td>
+                  <%= item.order_no %>
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  商品名称
+                </th>
+                <td>
+                  <%= item.owhat_product.title %>
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  成交时间
+                </th>
+                <td>
+                  <%= item.paid_at && item.paid_at.to_s(:db)  %>
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  报名时间
+                </th>
+                <td>
+                  <%= item.created_at && item.created_at.to_s(:db)  %>
+                </td>
+              </tr>
+              </tr>
+              <tr>
+                <th>
+                  付款时间
+                </th>
+                <td>
+                  <%= item.paid_at && item.paid_at.to_s(:db)  %>
+                </td>
+              </tr>
+              </tr>
+              <tr>
+                <th>
+                  支付金额
+                </th>
+                <td>
+                  <%= item.payment || ''  %>
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  支付平台
+                </th>
+                <td>
+                  <%= Shop::OrderItem::PAY_TYPES["#{item.pay_type}".to_sym]  %>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>
+            收货人信息
+          </p>
+          <table class="table table-bordered table-condensed">
+            <tbody>
+              <tr>
+                <th class="col-md-2">
+                  收货人姓名
+                </th>
+                <td>
+                  <%= item.try(:user_name) %>
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  手机
+                </th>
+                <td>
+                  <%= item.try(:phone) %>
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  地址
+                </th>
+                <td>
+                  <%= item.try(:address) %>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>
+            附加信息
+          </p>
+          <table class="table table-bordered table-condensed">
+            <tbody>
+              <tr>
+                <th class="col-md-2">
+                  附加信息
+                </th>
+                <td>
+                  <%= item.try(:memo) %>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

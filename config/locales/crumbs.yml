@@ -1,0 +1,12 @@
+zh-CN:
+  controller:
+    events:
+      index: 活动
+      goods: SHOP
+      fundings: 应援
+    lives:
+      index: 直播
+    notices:
+      index: 公告
+    home:
+      index: 全部

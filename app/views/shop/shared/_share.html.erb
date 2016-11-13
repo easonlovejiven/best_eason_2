@@ -1,0 +1,39 @@
+<% if type == 'preview' %>
+  <div class="bdsharebuttonbox">
+    <span class="bds_txt pull-left">分享到：</span>
+    <a href="javascript:;" class="icons" title="分享到新浪微博">&#xe603;</a>
+    <a href="javascript:;" class="icons" title="分享到QQ好友">&#xe602;</a>
+    <a href="javascript:;" class="icons" title="分享到微信">&#xe604;</a>
+  </div>
+<% else %>
+  <%
+    hash = case type
+    when 'user'
+      { share_id: object.id, title: object.name, url: home_user_path(object), type: type, pic: object.picture_url}
+    when 'star'
+      { share_id: object.id, title: object.name, url: home_star_path(object), type: type, pic: object.picture_url}
+    when 'topic_dynamic'
+      { share_id: object.id, title: (truncate(object.try(:content), ommision: "... Read More", length: 100)), url: shop_dynamic_comments_path(dynamic_id: object.id), type: type, pic: object.pictures.first.try(:picture_url), text: text }
+    when 'task'
+      { share_id: defined?(task) && task ? task : object.shop_task.id, title: object.title, url: object.class.to_s == 'Shop::Media' ? shop_media_path(object) : url_for(object), type: type, pic: object.cover_pic, text: text }
+    when 'order'
+      { share_id: object.id, title: object.title, url: url_for(object), type: type, pic: object.cover_pic, text: text }
+    end.to_json
+  %>
+  <% if type == 'order' %>
+    <div class="bdsharebuttonbox o-share_<%= type %>_<%= object.id %>" data-tag="o-share_<%= type %>_<%= object.id %>" data-current="<%= @current_user.try(:id) %>">
+      <input type="hidden" value="<%= hash %>">
+      <span class="bds_txt pull-left tell-every">昭告天下：</span>
+    	<a class="icons jtico bds_tsina" data-cmd="tsina" title="分享到新浪微博">&#xe603;</a>
+      <a class="icons jtico bds_sqq" data-cmd="sqq" title="分享到QQ好友">&#xe602;</a>
+    </div>
+  <% else %>
+    <div class="bdsharebuttonbox o-share_<%= type %>_<%= object.id %>" data-tag="o-share_<%= type %>_<%= object.id %>" data-current="<%= @current_user.try(:id) %>">
+      <input type="hidden" value="<%= hash %>">
+      <span class="bds_txt pull-left">分享到：</span>
+    	<a class="icons jtico bds_tsina" data-cmd="tsina" title="分享到新浪微博">&#xe603;</a>
+    	<a class="icons jtico bds_sqq" data-cmd="sqq" title="分享到QQ好友">&#xe602;</a>
+      <a class="icons jtico bds_weixin" data-cmd="weixin" title="分享到微信">&#xe604;</a>
+    </div>
+  <% end %>
+<% end %>

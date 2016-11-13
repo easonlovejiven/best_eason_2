@@ -1,0 +1,29 @@
+zh-CN:
+  activerecord:
+    models:
+      core/account: 账号
+    attributes:
+      core/account:
+        phone: 手机号
+        email: 邮箱
+        password: 密码
+        client: 客户端
+        user: 用户
+        user_name: 用户姓名
+        user_sex: 用户性别
+        last_login_on: 最近登录日期
+    enums:
+      "core/account":
+        client:
+          manage: 管理
+          html5: HTML5
+          osx: OS X
+          windows: Windows
+          linux: Linux
+          flash: Flash
+          iphone: iPhone
+          ipad: iPad
+          android: Android
+          phone_web: 手机网站
+          ipad_web: 平板网站
+          wechat: 微信

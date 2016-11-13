@@ -1,0 +1,7 @@
+zh-CN:
+  activerecord:
+    models:
+      shop/picture: 图片
+    attributes:
+      shop/picture:
+        cover: 图片

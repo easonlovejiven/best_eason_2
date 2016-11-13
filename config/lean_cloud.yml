@@ -1,0 +1,27 @@
+# Be sure to restart your server when you modify this file.
+
+# Your secret key is used for verifying the integrity of signed cookies.
+# If you change this key, all old signed cookies will become invalid!
+
+# Make sure the secret is at least 30 characters and all random,
+# no regular words or you'll be exposed to dictionary attacks.
+# You can use `rake secret` to generate a secure secret key.
+
+# Make sure the secrets in this file are kept private
+# if you're sharing your code publicly.
+
+default: &default
+  app_id:     "wuxox7x7tu0aciqu8ybgbyy6ofzjlb0ni7gjg1exj6kgp9pf"
+  app_key:    "vh4e1ss1ig469akcchb489wrj482ku3ov010dvinxbvw2rv3"
+  master_key: "5x50fufkwdzg0fxrlmadci7s5h9d665fr2fybbnxvzs2o0n6"
+  host:       "https://leancloud.cn"
+  version:    "1.1"
+
+development:
+  <<: *default
+
+production:
+  <<: *default
+
+staging:
+  <<: *default

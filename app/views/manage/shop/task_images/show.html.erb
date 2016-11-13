@@ -1,0 +1,17 @@
+<% show = !%w[new edit].include?(params[:action]) && @record.valid? %>
+<% options_class = show ? {disabled: 'true'} : {} %>
+
+<%= form_for @record, url: [:manage, @record], method: @record.new_record? ? :post : :put, html: {class: 'form-horizontal readonly-form'} do |f| %>
+  <% f.options.merge!(options_class: options_class) %>
+
+  <div class="modal-body">
+    <%= render 'manage/shared/modal/id', {f: f} if show %>
+    <%= render 'manage/shared/modal/file_field', {f: f, field: :pic, maxsize: 2, picture_url: @record.picture_url, image: {:width => '200px', :hight => '200px'}, p_field: '支持jpg/jpeg/gif/png格式,大小<2M,规格1:1' } %>
+    <%= render 'manage/shared/modal/select_tag', {f: f, field: :category, required: true, options: options_for_select(Shop::TaskImage.categories, @record.category) } %>
+    <%= render 'manage/shared/modal/timestamps', {f: f} if show %>
+  </div>
+
+  <div class="modal-footer">
+    <%= render 'manage/shared/modal/footer', {f: f} unless show %>
+  </div>
+<% end %>

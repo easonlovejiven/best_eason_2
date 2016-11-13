@@ -1,0 +1,31 @@
+wb = xlsx_package.workbook
+wb.use_shared_strings = true
+wrap_text = wb.styles.add_style({:alignment => {:horizontal => :center, :vertical => :center, :wrap_text => true}}  )
+ext_infos = (task_id.present? && task_type.present?) ? eval(task_type).where(id: task_id).first.try(:ext_infos) : []
+show_ext_infos = task_id.present? && task_type.present? && ext_infos.present?
+wb.add_worksheet(name: "福利任务订单列表") do |sheet|
+  row = %W(订单编号 商品名 商品类型 用户id 用户名字 支付O币 数量 支付钱数 taskID task类型)
+  row += %W(收件人 地址 联系电话) if task_type == 'Welfare::Product'
+  row += show_ext_infos ? ext_infos.map(&:title) : []
+  sheet.add_row  row
+
+  if orders.present?
+    orders.includes([:ticket_type, :resource, :user, :ext_info_values]).each_with_index do |order, tindex|
+      row = [
+        order.try(:order_no),
+        order.resource.try(:title),
+        "#{order.ticket_type.try(:category)} #{order.ticket_type.try(:second_category)}",
+        order.try(:user_id),
+        order.user.name,
+        order.created_at ? order.created_at.to_s(:db) : '',
+        order.quantity,
+        order.amount,
+        order.resource_id,
+        order.resource_type == 'Welfare::Product' ? '免费商品' : '免费活动'
+      ]
+      row += [order.user_name, order.address, order.phone] if task_type == 'Welfare::Product'
+      row += ext_infos.map{ |ext_info| "#{order.ext_info_values.select{|e| e.ext_info_id == ext_info.id}.first.try(:value)}" || ''} if show_ext_infos
+      sheet.add_row  row, :style => wrap_text, :types => [:string]
+    end
+  end
+end

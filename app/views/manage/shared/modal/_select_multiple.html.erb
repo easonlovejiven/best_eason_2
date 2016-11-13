@@ -1,0 +1,16 @@
+<% field_class = {multiple: true, class: 'form-control', style: "height:450px;width:220px;"}.merge!(f.options[:options_class]) %>
+
+<fieldset class="form-group row">
+  <%= f.label field, class: 'col-md-1 control-label' do -%>
+    <%= raw('<sup>*</sup>') if defined?(required) && required %>
+    <%= model.human_attribute_name(field) %>
+  <% end -%>
+
+  <div class="col-md-11">
+    <% field_class.merge!(required: true) if defined?(required) && required %>
+    <%#= f.select field, options_for_select(Core::User.active.where(identity: 1).select(:id, :name).map {|u| [u.name, u.id]}, selected: @record.send(field).try(:split, ",")), { prompt: "" }, field_class.merge(onchange: "$(this).next().val(($(this).val()||[]).join(','));") %>
+    <%= f.select field, options, { prompt: "" }, field_class.merge(onchange: "$(this).next().val(($(this).val()||[]).join(','));") %>
+    <%= f.hidden_field field %>
+
+  </div>
+</fieldset>

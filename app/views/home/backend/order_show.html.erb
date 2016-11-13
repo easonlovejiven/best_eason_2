@@ -1,0 +1,109 @@
+<div class="container m-container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <div class="block-area">
+        <table class="table table-sm table-nobordered">
+          <tr class="form-group">
+            <th class="col-md-2 text-right">订单编号：</th>
+            <td>
+              <%= @order.order_no %>
+            </td>
+          </tr>
+          <tr class="form-group">
+            <th class="col-md-2 text-right">订单流水号：</th>
+            <td>
+              <%= @order.order_no %>
+            </td>
+          </tr>
+          <tr class="form-group">
+            <th class="col-md-2 text-right">商品名称：</th>
+            <td>
+              <% if params[:shop_category] == 'shop_fundings'  %>
+                <a href="#" class="text-success"><%= @order.funding.title %></a>
+              <% else %>
+                <a href="#" class="text-success"><%= @order.owhat_product.title %></a>
+              <% end %>
+            </td>
+          </tr>
+          <tr class="form-group">
+            <th class="col-md-2 text-right">数量：</th>
+            <td>
+              <%= @order.quantity %>
+            </td>
+          </tr>
+          <tr class="form-group">
+            <th class="col-md-2 text-right">用户：</th>
+            <td>
+              <%= @order.user_name %>
+            </td>
+          </tr>
+          <tr class="form-group">
+            <th class="col-md-2 text-right">手机号：</th>
+            <td>
+              <%= @order.phone %>
+            </td>
+          </tr>
+          <tr class="form-group">
+            <th class="col-md-2 text-right">地址：</th>
+            <td>
+              <% if params[:shop_category] == 'shop_fundings'  %>
+                <a href="#" class="text-success">无</a>
+              <% else %>
+                <a href="#" class="text-success"><%= @order.address %></a>
+              <% end %>
+            </td>
+          </tr>
+          <tr class="form-group">
+            <th class="col-md-2 text-right">附加信息：</th>
+            <td>
+              <%= @order.memo %>
+            </td>
+          </tr>
+          <tr class="form-group">
+            <th class="col-md-2 text-right">支付状态：</th>
+            <td>
+              <%= t(@order.status)  %>
+            </td>
+          </tr>
+          <tr class="form-group">
+            <th class="col-md-2 text-right">报名时间：</th>
+            <td>
+              <% if params[:shop_category] == 'shop_fundings'  %>
+                <a href="#" class="text-success"><%= @order.funding.sale_start_at %></a>
+              <% else %>
+                <a href="#" class="text-success"><%= @order.owhat_product.sale_start_at %></a>
+              <% end %>
+            </td>
+          </tr>
+          <tr class="form-group">
+            <th class="col-md-2 text-right">付款时间：</th>
+            <td>
+              <%= @order.paid_at.present? ? @order.paid_at.to_s(:db) : '' %>
+            </td>
+          </tr>
+          <tr class="form-group">
+            <th class="col-md-2 text-right">实付金额：</th>
+            <td>
+              <%= @order.payment %>
+            </td>
+          </tr>
+          <tr class="form-group">
+            <th class="col-md-2 text-right">支付平台：</th>
+            <td>
+              <%= @order.platform  %>
+            </td>
+          </tr>
+          <tr class="form-group">
+            <th class="col-md-2 text-right">通知发送时间：</th>
+            <td>
+              <%= @order.paid_at.present? ? @order.paid_at.to_s(:db) : '' %>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

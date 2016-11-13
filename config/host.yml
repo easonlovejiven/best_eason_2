@@ -1,0 +1,18 @@
+development:
+  asset: localhost:3000
+  photo: localhost:3000
+  image: localhost:3000
+  audio: localhost:3000
+  video: localhost:3000
+  static: localhost:3000
+  dynamic: localhost:3000
+
+production:
+  asset: m.owhat.cn
+  image: m.owhat.cn
+  dynamic: m.owhat.cn
+
+staging:
+  asset: test.owhat.cn
+  image: test.owhat.cn
+  dynamic: test.owhat.cn

@@ -1,0 +1,3 @@
+.form-group
+	= label_tag "where[#{field}]", model.human_attribute_name(field)
+	= text_field_tag "where[#{field}]", params[:where].try(:[], field), class: 'form-control'

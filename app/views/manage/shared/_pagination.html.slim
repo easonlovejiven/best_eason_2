@@ -1,0 +1,2 @@
+.tablenav
+  = raw will_paginate(records, ({ class: "tablenav-pages" }).merge((options ||= {}))).to_s.gsub('current', 'current page-numbers').gsub(/<a ([^>]*)>/, '<a \1 class="page-numbers">') 

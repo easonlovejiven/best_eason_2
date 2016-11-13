@@ -1,0 +1,71 @@
+.carts{
+  .radio,
+  .checkbox{
+    width: 30px;
+    input{
+      position: absolute;
+      left: -9999px;
+    }
+  }
+}
+.cart-main{
+  width: 1140px;
+}
+
+.th{
+  float: left;
+  line-height: 44px;
+  text-align: center;
+  // padding: 15px 0;
+}
+.th.th-chk,
+.td.td-chk{
+  width: 30px;
+  min-height: 44px;
+  padding: 3px 0 0 15px;
+}
+.th.th-item,
+.td.td-item{
+  width: 400px;
+}
+.th.th-price,
+.td.td-price{
+  width: 160px;
+}
+.th.th-amount,
+.td.td-amount{
+  width: 280px;
+}
+.th.th-sum,
+.td.td-sum{
+  width: 140px;
+}
+.th.th-op,
+.td.td-op{
+  width: 128px;
+}
+.td{
+  float: left;
+  padding: 15px;
+  text-align: center;
+}
+.td.text-left,
+.td.td-item{
+  text-align: left;
+}
+
+.cart-item-head{
+  height: 44px;
+  line-height: 44px;
+}
+.cart-table-th,
+.cart-table-tr{
+  border-bottom: 1px solid #eee;
+}
+.cart-item{
+  border: 1px solid #eee;
+  border-width: 0 1px;
+  &:last-child{
+    margin-bottom: 20px;
+  }
+}

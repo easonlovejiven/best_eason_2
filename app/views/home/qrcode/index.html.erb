@@ -1,0 +1,109 @@
+<div class="container">
+  <br>
+  <br>
+  <br>
+  <%= raw @qr_code_img.as_html %>
+</div>
+<style>
+  table {
+    margin: 0 auto;
+    border-width: 0;
+    border-style: none;
+    border-color: #0000ff;
+    border-collapse: collapse;
+  }
+
+  td {
+    border-left: solid 10px #000;
+    padding: 0;
+    margin: 0;
+    width: 0px;
+    height: 10px;
+  }
+
+  td.black { border-color: #000; }
+  td.white { border-color: #fff; }
+</style>
+
+<% content_for :tail do %>
+  <script type="text/javascript">
+    $(function () {
+      var timer = null;
+      (function longPolling() {
+          $.ajax({
+              url: "<%= '/v3/turn_to_publish.json?rand=' + @rand %>",
+              data: {"timed": new Date().getTime()},
+              dataType: "json",
+              timeout: 50000,
+              error: function (XMLHttpRequest, textStatus, errorThrown) {
+                  if (textStatus == "timeout") { // 请求超时
+                          longPolling(); // 递归调用
+                      // 其他错误，如网络错误等
+                      } else {
+                          longPolling();
+                      }
+                  },
+              success: function (data, textStatus) {
+                  if (textStatus == "success") { // 请求成功
+                    if(data.status == true){
+                      var d_uid = data.data.uid;
+                      var d_time = data.time;
+                      var d_category = data.data.category;
+                      $.ajax({
+                        url:'/sessions.json',
+                        type:'POST',
+                        data:{
+                          uid:d_uid,
+                          time:d_time,
+                          sign:$.md5(d_uid+'OTjnsYw76IR98'+d_time),
+                          category: 'qr_code'
+                        },
+                        success:function(msg){
+                          if(msg.url){
+                            switch(d_category){
+                              case "shop_events":
+                              window.location.href="/shop/events/new";
+                              break;
+                              case "shop_products":
+                              window.location.href="/shop/products/new ";
+                              break;
+                              case "shop_fundings":
+                              window.location.href="/shop/fundings/new";
+                              break;
+                              case "shop_subjects":
+                              window.location.href="/shop/subjects/new";
+                              break;
+                              case "welfare_product":
+                              window.location.href="/welfare/products/new";
+                              break;
+                              case "welfare_event":
+                              window.location.href="/welfare/events/new";
+                              break;
+                            }
+                          }else{
+                            alert('登陆失败');
+                          }
+                        },
+                        error:function(){
+                          alert('登陆失败，请刷新页面重试');
+                        }
+                      });
+                      clearTimeout(timer);
+                    }else{
+                      if(data.error == '已过期'){
+                        clearTimeout(timer);
+                        alert('二维码已过期');
+                      }
+                      timer = setTimeout(function(){
+                        longPolling();
+                      },3000)
+                    }
+                  }
+
+              }
+          });
+      })();
+    });
+
+  </script>
+<% end %>

@@ -1,0 +1,12 @@
+zh-CN:
+  activerecord:
+    models:
+      shop/topic_dynamic: 话题动态
+    attributes:
+      shop/topic_dynamic:
+        content: 内容
+        user_id: 动态发布人
+        shop_topic_id: 话题id
+        comment_count: 评论数
+        like_count: 赞数
+        foward_count: 转发数

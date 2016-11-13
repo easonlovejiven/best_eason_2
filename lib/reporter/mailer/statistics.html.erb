@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+  <title>statistics.html</title>
+</head>
+  <body>
+    <h3>用户</h3>
+    <table border="0" cellspacing="5" cellpadding="5">
+      <% @users.counter.each_pair do |key, count| %>
+      <tr>
+        <th><%= t key, scope: "reporter.users" %></th>
+        <th><strong><%= count %></strong></th>
+      </tr>
+      <% end %>
+    </table>
+
+    <h3>订单量</h3>
+    <table border="0" cellspacing="5" cellpadding="5">
+      <% tickets_count = 0 %>
+      <% @tickets.counter.each_pair do |key, count| %>
+      <% tickets_count += count %>
+      <tr>
+        <th><%= t Ticket::STATUS.detect{|k,v|v==key}.first, scope: "reporter.tickets.status" %></th>
+        <th><strong><%= count %></strong></th>
+      </tr>
+      <% end %>
+      <tr><th>总数量:</th><th><%= tickets_count %></th></tr>
+    </table>
+
+    <h3>成交额</h3>
+    <table border="0" cellspacing="5" cellpadding="5">
+      <% tickets_amounts = 0 %>
+      <% @tickets.amounts.each_pair do |key, amount| %>
+      <% tickets_amounts += amount %>
+      <tr>
+        <th><%= t Ticket::STATUS.detect{|k,v|v==key}.first, scope: "reporter.tickets.status" %></th>
+        <th><strong><%= number_to_currency amount %></strong></th>
+      </tr>
+      <% end %>
+      <tr><th>总金额:</th><th><%= number_to_currency tickets_amounts %></th></tr>
+    </table>
+    
+    <h4>健康体检</h4>
+    <table border="0" cellspacing="5" cellpadding="5">
+      <% @tickets.doctor.each_pair do |key, value| %>
+        <tr>
+          <th><%= t key, scope: "reporter.tickets.doctor" %></th>
+          <th><%= value.join(",") %></th>
+        </tr>
+      <% end %>
+    </table>
+  </body>
+</html>

@@ -1,0 +1,51 @@
+<div class="container m-container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <div class="head-highline">
+        <span class="item">管理中心</span>
+      </div>
+      <div class="block-area text-center">
+        <div class="row row-10">
+          <div class="col-md-3">
+            <div class="tag-box">
+              <div class="">
+                <%= @current_user.followers_count %>
+              </div>
+              粉丝数
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="tag-box">
+              <div class="">
+                <%= @total_pay_orders%>
+              </div>
+              购买成交订单量
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="tag-box">
+              <div class="">
+                <%= @total_orders %>
+              </div>
+              订单总量
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="tag-box">
+              <div class="">
+                <%= @total_sum %>
+              </div>
+              交易总额
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

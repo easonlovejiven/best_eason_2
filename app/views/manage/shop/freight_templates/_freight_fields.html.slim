@@ -1,0 +1,10 @@
+- citys = ['其它'] + ADDRESS['0'].values
+.form-inline.nested-fields.nested-fields-inline
+  / = f.input :start_position, label: "首发地"
+  = f.input :destination, label: "目的地", collection: citys
+  = f.input :frist_item, label: "首件"
+  = f.input :first_fee, label: "首费"
+  = f.input :reforwarding_fee, label: "续费"
+  = f.input :reforwarding_item, label: "续件"
+  / = f.input :id_delivery, as: :boolean, label: "配送"
+  = link_to_remove_association "删除配送信息", f, class: "btn btn-link"

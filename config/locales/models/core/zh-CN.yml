@@ -1,0 +1,4 @@
+zh-CN:
+  activerecord:
+    models:
+      core: 核心

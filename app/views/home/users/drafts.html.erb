@@ -1,0 +1,93 @@
+<div class="container drafts">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "panel" %>
+    </div>
+    <div class="col-sm-9">
+      <div class="head-highline">
+        <span class="item">草稿箱</span>
+        <div class="dropdown pull-right">
+          <% hash = {'全部' => nil, 'O妹精选' => 'medias', '活动' => 'task_events', '问答' => 'questions' ,'商品'=> 'products','应援'=>'fundings','话题'=>'topics','直播'=>'subjects','图片福利'=>'letters', '活动福利'=>'welfare_events','商品福利' => 'welfare_products'} %>
+          <a href="javascript:;" class="item pull-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= hash.invert[params[:category]] || '全部'%>&nbsp;&nbsp;&nbsp;<i class="icons pull-right">&#xe62e;</i></a>
+          <div class="dropdown-menu" aria-labelledby="dLabel">
+            <% hash.each do |item, key| %>
+              <div class="col-xs-4">
+                <a href="<%= drafts_home_users_path(category: key)%>">
+                  <% if item == '全部' %>
+                  <i class="icons flag-drafts">&#xe6a3;</i>
+                  <% end %>
+                  <% if item == '活动' %>
+                  <i class="icons flag-event">&#xe6ac;</i>
+                  <% end %>
+                  <% if item == '商品' %>
+                    <i class="icons flag-product">&#xe6a7;</i>
+                  <% end %>
+                  <% if item == '应援' %>
+                    <i class="icons flag-funding">&#xe6ae;</i>
+                  <% end %>
+                  <% if item == '话题' %>
+                    <i class="icons flag-topic">&#xe6a4;</i>
+                  <% end %>
+                  <% if item == '直播' %>
+                    <i class="icons flag-subject">&#xe6a5;</i>
+                  <% end %>
+                  <% if item == '问答'%>
+                    <i class="icons flag-question">&#xe6ad;</i>
+                  <% end %>
+                  <% if item == '图片福利'%>
+                    <i class="icons flag-letter">&#xe6aa;</i>
+                  <% end %>
+                  <% if item == '活动福利'%>
+                    <i class="icons flag-event">&#xe6aa;</i>
+                  <% end %>
+                  <% if item == '商品福利'%>
+                    <i class="icons flag-product">&#xe6aa;</i>
+                  <% end %>
+                  <% if item == 'O妹精选'%>
+                    <i class="icons flag-media">&#xe6a6;</i>
+                  <% end %>
+                  <div>
+                    <%= item %>
+                  </div>
+                </a>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="row row-10">
+        <% if @tasks.blank? %>
+          <div class="col-sm-12">
+            <div class="null-content block-area">
+              <div class="text-center translate-middle-y">
+                <p>
+                  <%= image_tag 'home/null-content.png', alt: '' %>
+                </p>
+                <p>没有内容</p>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <% @tasks.each do |task| %>
+          <div class="col-sm-4">
+            <div class="block-area block-area-radius">
+              <p class="text-gray">
+                <%= (@resource[task.id] || task.created_at).to_s(:db) %>
+                <%= link_to '删除', task, method: :delete, confirm: "确定吗？", class: 'pull-right text-gray' %>
+              </p>
+              <p class="title text-center ellipsis ellipsis-l2">
+                <%= task.title%>
+              </p>
+              <%= link_to '详情', task.shop.is_a?(Shop::Media) ? preview_shop_media_path(task.shop) : [:preview, task.shop], class: 'btn btn-default btn-block' %>
+            </div>
+          </div>
+          <% end %>
+          <div class="text-center">
+            <%= will_paginate(@tasks) %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

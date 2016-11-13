@@ -1,0 +1,87 @@
+// 首页banner css 基于插件http://kenwheeler.github.io/slick
+.slider-box{
+  max-width: 1200px;
+  max-height: 400px;
+  overflow: hidden;
+  margin: 0 auto 20px;
+  white-space: nowrap;
+}
+.slick-slide{
+  text-align: center;
+  a{
+    display: block;
+  }
+}
+.slick-prev,
+.slick-next{
+  display: block;
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+
+  width: 60px;
+  height: 60px;
+  padding: 0;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+
+  cursor: pointer;
+
+  color: #fff;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  background-color: rgba(0, 0, 0, .3);
+  .icons{
+    font-size: 54px;
+    line-height: 60px;
+  }
+}
+.slick-prev{
+  left: 0;
+}
+.slick-next{
+  right: 0;
+}
+.slick-dots{
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  line-height: 0;
+  padding: 0 20px;
+  margin-bottom: 0;
+  text-align: center;
+  li{
+    display: inline-block;
+    & + li{
+      margin-left: 10px;
+    }
+  }
+  button{
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 0;
+    width: 14px;
+    height: 4px;
+
+    border: 0;
+    padding: 0;
+    text-indent: -9999px;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+  li.slick-active{
+    button{
+      background-color: rgba(255, 255, 255, 1);
+    }
+  }
+}
+// 首页banner css ends
+.carousel-null{
+  text-align: center;
+  max-width: $container;
+  margin: 0 auto 20px;
+}

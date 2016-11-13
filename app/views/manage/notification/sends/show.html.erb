@@ -1,0 +1,80 @@
+<% show = !%w[new edit].include?(params[:action]) && (@record.valid? || @record.send_status != 1) %>
+<% if @record.errors.messages.present? %>
+  <% if @record.send_type.to_i.zero? %>
+    <script>
+      $(function(){$(".col-md-offset-1").hide()});
+    </script>
+  <% end %>
+  <% if @record.send_status == 1 %>
+    <div class="alert alert-notice"><button class="close" data-dismiss="alert">×</button>
+      验证失败：<%= @record.errors.full_messages.join(",").gsub(' ', '').gsub('ID', '') %>
+    </div>
+  <% end %>
+<% end %>
+<% options_class = show ? {disabled: 'true'} : {} %>
+<% disable_class = {disabled: 'disabled'} %>
+<%= form_for @record, url: [:manage, @record], method: @record.new_record? ? :post : :put, html: {class: 'form-horizontal readonly-form', id: 'send_form'} do |f| %>
+  <% f.options.merge!(options_class: options_class, disable_class: disable_class) %>
+  <div style='color: red;'>一个小时之内最多只能发一条，一天最多发三条！</div>
+  <div class="modal-body">
+    <%= render 'manage/shared/modal/id', {f: f, field: :id} %>
+    <%= render 'manage/shared/modal/select2_tag', {f: f, field: :skip_channel, required: true, options: Notification::Send::SKIP_CHANNEL.invert } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :skip_id, required: true, placeholder: "即后台里每一个任务福利对应的ID"} %>
+    <%= render 'manage/shared/modal/text_area', {f: f, field: :content, required: true, placeholder: "50个汉字以内(含标点)，暂不支持emoji，不支持换行，不能出现中文格式或者英文格式的单双引号！"} %>
+    <%= render 'manage/shared/modal/select_tag', {f: f, field: :sendor_id, options: ['O妹'], include_blank: false} %>
+    <!-- 推送类型&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <% if params[:action] == 'new' %>
+      <%= radio_button("notification_send", "push_type", 1, checked: true) %> 广播 &nbsp;&nbsp;
+    <% else %>
+      <%= radio_button("notification_send", "push_type", 1, checked: @record.try(:push_type) == 1 ? true : false) %> 广播 &nbsp;&nbsp;
+    <% end %>
+    <%= radio_button("notification_send", "push_type", 0, checked: @record.try(:push_type) == 0 ? true : false) %> Push
+    <br/> -->
+    发送类型&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <% if params[:action] == 'new' %>
+      <%= radio_button("notification_send", "send_type", 1, checked: true) %> 计划发送 &nbsp;&nbsp;
+    <% else %>
+      <%= radio_button("notification_send", "send_type", 1, checked: @record.try(:send_type) == 1 ? true : false) %> 计划发送 &nbsp;&nbsp;
+    <% end %>
+    <%= radio_button("notification_send", "send_type", 0, checked: @record.try(:send_type) == 0 ? true : false) %> 立即发送
+    <div class="col-md-offset-1">
+      <%= render 'manage/shared/modal/date_field', {f: f, field: :send_date} %>
+      <span>注意：计划发送，会存在0-5分钟左右的小延迟</span>
+    </div>
+    <%= render 'manage/shared/modal/select_tag', {f: f, field: :receivor_id, options: ['全部'], include_blank: false}%>
+    <%= render 'manage/shared/modal/select_tag', {f: f, field: :os, include_blank: false, options: ['all', 'iOS', 'Android']} %>
+    <%= render 'manage/shared/modal/hidden_field', {f: f, field: :creator_id, value: @record.creator.blank? ? @current_user.id : @record.creator.id } %>
+    <%= render 'manage/shared/modal/hidden_field', {f: f, field: :sendor_id, value: 88 } %>
+    <%= render 'manage/shared/modal/hidden_field', {f: f, field: :updater_id, value: @record.creator.blank? ? @current_user.id : @record.creator.id } %>
+    <%= render 'manage/shared/modal/timestamps', {f: f} if show %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :ios_times, value: @record.ios_times} if show && @record.send_status == 2 %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :android_times, value: @record.android_times} if show && @record.send_status == 2 %>
+
+  </div>
+
+  <div class="modal-footer">
+    <%= link_to '返回', [:manage, @record], class: 'btn btn-default redirect-back' %>
+    <input value="<%= params[:action] == 'new' ? '保存' : '更新广播消息' %>" type="button" class='btn btn-info back_submit' onClick="javascript:send_submit();">
+  </div>
+<% end %>
+<script>
+  function send_submit(){
+    var type = $("#notification_send_send_type_1")[0].checked
+    var date = $("#notification_send_send_date")[0].value
+    var oS = new Date(date).getTime() < new Date().getTime();
+    if (type == true && oS){
+      if(confirm("计划发送时间早于当前实际时间。点击确认，消息将在几分钟内发出。点击取消，可返回修改。")){
+        $("#send_form").submit();
+      }else{
+        return false;
+      }
+    }else{
+      $("#send_form").submit();
+    }
+  }
+  $(function(){
+    $("#notification_send_receivor_id").attr("selected", true)
+    $("#notification_send_send_type_0").click(function(){$(".col-md-offset-1").hide()})
+    $("#notification_send_send_type_1").click(function(){$(".col-md-offset-1").show()})
+  }); 
+</script>

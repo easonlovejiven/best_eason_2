@@ -1,0 +1,35 @@
+zh-CN:
+  activerecord:
+    models:
+      shop/product: 商品
+    attributes:
+      shop/product:
+        title: 名称
+        description: 描述
+        descripe_cover: 描述图片
+        descripe2: 描述2
+        cover1: 图片1
+        cover2: 图片2
+        cover3: 图片3
+        key1: 图片1
+        key2: 图片2
+        key3: 图片3
+        start_at: 活动开始时间
+        end_at: 活动结束时间
+        sale_start_at: 购票开始时间
+        sale_end_at: 购票结束时间
+        address: 地址
+        mobile: 联系电话
+        star_list: 关联明星
+        user_id: 发布人
+        creator_id: 创建人
+        is_share: 是否分享
+        free: 是否免费
+        is_need_express: 是否需要设置快递信息
+        ticket_types: 价格信息
+        ext_infos: 报名信息
+        freight_template_id: 运费信息
+        guide: 口号
+        is_rush: 是否抢购任务
+        ticket_types: 价格信息
+        participator: 参与人数

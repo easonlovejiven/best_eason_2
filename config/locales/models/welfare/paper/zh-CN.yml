@@ -1,0 +1,17 @@
+zh-CN:
+  activerecord:
+    models:
+      welfare/paper: 信纸
+    attributes:
+      welfare/paper:
+        name: 名字
+        pic: 背景
+        key: 背景
+        sign: V认证
+        description: 描述
+        company: 公司
+        works: 作品
+        acting: 代言品牌
+        nickname: 粉丝昵称
+        cover: 背景图
+        related_ids: 关联ID

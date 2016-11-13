@@ -1,0 +1,10 @@
+- action = action
+.form-inline.nested-fields.nested-fields-inline
+  = f.input :category, label: '价格分类', placeholder: "最多输入20个字", maxlength: "20"
+  = f.input :second_category, label: '价格二级分类', placeholder: "最多输入20个字", maxlength: "20"
+  = f.input :ticket_limit, label: raw('数量<small class="text-gray">(最多输入9位数字，输入0为不限份数)</small>'), input_html: {class: "required", min: "0", max: '999999999'}
+  = f.input :is_limit, :as => :boolean, label: "是否限购"
+  = f.input :is_each_limit, :as => :boolean, label: "是否每人限购"
+  = f.input :each_limit, label: raw('每人限购数量<small class="text-gray">(最多输入9位数字)</small>'), input_html: {class: "required", min: "0", max: '999999999'}
+  - unless action == "edit"
+    = link_to_remove_association "删除价格信息", f, class: "btn btn-link"

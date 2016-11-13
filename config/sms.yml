@@ -1,0 +1,37 @@
+development:
+  tui3:
+    key: affe438b9004e14ed09cf5173aa80f3c
+  zhiqing:
+    username: SDK-OW-0074
+    password: CFT674
+  sirui:
+    account: s101
+    password: 101716
+  leancloud:
+    gateway: "https://api.leancloud.cn/1.1/"
+    appid: b42evel15q0eoaoxjiqllnh56v18vkdspjou5lipo9m6jqtx
+    appkey: tp3vbkwf5e3rgwwcr8rp038jr53loefkkongdmrr2o1edeqo
+  yunpian:
+    sms_url: "https://sms.yunpian.com/v2/sms/"
+    voice_url: "https://voice.yunpian.com/v2/voice/"
+    apikey: 3d81aa2f676e16d1b28fcb09170bafe6
+    secret: c95d6bfa
+
+production:
+  tui3:
+    key: affe438b9004e14ed09cf5173aa80f3c
+  zhiqing:
+    username: SDK-OW-0074
+    password: CFT674
+  sirui:
+    account: s101
+    password: 101716
+  leancloud:
+    gateway: "https://api.leancloud.cn/1.1/"
+    appid: b42evel15q0eoaoxjiqllnh56v18vkdspjou5lipo9m6jqtx
+    appkey: tp3vbkwf5e3rgwwcr8rp038jr53loefkkongdmrr2o1edeqo
+  yunpian:
+    sms_url: "https://sms.yunpian.com/v2/sms/"
+    voice_url: "https://voice.yunpian.com/v2/voice/"
+    apikey: 3d81aa2f676e16d1b28fcb09170bafe6
+    secret: c95d6bfa

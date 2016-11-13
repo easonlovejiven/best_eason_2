@@ -1,0 +1,82 @@
+// modal 没有head, 和 footer, 弱提示类型
+.modal-tips .modal-body{
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.modal-md.modal-dialog{
+  max-width: 492px;
+}
+.modal-title{
+  font-weight: normal;
+}
+.modal .tips-icon{
+  margin-bottom: 25px;
+}
+// rebuild
+.modal.in .modal-dialog,
+.modal.fade .modal-dialog{
+  -webkit-transform: translateY(-50%) translateX(-50%);
+  -ms-transform: translateY(-50%) translateX(-50%);
+  transform: translateY(-50%) translateX(-50%);
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  margin: 0;
+}
+.modal-content{
+  border: 0;
+  box-shadow: 0 0 10px rgba(0,0,0,.3);
+}
+.modal-backdrop{
+  z-index: 1031;
+}
+// rebuild end/
+.modal-footer.text-center{
+  text-align: center;
+}
+.no-bordered,
+.freight-modal{
+  .modal-header{
+    border-bottom: 0;
+  }
+  .modal-footer{
+    border-top: 0;
+  }
+}
+// 详情页面－运费弹框
+.freight-modal{
+  .modal-header{
+    padding-top: 20px;
+  }
+  .modal-body{
+    padding: 20px;
+    .btn{
+      min-width: 60px;
+      outline: none;
+      margin: 0 2px 5px;
+      &.selected{
+        background-color: $colorHighLight;
+        color: #fff;
+        border-color: $colorHighLight;
+        outline: none;
+      }
+    }
+  }
+  .modal-footer{
+    text-align: center;
+    padding-bottom: 20px;
+    .btn + .btn{
+      margin-left: 16px;
+    }
+  }
+  .btn{
+    padding-top: 7px;
+    padding-bottom: 7px;
+  }
+}
+// 书信详情-弹框
+#welfare-open{
+  .modal-footer{
+    text-align: center;
+  }
+}

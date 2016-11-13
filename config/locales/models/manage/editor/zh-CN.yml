@@ -1,0 +1,8 @@
+zh-CN:
+  activerecord:
+    models:
+      manage/editor: 编辑
+    attributes:
+      manage/editor:
+        name: 姓名
+        role_id: 角色

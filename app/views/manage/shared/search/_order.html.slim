@@ -1,0 +1,2 @@
+.form-group
+	= select_tag 'order', options_for_select( (%w[id] + (fields ||= []) + ((defined? need_timestamp) && need_timestamp == false  ? [] : %w[created_at updated_at])).map { |field| [["#{model.human_attribute_name(field)} ↓(从大到小)", "#{field} desc"], ["#{model.human_attribute_name(field)} ↑(从小到大)", "#{field} asc"]] }.reduce(&:+), params[:order]), class: 'form-control'

@@ -1,0 +1,23 @@
+zh-CN:
+  activerecord:
+    models:
+      core/banner: 焦点图
+    attributes:
+      core/banner:
+        title: 标题
+        description: 描述
+        position: 模块
+        genre: 平台
+        link: 链接
+        pic: 老版图(app)
+        pic2: 新版图
+        template: 模板
+        template_id: 模板ID
+        start_at: 开始时间
+        end_at: 结束时间
+        sequence: 位置
+    enums:
+      "core/banner":
+        genre:
+          phone: 手机
+          web: 网站

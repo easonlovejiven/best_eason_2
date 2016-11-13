@@ -1,0 +1,10 @@
+zh-CN:
+  activerecord:
+    models:
+      core/exported_order: 导出订单
+    attributes:
+      core/exported_order:
+        user_id: 用户
+        task_id: task ID
+        task_type: task 类型
+        file_name: 文件名称

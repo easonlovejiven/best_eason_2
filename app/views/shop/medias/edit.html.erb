@@ -1,0 +1,61 @@
+<div class="container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <ol class="breadcrumb">
+        <li><a href="<%= personal_center_home_users_path %>">发布任务</a></li>
+        <li class="active">O妹精选</li>
+      </ol>
+
+      <%= simple_form_for @medium, url: shop_media_path, method: :put, html: { method: :post, class: "publish-form validate-form js-checkForm" } do |f| %>
+        <div class="form-group">
+          <label>标题 <span class="text-highlight-r">*</span></label>
+          <%= f.input :title, label: false, placeholder: '请勿包含 ＃＊<> & % ^‘集资等字符', as: :text, input_html: { rows: "1", class: "required js_danger_chara js-emoji" } %>
+        </div>
+        <div class="form-group">
+          <label>拷贝外部链接 <span class="text-highlight-r">*</span></label>
+          <%= f.input :url, label: false, placeholder: '如：http://www.owhat.cn', as: :text, input_html: { rows: "1", class: "required js_danger_chara js-emoji" } %>
+        </div>
+        <div class="form-group">
+          <label class="">任务时间 <span class="text-highlight-r">*</span></label>
+          <div class="form-inline">
+            <span class="datetime-wrap"><input type="text" value="<%= @medium.start_at%>" id="eventDateStart" name="shop_media[start_at]" class="form-control required" placeholder="任务开始时间"></span>
+            至
+            <span class="datetime-wrap"><input type="text" value="<%= @medium.end_at%>" id="eventDateEnd" name="shop_media[end_at]" class="form-control required" placeholder="任务结束时间"></span>
+          </div>
+        </div>
+
+        <div class="form-group js-tagbox">
+          <label>
+            上传任务封面图 <span class="text-highlight-r">*</span><small class="text-gray">支持jpg/gif/png格式,单张（大小 &lt; 2M）</small>
+          </label>
+          <div class="form-group">
+            <% unless @medium.cover_pic.present? %>
+              <label class="control-label">无</label>
+            <% else %>
+              <%= link_to (image_tag @medium.cover_pic, width: 200, height: 200, alt: ""), @medium.cover_pic, target: '_blank' %>
+            <% end %>
+            <%= f.hidden_field :pic, label: false, placeholder: '上传图片', class: "js-name form-control js-checkName" %>
+            <div class="form-control js-photobtn1">上传图片</div>
+            <p class="js-textError text-highlight-r"></p>
+          </div>
+          <div class="js-upload-photo-1 hide">
+            <div class="thumb-img-add js-upload-photoadd-1">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>关联明星 <span class="text-highlight-r">*</span><small class="text-gray">(最多关联10位明星)</small></label>
+          <%= render partial: 'shop/shared/select2_find_tag', locals: {f: f, field: :star_list, options: { selects: Core::Star.where(published: true).select("id, name"), multiple_class: true, auto_suppl: true, auto_url: "/manage/shop/get_star?id=#{@medium.shop_task.try(:id)}", url: '/manage/shop/search_star', tag: false } } %>
+        </div>
+
+        <div class="form-group text-right">
+          <%= f.button :submit, @medium.shop_task.try(:published) == true ? '保存' : "预览", class: 'btn btn-highlight-outline space-lg-hor js-checkButton' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

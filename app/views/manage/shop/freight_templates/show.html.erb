@@ -1,0 +1,31 @@
+<% show = !%w[new edit].include?(params[:action]) && @record.valid? %>
+<% options_class = show ? {disabled: 'true'} : {} %>
+<%= simple_form_for @record, url: [:manage, @record], method: @record.new_record? ? :post : :put, html: {class: 'form-horizontal validate-form'} do |f| %>
+  <% f.options.merge!(options_class: options_class) %>
+
+  <div class="modal-body">
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :name, required: true, maxlength: 30, placeholder: "最多输入30个字" } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :start_position, required: true, maxlength: 20, placeholder: "最多输入20个字" } %>
+    <%= render 'manage/shared/modal/hidden_field', {f: f, field: :user_id, value: @current_user.id } %>
+    <%= render 'manage/shared/modal/hidden_field', {f: f, field: :user_type, value: @current_user.class } %>
+    <fieldset class="form-group well well-sm">
+      <div id="freights">
+        <%= f.simple_fields_for :freights do |info| %>
+          <%= render 'freight_fields', {f: info } %>
+        <% end %>
+      </div>
+      <div class="">
+        <%= link_to_add_association '添加模板信息',  f, :freights %>
+        <% unless @record.errors[:freights].blank? %>
+          <div class="text-highlight-r" style="margin-top: 3px;"><%= @record.errors[:freights].join(', ') %></div>
+        <% end %>
+      </div>
+    </fieldset>
+
+    <%= render 'manage/shared/modal/timestamps', {f: f} if show %>
+  </div>
+
+  <div class="modal-footer">
+    <%= render 'manage/shared/modal/footer', {f: f} unless show %>
+  </div>
+<% end %>

@@ -1,0 +1,180 @@
+<%= content_for :title do %>
+  <%= @task.title %>
+<% end %>
+<%# cache @participators do %>
+  <div class="container">
+    <%= render 'shop/shared/show_crumbs' %>
+    <div class="clearfix">
+      <div class="content-left">
+        <%= form_tag add_shop_carts_path, class: 'task-product funding-form', name: "shop" do %>
+          <div class="clearfix task-main">
+            <div class="detail-left">
+              <%= render 'shop/shared/task_pictures' %>
+
+              <div class="share-box clearfix">
+                <%= render partial: "shop/shared/share", locals: {object: @task, type: 'task', text: '我正在关注这个应援活动'} %>
+              </div>
+              <% if @current_user %>
+                <div class="square-article text-gray">
+                  <%= render partial: 'shop/shared/complete_status', locals: {task: @task.shop_task} %>
+                </div>
+              <% end %>
+            </div>
+            <div class="detail-right">
+              <h4 class="task-title"><%= @task.title %></h4>
+              <p>
+                <span class="funding-label">价格：</span><span class="text-highlight-r js-eventprice"><%= @ticket_types.first.fee %></span> 元
+                <input name="ticket_type_id" class="js-posteventprice" type="hidden" value="<%= @categories.first[1].first.id %>">
+              </p>
+              <p>
+                <span class="funding-label">已筹款：</span><span><%= @funding_total_fee %></span>
+              </p>
+              <p>
+                <span class="funding-label">目标额度：</span><span><%= @task.funding_target  %></span>
+              </p>
+              <p>
+                <span class="funding-label">参与人数：</span><span class="ticket-sold"><%= @all_participator %></span>
+              </p>
+              <p>
+                <span class="funding-label">关联明星：</span>
+                <% @stars.each do |star| %>
+                  <%= link_to star.name, home_star_path(star) ? home_star_path(star) : 'javascript:;' %>&nbsp;&nbsp;
+                <% end %>
+              </p>
+              <p>
+                <span class="funding-label">完成度：</span> <span class="text-highlight"><%= @funds %>%</span>
+              </p>
+              <div class="progress-box">
+                <div class="progress">
+                  <div class="progress-bar" style="width: <%= @funds %>%;">
+                    <span class="sr-only"><%= @funds %> Complete</span>
+                  </div>
+                </div>
+                <div class="">
+                  <span class="">0%</span>
+                  <span class="pull-right text-info">100%</span>
+                </div>
+                <div class="fish" style="left: <%= @funds > 100 ? 100 : @funds %>%;"></div>
+              </div>
+
+              <ul class="list-inline js-showtypeFunding">
+                <li class="">分类：</li>
+                <% @categories.each do |key, category| %>
+                  <li class="otag-type" data-id="<%= key %>">
+                    <label for="data-1" class="task-label">
+                      <%= key %>
+                    </label>
+                    <span class="otag-state"></span>
+                  </li>
+                <% end %>
+              </ul>
+              <ul class="list-inline js-showpriceFunding">
+                <li class="">价格：</li>
+                <% @categories.first[1].each do |category| %>
+                  <li class="otag-type">
+                    <label for="data-1" class="task-label">
+                      <%= category.second_category %>
+                    </label>
+                    <span class="otag-state"></span>
+                  </li>
+                <% end %>
+              </ul>
+
+              <ul class="list-inline">
+                <li class="">数量：</li>
+                <li class="">
+                  <div class="product-quantity">
+                    <button name="button" type="button" class="quantity-button reduce-quantity js-minusFundings">-</button>
+                    <input type="number" min="1" value="1" class="quantity-field js-valueFunding" name="quantity" onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false">
+                    <button name="button" type="button" class="quantity-button add-quantity js-addFunding" data-target-name="quantity">+</button>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- 附加信息 -->
+          <% if @ext_infos.present? %>
+            <div class="ext-infos-edit clearfix">
+              <div class="pull-left">附加信息：</div>
+              <% @ext_infos.each_with_index do |info, index| %>
+              <div class="row form-group" style="margin-left: 70px;">
+                <label for="" class="col-sm-3 control-label text-right">
+                  <% if info.require %>
+                    <span class="text-highlight-r">*</span>
+                  <% end %>
+                  <%= info.title %>
+                </label>
+                <div class="col-sm-9">
+                  <% if info.require %>
+                    <input type="text" class="form-control js-infodanger" required="required" name="info<%= index%>" placeholder="不要添加表情符号哦，否则生成不了订单哒">
+                  <% else %>
+                    <input type="text" class="form-control" name="info<%= index%>" placeholder="不要添加表情符号哦，否则生成不了订单哒">
+                  <% end %>
+                </div>
+              </div>
+              <% end %>
+            </div>
+          <% end %>
+
+          <% if @task.sale_start_at && @task.sale_start_at > Time.now %>
+            <!-- 应援未开始 -->
+            <button class="btn btn-gray btn-block" disabled="disabled">应援未开始</button>
+          <% elsif @task.sale_end_at && @task.sale_end_at < Time.now %>
+            <!-- 应援已结束 -->
+            <div class="text-right">
+              <%= link_to '查看应援结果', show_result_shop_funding_path(@task), class: "btn btn-highlight space-lg-hor"  %>
+              <button class="btn btn-gray space-lg-hor" disabled="disabled">应援已结束</button>
+            </div>
+          <% else %>
+            <div class="text-right">
+              <div class="hidden_field">
+                <input type="hidden" class="form-control" required="required" value="<%= @task.shop_category %>" name="shop_category">
+                <input type="hidden" class="form-control" required="required" value="<%= @task.id %>" name="shop_task_id">
+              </div>
+              <% if @current_user %>
+                <button name="button" type="button" class="btn btn-highlight space-lg-hor js-buyItem">我要支持</button>
+              <% else %>
+                <a class="btn btn-highlight space-lg-hor" href="/sessions/new?redirect=/shop/fundings/<%= @task.id %>">我要支持</a>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+
+        <h5 class="h4 aside-title">
+          <span class="border-l">应援详情</span>
+        </h5>
+        <div class="article-area">
+          <%= simple_format h @task.description %>
+          <% unless @task.descripe_cover.blank? %>
+            <div>
+              <%= image_tag @task.descripe_cover %>
+            </div>
+          <% end %>
+        </div>
+
+        <% cache(@parti_users, expires_in: 20.minutes ) do %>
+          <%= render "/shop/shared/paid_ranking", users: @parti_users, url: "/shop/fundings/#{@task.id}/more_users" %>
+        <% end %>
+      </div>
+      <div class="js-dataInfo hide" data-participatorjson='<%= raw @price_types.to_json %>' data-participator='<%= raw @participators.to_json %>' data-maxparticipator='<%= raw @max_participators.to_json %>' data-freights='<%= raw @freights_json.to_json %>' data-each='<%= raw @each_limit.to_json %>'></div>
+      <!-- 右侧边栏 -->
+      <%= render partial: "layouts/home/aside", locals: {publish_user: @task.user} %>
+
+    </div>
+  </div>
+<%# end %>
+
+<% content_for :tail do %>
+  <script type="text/javascript">
+      var tid = null;
+      var bClicked = false;
+      var bCarsSecound = false;
+      var bInfo = true;
+      var json = $.parseJSON($('.js-dataInfo').attr('data-participatorjson'));
+      var participator_json = $.parseJSON($('.js-dataInfo').attr('data-participator'));
+      var max_participator_json = $.parseJSON($('.js-dataInfo').attr('data-maxparticipator'));
+      var freights_json = $.parseJSON($('.js-dataInfo').attr('data-freights'));
+      var each_json = $.parseJSON($('.js-dataInfo').attr('data-each'));
+      var oDataoIdWrap = 99999999;
+  </script>
+<% end %>

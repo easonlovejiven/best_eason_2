@@ -1,0 +1,89 @@
+<div class="container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <div class="head-highline">
+        <%= link_to '全部订单', shop_funding_orders_path, class: "item #{'active' unless params[:status]}" %>
+        <%= link_to '待付款', shop_funding_orders_path(status: 'pending'), class: "item #{'active' if params[:status] == 'pending'}" %>
+        <%= link_to '已付款', shop_funding_orders_path(status: 'paid'), class: "item #{'active' if params[:status] == 'paid'}" %>
+      </div>
+      <% if @orders.blank? %>
+        <div class="null-content">
+          <div class="text-center translate-middle-y">
+            <p>
+              <%= image_tag 'home/null-content.png', alt: '' %>
+            </p>
+            <p>您还没有订单哦, 快去参加活动赢O元吧!</p>
+            <a href="/" class="btn btn-sm btn-default">去首页</a>
+          </div>
+        </div>
+      <% else %>
+        <div class="table-responsive task-in">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th width="60%">订单信息</th>
+                <th>单价</th>
+                <th>数量</th>
+                <th>实付款</th>
+                <th>订单状态</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @orders.includes(:owhat_product, :ticket_type).each do |order|  %>
+                <tr class="trades-number-tr">
+                  <td colspan="5" class="bg-grey">
+                    <small class="pull-right text-gray"><%= order.paid_at && order.paid_at.to_s(:db) %></small>
+                    <span class="text-gray">订单号:</span>
+                    <%= link_to shop_funding_order_path(id: order.order_no, order_no: order.order_no), class: '' do %>
+                      <%= order.order_no %>
+                    <% end %>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-left">
+                    <div class="task-in-image pull-left">
+                      <%= link_to order.owhat_product, class: 'thumb-img' do %>
+                        <%= image_tag order.owhat_product.cover_pic.to_s + '?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120' %>
+                      <% end %>
+                    </div>
+                    <div class="task-in-desc">
+                      <%= link_to order.owhat_product, class: 'thumb-img' do %>
+                        <h4 class="task-in-title"><%= order.owhat_product.title %></h4>
+                      <% end %>
+                      <div class="task-it-in">
+                        <div class="text-gray"><%= order.ticket_type.category %>:<%= order.ticket_type.second_category %></div>
+                        <div class="text-gray"><%= order.owhat_product.start_at ? order.owhat_product.start_at.to_s(:db) : '' %></div>
+                        <div class="text-gray"><%= order.owhat_product.address %></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td style="vertical-align: middle;">￥ <%= order.ticket_type.fee %></td>
+                  <td style="vertical-align: middle;" class="text-center"><%= order.quantity %></td>
+                  <td style="vertical-align: middle;" class="text-highlight-r">
+                    ￥ <%= order.payment %> <br>
+                  </td>
+                  <td style="vertical-align: middle;" class="text-center">
+                    <small><%= t(order.status) %></small>
+                    <% unless order.status == 'paid' %>
+                      <div class="trades-btn-group">
+                        <%= link_to '去支付', payment_shop_funding_order_path(id: order.order_no), class: "btn btn-sm btn-block btn-danger" %>
+                        <%= link_to '取消订单', cancel_shop_funding_order_path(id: order ), method: :delete, data: {confirm: "确认取消订单？"}, class: "btn btn-sm btn-block btn-danger" %>
+                      </div>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <br>
+        <div class="text-center">
+          <%= will_paginate @orders %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

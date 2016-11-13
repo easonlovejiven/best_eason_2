@@ -1,0 +1,206 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require bootstrap.min
+ *= require bootstrap-datetimepicker.min
+ *= require select2
+ *= require select2-bootstrap
+ *= require manage/scss/style
+ *= require_tree .
+ */
+/*@import "bootstrap";*/
+/*ul,li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.alert-error{
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442;
+}
+.help-inline {
+  color: red;
+  line-height: 32px;
+}
+.clear { clear: both;}
+#myTab {
+  border: 0;
+}
+#myTab > li > a {
+  padding: 10px 20px;
+}
+#myTab li a.active {
+  background: #428bca;
+  color: #fff;
+}
+table.table-quota table td {
+  line-height: 42px;
+  height: 42px;
+  text-align: center;
+}
+table.table-quota table.td_city,table.table-quota table.td_time {
+  margin-bottom: 0;
+}
+
+table.table-quota table.td_city.table td{
+  border-top: 0;
+  border-left: 0;
+}
+
+.table-quota td {
+  padding: 0;
+}
+.editable-click, a.editable-click, a.editable-click:hover {
+  cursor: pointer;
+}
+.bold_font {
+  font-weight: bold;
+  font-size: 14px;
+}
+.bold_font td,td.bold_font  {
+  background: #66B5F9;
+  color: #fff;
+}
+
+.banner-manage ul li img  {
+  width: 100%;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  padding: 2px;
+  border-radius: 3px;
+}
+.banner-manage li p {
+  text-align: center;
+  line-height: 30px;
+}
+.banner-manage ul {
+  padding: 0;
+  margin: 0;
+  min-height: 400px;
+
+
+}
+.banner-manage li {
+  list-style: none;
+}
+#banner-manage-con li {
+  width: 300px;
+  margin:10px;
+  float: left;
+}
+span.checkbox {
+  width: 100%;
+  float: left;
+  position: relative;
+  margin: 5px 0;
+}
+.pnale-body form {
+  padding: 10px;
+}
+.banner-manage-left {
+  margin-left: 0;
+}
+input.check_boxes {
+  border: 0;
+  box-shadow: none;
+  // width: 20px;
+  height: 20px;
+  // position: absolute;
+  // left: 0;
+}
+label.collection_check_boxes {
+  position: absolute;
+  top: 8px;
+  left: 0px;
+}
+#box img {
+  width: 100%;
+}
+
+.category-box img {
+  width: 100%;
+  margin: 1% 1% 0 1%;
+}
+.category_img {
+  width: 360px;
+  height: 204px;
+  overflow: hidden;
+  float: left;
+}
+
+#box{ border:1px solid #aaa; margin: 10px auto 0 auto; padding: 3px; position: relative; overflow:hidden;}
+#box ul li{height: 300px; overflow: hidden; position: relative;}
+
+#box ul {height: 300px; overflow: hidden;}
+#box ol{position: absolute; left: 46%; bottom: 0px; }
+#box ol li{float: left; width: 16px; height: 16px;background-color: #000; opacity: 0.3; margin: 3px; text-align: center;line-height: 20px; color: #000;cursor: pointer;border:1px solid #aaa; border-radius: 100%;}
+#box ol li.current{ background-color: #000; opacity: 0.8;}
+
+form.form-horizontal {
+  padding: 20px;
+}
+.radio input[type="radio"], .radio-inline input[type="radio"], .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"] {
+  margin-left: 0;
+  box-shadow: none;
+  float: none;
+}
+.form-horizontal .radio, .form-horizontal .checkbox {
+  position: relative;
+}
+.radio label.collection_radio_buttons, .checkbox label.collection_check_boxes {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+.progress {
+  height: 26px;
+  text-align: center;
+  line-height: 26px;
+}
+.progress-text {
+  border-top: 0;
+  position: relative;
+  width: 100%;
+}
+.progress-bar {
+  line-height: 26px;
+
+}
+.alert-tip {
+  position: relative;
+}
+.alert-tip {
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.alert-tip a  {
+  float: right;
+  margin-right: 5px;
+  margin-top: -4px;
+  top: 5px;
+}
+.progress-bar span {
+  opacity: 0.6;
+}
+.progress-text div {
+  position: absolute;
+  color: #666;
+  font-size: 14px;
+  top: -16px;
+}
+.progress-bar .sr-only.black {
+  text-align: center;
+  color: #666;
+
+}
+.sr-only {
+  position: inherit !important;
+}*/

@@ -1,0 +1,50 @@
+<div class="row statistics">
+  <div class="col-sm-4">
+    <div class="tag-box">
+      <h3 class="m-title">活动统计</h3>
+      <p>
+        活动数： <%= @events_count %>
+      </p>
+      <p>
+        商品数： <%= @products_count %>
+      </p>
+      <p>
+        应援数： <%= @fundings_count %>
+      </p>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="tag-box">
+      <h3 class="m-title">订单统计</h3>
+      <p>
+        商品(活动)订单数：<%= @orders_count %>
+      </p>
+      <p>
+        子订单数：<%= @order_items_count %>
+      </p>
+      <p>
+        应援订单数：<%= @funding_count %>
+      </p>
+      <p>
+        总金额：<%= @payment %>
+      </p>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="tag-box">
+      <h3 class="m-title">用户统计</h3>
+      <p>
+        用户数：<%= @user_count[0] + @user_count[1] + @user_count[2] + @user_count[3] %>
+      </p>
+      <p>
+        认证用户： <%= @user_count[0] %>
+      </p>
+      <p>
+        粉丝会：<%= @user_count[1] %>
+      </p>
+      <p>
+        娱乐机构：<%= @user_count[2] %>
+      </p>
+    </div>
+  </div>
+</div>

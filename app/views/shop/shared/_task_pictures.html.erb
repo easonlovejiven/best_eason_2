@@ -1,0 +1,23 @@
+<div class="slider-for detail-img-height">
+  <% @covers.each_with_index do |cover, i| %>
+    <%= image_tag cover.to_s + '?imageMogr2/auto-orient/thumbnail/!640x480r/gravity/North/crop/640x480'  %>
+  <% end %>
+</div>
+<% content_for :tail do %>
+<script type="text/javascript">
+  $(function(){
+    $('.slider-for').slick({
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      speed: 200,
+      arrows: true,
+      fade: false,
+      prevArrow: '<button type="button" data-role="none" class="slick-prev" aria-label="Previous" tabindex="0" role="button"><i class="icons">&#xe62d;</i></button>',
+      nextArrow: '<button type="button" data-role="none" class="slick-next" aria-label="Next" tabindex="0" role="button"><i class="icons">&#xe62a;</i></button>',
+      // infinite: false,
+      touchThreshold: 100,
+      dots: true
+    });
+  })
+</script>
+<% end %>

@@ -1,0 +1,28 @@
+<!-- 发语音 -->
+<div class="container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <div class="block-area">
+        <h5>Hi,</h5>
+        <br>
+        <div class="row">
+          <p class="pull-left col-xs-6">
+            目前网站暂不支持发布语音，我们建议您下载 Owhat APP 来发布语音福利给到用户。用手机扫描下方二维码即可下载 Owhat 手机客户端。 <br><br><br>Owhat 团队
+          </p>
+
+          <div class="col-xs-offset-8">
+            <div class="tag-box text-center col-xs-7">
+              <a class="qrcode" href="#">
+                <img alt="" src="<%= asset_path('home/qrcode.jpg') %>">
+                扫码下载APP
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,72 @@
+<div class="container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <ol class="breadcrumb">
+        <li><a href="<%= edit_home_users_path %>">个人中心</a></li>
+        <li><a href="<%= addresses_home_users_path %>">收货地址管理</a></li>
+        <li class="active">编辑</li>
+      </ol>
+      <%= form_for @address, url: home_address_path, method: :patch, html: {class: 'address-form validate-form'} do |f| %>
+        <div class="form-group">
+          <label for="" class="control-label">收货人 <span class="text-highlight-r">*</span></label>
+          <%= f.text_field :addressee, label: false, placeholder: '', class: "form-control required" %>
+          <%= f.hidden_field :user_id, value: @current_user.id if @current_user %>
+        </div>
+        <div class="form-group">
+          <label for="" class="control-label">手机号 <span class="text-highlight-r">*</span></label>
+          <%= f.text_field :mobile, label: false, placeholder: '', class: "form-control required" %>
+        </div>
+        <div class="form-group">
+          <label for="" class="control-label">地区 <span class="text-highlight-r">*</span></label>
+          <div class="form-inline js-linkageSelect">
+            <select class="form-control level_1 required" name="core_address[province_id]">
+              <option>北京</option>
+            </select>
+            <select class="form-control level_2 required" name="core_address[city_id]">
+              <option>东城</option>
+            </select>
+            </select>
+            <select class="form-control level_3" name="core_address[district_id]">
+              <option>东城</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="" class="control-label">详细地址 <span class="text-highlight-r">*</span></label>
+          <%= f.text_field :address, label: false, placeholder: '', class: "form-control required" %>
+        </div>
+        <div class="form-group">
+          <div class="checkbox">
+            <label>
+              <% if @address.is_default %>
+                <input type="checkbox" name="core_address[is_default]" checked="checked"> 设为默认地址
+              <% else %>
+                <input type="checkbox" name="core_address[is_default]"> 设为默认地址
+              <% end %>
+            </label>
+          </div>
+        </div>
+        <div class="form-group text-right">
+          <button type="submit" class="btn btn-highlight-outline space-lg-hor">保存</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% content_for :tail do %>
+  <script type="text/javascript">
+  $(function() {
+  	var options	= {
+  		data	: data
+  	}
+
+  	var sel = new LinkageSelect(options);
+  	sel.bind('.js-linkageSelect .level_1', <%= @address.province_id || 0%>);
+  	sel.bind('.js-linkageSelect .level_2', <%= @address.city_id || 0%>);
+  	sel.bind('.js-linkageSelect .level_3', <%= @address.district_id || 0%>);
+  })
+  </script>
+<% end %>

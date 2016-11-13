@@ -1,0 +1,8 @@
+<% if @status == false%>
+  alert("该话题不存在");
+<% elsif @comment.present? %>
+  $("#dynamic-comment-<%= params[:shop_dynamic_comment][:parent_id]%>").append("<%= escape_javascript render(partial: 'son_comment', locals: { parent_username: @parent_username, son_comment: @comment }) %>");
+  $(".comment_<%= params[:shop_dynamic_comment][:parent_id] %>").text(parseInt($(".comment_<%= params[:shop_dynamic_comment][:parent_id] %>").text()) + 1);
+  $('.js_dynamic_count').text(parseInt($('.js_dynamic_count').text()) + 1);
+  $('.js_dynamic_text').val('');
+<% end %>

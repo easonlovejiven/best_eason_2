@@ -1,0 +1,72 @@
+// 关联账号
+.connection{
+  font-family: "Heiti SC";
+  max-width: 500px;
+  margin: 30px auto;
+  color: #6A6A6A;
+
+  padding: 50px;
+  background-color: #fff;
+  border: 1px solid #eee;
+  p{
+    font-size: 16px;
+  }
+  .lead{
+    margin-bottom: 15px;
+    font-size: 20px;
+  }
+  .connect-btn-group{
+    margin-top: 20px;
+  }
+  .btn{
+    line-height: 26px;
+    border-radius: 2px;
+  }
+  .btn-block+.btn-block{
+    margin-top: 20px;
+  }
+  .form-group{
+    margin-bottom: 30px;
+  }
+  .form-control{
+    border-radius: 2px;
+    height: 40px;
+  }
+  .text-right{
+    margin-top: 8px;
+  }
+
+  // 确认关联
+  .connection-avatars{
+    width: 280px;
+    margin: 30px auto;
+  }
+  .link-arrows{
+    width: 120px;
+    > div{
+
+    }
+  }
+  .avatar-box,
+  .avatar-box-oauth{
+    width: 80px;
+  }
+  .avatar-box-o{
+    padding-top: 90px;
+  }
+  .connect-avatar-name{
+    margin-top: 10px;
+    margin-bottom: 0;
+  }
+  .oautharea{
+    &+.oautharea{
+      margin-top: 80px;
+    }
+  }
+  .icon-avatarlink-1{
+    margin-top: 53px;
+  }
+  .icon-avatarlink-2{
+    margin-top: 92px;
+  }
+}

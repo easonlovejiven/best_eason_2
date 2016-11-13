@@ -1,0 +1,240 @@
+<!-- 玩转Owhat -->
+<div class="container wan-owhat">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <div class="head-highline">
+        <span class="item">玩转Owhat</span>
+      </div>
+      <div class="block-area">
+        <div class="clearfix">
+          <a class="pull-right small" href="/home/users/level" style="margin-top: 2px;">等级规则</a>
+          等级与头衔
+        </div>
+        <br>
+        <div class="clearfix">
+          <span class="pull-left user-level">用户等级</span>
+          <%= user_identity_style(@current_user)%>
+        </div>
+        <br>
+        <div class="clearfix">
+          <span class="pull-left user-level">我的头衔</span>
+          <span style="color: #FFC130;"><%= @current_user.current_level_name %></span>
+        </div>
+        <br>
+        <div class="clearfix">
+          <span class="pull-left user-level">升级进度</span>
+          <div class="progress-box">
+            <span class="pull-left text-gray"><%= "#{@current_user.empirical_value}/#{@current_user.next_level_need}"%> &nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <div class="progress">
+              <div class="progress-bar" style="width: <%= (@current_user.empirical_value * 100.0) / @current_user.next_level_need %>%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="block-area">
+        <div class="title">任务及奖励介绍</div>
+        <ul class="list-unstyled wan-list">
+          <li class="item <%= @current_user.pic ? 'done' : ''  %>"><span class="pull-right"><%= @current_user.pic ? '已完成' : '未完成'  %></span><i class="icons <%= @current_user.pic ? 'text-green' : 'text-gray' %>">&#xe6bd;</i>修改头像，得5经验</li>
+          <li class="item <%= @current_user.name ? 'done' : ''  %>"><span class="pull-right"><%= @current_user.name ? '已完成' : '未完成'  %></span><i class="icons <%= @current_user.name ? 'text-green' : 'text-gray' %>">&#xe6bd;</i>设置昵称，得2经验</li>
+          <li class="item <%= @current_user.signature ? 'done' : ''  %>"><span class="pull-right"><%= @current_user.signature ? '已完成' : '未完成'  %></span><i class="icons <%= @current_user.signature ? 'text-green' : 'text-gray' %>">&#xe6bd;</i>编辑个人简介，得2经验</li>
+          <li class="item <%= @current_user.account.phone ? 'done' : ''  %>"><span class="pull-right"><%= @current_user.account.phone ? '已完成' : '未完成'  %></span><i class="icons <%= @current_user.account.phone ? 'text-green' : 'text-gray' %>">&#xe6bd;</i>填写联系方式，得5经验</li>
+          <li class="item <%= @current_account.connections.active.present? ? 'done' : ''  %>"><span class="pull-right"><%= @current_account.connections.active.present? ? '已完成' : '未完成'  %></span><i class="icons <%= @current_account.connections.active.present? ? 'text-green' : 'text-gray' %>">&#xe6bd;</i>绑定社交帐号，得2经验</li>
+          <li class="item <%= @current_user.birthday ? 'done' : ''  %>"><span class="pull-right"><%= @current_user.birthday ? '已完成' : '未完成'  %></span><i class="icons <%= @current_user.birthday ? 'text-green' : 'text-gray' %>">&#xe6bd;</i>填写生日信息，得2经验</li>
+          <li class="item <%= @current_user.addresses ? 'done' : ''  %>"><span class="pull-right"><%= @current_user.addresses ? '已完成' : '未完成'  %></span><i class="icons <%= @current_user.addresses ? 'text-green' : 'text-gray' %>">&#xe6bd;</i>填写所在地，得2经验</li>
+        </ul>
+      </div>
+
+
+      <!-- Nav tabs -->
+      <div class="head-highline">
+        <a role="presentation" href="#common-tips" aria-controls="common-tips" role="tab" data-toggle="tab" class="item active">常规任务</a>
+        <a role="presentation" href="#special-tips" aria-controls="special-tips" role="tab" data-toggle="tab" class="item">特殊任务</a>
+      </div>
+      <!-- Tab panes -->
+      <div class="tab-content block-area">
+        <div role="tabpanel" class="tab-pane active" id="common-tips">
+          <div class="wan-panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel">
+              <a class="item" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseComments" aria-expanded="true" aria-controls="collapseComments"><span class="arrow pull-right">&gt;</span>评论/回复评论</a>
+
+              <div class="panel-collapse collapse in" id="collapseComments" aria-labelledby="collapseComments">
+                <p>评论/回复评论</p>
+                <p>
+                  任务奖励：经验值 +2 /次；O!元 +1 /次<br>
+                  每日封顶：50次/天
+                </p>
+                <p>如何写评论</p>
+                <p>
+                  进入『新鲜事任务』页面<br>
+                  点击『评论』按钮；进入新鲜事『详情页』写评论
+                </p>
+                <p>如何回复评论</p>
+                <p>
+                  进入新鲜事『详情页』<br>
+                  点击『评论』右侧的『回复』按钮
+                </p>
+              </div>
+            </div>
+
+            <div class="panel">
+              <a class="item" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseZan" aria-expanded="false" aria-controls="collapseZan"><span class="arrow pull-right">&gt;</span>点赞</a>
+
+              <div class="panel-collapse collapse" id="collapseZan" aria-labelledby="collapseZan">
+                <p>点赞</p>
+                <p>
+                  任务奖励：经验值 +1 /次；无 O!元 奖励<br>
+                  每日封顶：5次/天
+                </p>
+                <p>如何点赞</p>
+                <p>
+                  进入『新鲜事任务』页面 <br>
+                  点击『新鲜事任务』页面/新鲜事『详情页』的『赞』按钮
+                </p>
+              </div>
+            </div>
+
+            <div class="panel">
+              <a class="item" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseZaned" aria-expanded="false" aria-controls="collapseZaned"><span class="arrow pull-right">&gt;</span>被别人点赞</a>
+
+              <div class="panel-collapse collapse" id="collapseZaned" aria-labelledby="collapseZaned">
+                <p>被别人点赞</p>
+                <p>
+                  任务奖励：经验值 +2 /次；O!元 +1 /次 <br>
+                  每日封顶：50次/天
+                </p>
+              </div>
+            </div>
+
+            <div class="panel">
+              <a class="item" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseShared" aria-expanded="false" aria-controls="collapseShared"><span class="arrow pull-right">&gt;</span>个人主页被分享</a>
+
+              <div class="panel-collapse collapse" id="collapseShared" aria-labelledby="collapseShared">
+                <p>个人主页被分享</p>
+                <p>
+                  任务奖励：经验值 +2 /次；O!元 +1 /次<br>
+                  每日封顶：20次/天
+                </p>
+              </div>
+            </div>
+
+            <div class="panel">
+              <a class="item" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseShare" aria-expanded="false" aria-controls="collapseShare"><span class="arrow pull-right">&gt;</span>分享</a>
+
+              <div class="panel-collapse collapse" id="collapseShare" aria-labelledby="collapseShare">
+                <p>分享</p>
+                <p>
+                  任务奖励：经验值 +2 /次；O!元 +0.1/次<br>
+                  每日封顶：20次/天
+                </p>
+
+                <p>如何分享</p>
+                <p>
+                  Owhat 很多东西都是可以分享的噢，找到分享按钮后点击。分享成功后才会得到
+                </p>
+              </div>
+            </div>
+
+            <div class="panel">
+              <a class="item" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseLogin" aria-expanded="false" aria-controls="collapseLogin"><span class="arrow pull-right">&gt;</span>登陆</a>
+
+              <div class="panel-collapse collapse" id="collapseLogin" aria-labelledby="collapseLogin">
+                <p>登录</p>
+                <p>
+                  任务奖励：经验值 +2 /次；O!元 +1 /次 <br>
+                  每日封顶：1次/天 <br>
+                  补充说明：每日登录即每天打开 Owhat APP 时，为登录状态
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="special-tips">
+          <div class="panel-group wan-panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
+            <div class="panel">
+              <a class="item" role="button" data-toggle="collapse" data-parent="#accordion2" href="#collapseTopic" aria-expanded="true" aria-controls="collapseTopic"><span class="arrow pull-right">&gt;</span>话题</a>
+
+              <div class="panel-collapse collapse in" id="collapseTopic" aria-labelledby="collapseTopic">
+                <p>话题</p>
+                <p>
+                  任务奖励：经验值 +4 /次；O!元 +2 /次<br>
+                  每日封顶：5次/天
+                </p>
+                <p>如何写新鲜事</p>
+                <p>
+                  进入『新鲜事任务』页面<br>
+                  点击最底部的『写新鲜事』按钮
+                </p>
+              </div>
+            </div>
+            <div class="panel">
+              <a class="item" role="button" data-toggle="collapse" data-parent="#accordion2" href="#collapseBuy" aria-expanded="false" aria-controls="collapseBuy"><span class="arrow pull-right">&gt;</span>购买类</a>
+
+              <div class="panel-collapse collapse" id="collapseBuy" aria-labelledby="collapseBuy">
+                <p>购买类</p>
+                <p>
+                  任务奖励：经验值同花费金额；O!元为花费金额的1%
+                </p>
+                <p>如何参与购买任务</p>
+                <p>
+                  进入『活动』/『SHOP』/『应援』页面<br>
+                  选择要买的『活动』门票/商品/应援 <br>
+                  付款成功后，将获得奖励
+                </p>
+              </div>
+            </div>
+            <div class="panel">
+              <a class="item" role="button" data-toggle="collapse" data-parent="#accordion2" href="#collapseFunding" aria-expanded="false" aria-controls="collapseFunding"><span class="arrow pull-right">&gt;</span>应援</a>
+
+              <div class="panel-collapse collapse" id="collapseFunding" aria-labelledby="collapseFunding">
+                <p>应援</p>
+                <p>
+                  任务奖励：经验值同花费金额；O!元为花费金额的1%
+                </p>
+                <p>如何参与应援任务</p>
+                <p>
+                  进入『应援』页面<br>
+                  输入/选择应援的金额 <br>
+                  付款成功后，将获得奖励
+                </p>
+              </div>
+            </div>
+            <div class="panel">
+              <a class="item" role="button" data-toggle="collapse" data-parent="#accordion2" href="#collapseQa" aria-expanded="false" aria-controls="collapseQa"><span class="arrow pull-right">&gt;</span>死忠粉</a>
+
+              <div class="panel-collapse collapse" id="collapseQa" aria-labelledby="collapseQa">
+                <p>死忠粉</p>
+                <p>
+                  任务奖励：题目答对后，经验值 +1 /题；O!元 +1 /题 <br>
+                  每日封顶：30组题/天
+                </p>
+                <p>如何参与死忠粉任务</p>
+                <p>
+                  进入死忠粉任务页面，开始答题
+                </p>
+              </div>
+            </div>
+            <div class="panel">
+              <a class="item" role="button" data-toggle="collapse" data-parent="#accordion2" href="#collapseMedia" aria-expanded="false" aria-controls="collapseMedia"><span class="arrow pull-right">&gt;</span>O妹精选任务</a>
+
+              <div class="panel-collapse collapse" id="collapseMedia" aria-labelledby="collapseMedia">
+                <p>O妹精选任务</p>
+                <p>
+                  任务奖励：经验值 +2 /次；O!元 +1 /次 <br>
+                  每日封顶：10次/天
+                </p>
+                <p>如何参与O妹精选任务</p>
+                <p>
+                  进入『O妹精选任务』页面 <br>
+                  参与O妹精选任务
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,216 @@
+<div class="container topics">
+  <ol class="breadcrumb">
+    <li><a href="/">首页</a></li>
+    <li><a href="/home/suggestions?category=topics">话题任务</a></li>
+    <li><%= link_to @topic.title, shop_topic_path(@topic) %></li>
+    <li class="active">Ta的动态</li>
+  </ol>
+  <div class="clearfix">
+    <div class="content-left block-area">
+      <p class="word-bread">
+        <%= @dynamic.content %>
+      </p>
+      <% @dynamic.videos.each do |video| %>
+        <div class="text-center">
+          <video width="80%" controls>
+            <source src="<%= video.key_url %>" type="video/mp4">
+            Your browser doesn't support HTML5 video tag.
+          </video>
+        </div>
+      <% end %>
+
+      <% @dynamic.pictures.each do |picture| %>
+        <p class="text-center">
+          <%= image_tag picture.key_url, class: "" %>
+        </p>
+      <% end %>
+
+      <% vote =  @votes[@dynamic.id]%>
+      <% if vote.present? %>
+        <div class="progressBox">
+          <!-- 开始有的js_progress_btn  点了就没了 -->
+          <% vote[:detail].each do |v|%>
+            <div class="progress-default <%= !(@current_user.present? && vote[:is_voted]) ? 'js_progress_btn' : ''%>">
+              <!-- progress-show-you 点了就有 width= 600*% px-->
+              <% vote_count_proportion = (vote[:participator] == 0 || v[:voted_count] == 0) ? 0 : (v[:voted_count] * 100.0/ vote[:participator]).to_f.round(1)%>
+              <span class="js_show progress-world-left" data-id='<%= v[:id]%>'><%= v[:content]%></span>
+              <span class="js_show_progress <%= vote[:is_voted] ? v[:is_choosed] ? 'progress-show-you' : 'progress-show-other' : ''%>">
+              </span>
+              <span class="progress-world-right <%= !(@current_user.present? && vote[:is_voted]) ? 'hide': ''%>">
+                <span class="js_vote_now"><%= v[:voted_count] %></span>票
+                <span class="progress-world"><%= vote_count_proportion.to_i == vote_count_proportion ? vote_count_proportion.to_i : vote_count_proportion %>%
+                </span>
+              </span>
+            
+            </div>
+          <% end %>
+        </div>
+        <div class="js_vote_next">
+          <span class="js_vote_all"><%=vote[:participator]%></span><span>人参与此投票</span>
+        </div>
+      <% end %>
+
+      <br>
+      <h5 class="h4 aside-title">
+        <span class="border-l">评论 <span class="js_dynamic_count"><%= @dynamic.comment_count%></span></span>
+      </h5>
+      <br>
+      <div class="avatar-head pull-left">
+        <% if @current_user %>
+          <a class="avatar-round avatar-xs" href="/home/users/<%= @current_user.id %>">
+            <%= image_tag @current_user.picture_url, class: "img-circle"  %>
+          </a>
+        <% else %>
+          <span class="avatar-round avatar-xs">
+            <img class="img-circle" alt="" src="http://7xlmj0.com1.z0.glb.clouddn.com/uploads/core/star/pic/171/1d12a3f2b13823d8b650130e41a2dcb8f47add11?imageMogr2/auto-orient/thumbnail/!40x40r/gravity/Center/crop/40x40">
+          </span>
+        <% end %>
+      </div>
+      <%= form_for @comment, url: shop_dynamic_comments_path, method: :post, html: {class: 'comment-form'} do |f| %>
+        <div class="hidden_field">
+          <%= f.hidden_field :user_id, class: 'js_dynamic_user_id', value: @current_user.id if @current_user %>
+          <%= f.hidden_field :dynamic_id, class: 'js_dynamic_id', value: params[:dynamic_id] %>
+        </div>
+        <div class="form-group">
+          <%= f.text_area :content, placeholder: '随便说几句呗 （不超过200字）', class: "form-control comment-textarea js-topicTextarea js_danger_val", maxlength: 200 %>
+        </div>
+        <div class="topics-botton text-right">
+          <% if @current_user %>
+            <button type="submit" class="btn btn-default js_dynamic_publish">发表</button>
+          <% else %>
+            <a class="btn btn-default" href="/sessions/new?redirect=/shop/dynamic_comments?dynamic_id=<%= params[:dynamic_id] %>">发表</a>
+          <% end %>
+        </div>
+      <% end %>
+
+      <div class="comments-list js_comments_list">
+        <% if @comments.blank? %>
+          <div class="null-content js_no_comments">
+            <div class="text-center translate-middle-y">
+              <p>
+                <%= image_tag 'home/null-content.png', alt: '' %>
+              </p>
+              <p>还没有评论, 赶快评论吧!</p>
+            </div>
+          </div>
+        <% else %>
+          <% cache @comments do %>
+            <% @comments.each_with_index do |c, index| %>
+            <!-- 该条动态的所有子评论的子评论缓存 -->
+              <% son_comments = Shop::DynamicComment.includes(:user).where(parent_id: c.id) %>
+              <div class="avatar-head has-bordered" data-replay="replayBox">
+                <div class="pull-right text-right">
+                  <span class="date">
+                    <%= c.created_at.to_s(:db)  %>
+                  </span>
+                  <a class="reply-btn js-reply-show " href="javascript:;">回复(<span class="comment_<%= c.id %>"><%= c.seed_count %></span>)</a>
+                </div>
+                <a class="avatar-round avatar-xs pull-left" href="#">
+                  <%= image_tag c.user.picture_url, class: "img-circle"  %>
+                </a>
+                <div class="name-location">
+                  <div class="ellipsis"><a href="#"><%= c.user.name %> &nbsp;&nbsp;<%= user_identity_style(c.user) %></a></div>
+                  <div class="comment-article word-bread">
+                    <%= c.content %>
+                  </div>
+
+                  <div class="reply-show word-bread">
+                    <ul class="list-unstyled reply-list" id="dynamic-comment-<%= c.id %>">
+                      <% son_comments.each do |son_comment| %>
+                      <%= render partial: 'son_comment', locals: { parent_username: c.user.name, son_comment: son_comment } %>
+                      <% end %>
+                    </ul>
+
+                    <%= form_for @comment, url: shop_dynamic_comments_path, method: :post, html: {class: 'reply-form'}, remote: true do |f| %>
+                      <div class="clearfix">
+                        <% if @current_user %>
+                          <a class="avatar-round avatar-xs pull-left" href="/home/users/<%= @current_user.id %>">
+                            <%= image_tag @current_user.picture_url, class: "img-circle"  %>
+                          </a>
+                        <% else %>
+                          <img class="img-circle pull-left" alt="" src="http://7xlmj0.com1.z0.glb.clouddn.com/uploads/core/star/pic/171/1d12a3f2b13823d8b650130e41a2dcb8f47add11?imageMogr2/auto-orient/thumbnail/!40x40r/gravity/Center/crop/40x40">
+                        <% end %>
+                        <div class="name-location">
+                          <%= f.text_field :content, label: false, placeholder: "回复@#{c.user.name} :", class: "form-control js_dynamic_text", autocomplete:"off", maxlength: 200 %>
+                        </div>
+                      </div>
+                      <%= f.hidden_field :user_id, value: @current_user.id  if @current_user %>
+                      <%= f.hidden_field :dynamic_id, value: params[:dynamic_id] %>
+                      <%= f.hidden_field :parent_id, value: c.id %>
+                      <div class="topics-botton text-right">
+                        <button type="submit" class="btn btn-default js_dynamic_again">发表</button>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="text-center">
+        <%= will_paginate @comments %>
+      </div>
+    </div>
+
+    <!-- 右侧边栏 -->
+    <%= render partial: "layouts/home/aside", locals: {publish_user: @topic.user} %>
+  </div>
+</div>
+<% content_for :tail do %>
+  <script type="text/javascript">
+    var progressW = $('.progress-default').width()+20;
+    $('.progressBox').on('click','.js_progress_btn',function(){
+      var choseId = $(this).find('.js_show').attr('data-id');
+      var self = this;
+      console.log(self);
+      $.ajax({
+        type:'post',
+        url:' /shop/vote_options/'+choseId+'/vote_dynamic.json',
+        success:function(msg){
+          if(msg.error){
+            if(msg.unlogin){
+              window.location.href = window.location.origin+'/sessions/new?redirect='+window.location.pathname;
+              return;
+            }
+            alert(msg.error);
+            if(msg.refresh){
+              window.location.reload();
+            }            
+          }else{
+            var all = parseInt($(self).parents('.progressBox').next('.js_vote_next').find('.js_vote_all').html())+1;
+            var now = parseInt($(self).find('.js_vote_now').html())+1;
+            $(self).find('.js_vote_now').html(now).next('span').html(changeVoteStr(((now/all).toFixed(3)*100).toFixed(1))+'%');
+            $(self).parents('.progressBox').next('.js_vote_next').find('.js_vote_all').html(all);
+            var nowWidth = (now/all).toFixed(3)*progressW+'px';
+            $(self).parents('.progressBox').find('.js_show_progress').each(function(index){
+              var otherWidth = parseInt($(this).next('.progress-world-right').find('.js_vote_now').html());
+              $(this).addClass('progress-show-other').css('width',(otherWidth/all).toFixed(3)*progressW+'px').next('span').find('.js_vote_now').html(otherWidth).next('span').html(changeVoteStr(((otherWidth/all).toFixed(3)*100).toFixed(1))+'%').parent().removeClass('hide');
+            });
+            $(self).find('.js_show_progress').removeClass('progress-show-other').addClass('progress-show-you').css('width',nowWidth);
+            $(self).parents('.progressBox').find('.js_progress_btn').each(function(index){
+              $(this).removeClass('js_progress_btn');
+            });
+          }
+        },
+        error:function(){}
+      });
+    });
+    window.onload=function(){
+      $('.js_show_progress').each(function(index, el) {
+        if($(this).hasClass('progress-show-you') || $(this).hasClass('progress-show-other')){
+          var currentPro = $(this).next('span').find('.progress-world').html();
+          $(this).width(currentPro.replace('%','')/100*progressW);
+        }
+      });
+    }
+    function changeVoteStr(num){
+      var str = ''+num;
+      if(str.slice(-1)==0){
+        str = str.substring(0,str.length-2);
+      }
+      return str;
+    }
+
+  </script>
+<% end %>

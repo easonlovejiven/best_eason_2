@@ -1,0 +1,100 @@
+<!-- 认证用户个人中心 -->
+<% if @current_user.verified %>
+<div class="container publish-enter">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "panel", user: @user %>
+    </div>
+    <div class="col-sm-9">
+      <div class="head-highline">
+        <span class="item">发任务</span>
+      </div>
+      <div class="block-area">
+        <div class="row row-10">
+          <% {'活动' => 'new_shop_event_path','商品' => 'new_shop_product_path','应援' => 'new_shop_funding_path','话题' => 'new_shop_topic_path','直播' => 'new_shop_subject_path','问答' => 'new_qa_poster_path','O妹精选' => 'new_shop_media_path'}.each do |item, url| %>
+            <div class="col-xs-6 col-md-3">
+              <%= link_to eval(url), :class => "publish-item" do %>
+                <div class="translate-middle-y text-center">
+                  <% if item == '活动' %>
+                  <i class="icons flag-event">&#xe6ac;</i>
+                  <% end %>
+                  <% if item == '商品' %>
+                    <i class="icons flag-product">&#xe6a7;</i>
+                  <% end %>
+                  <% if item == '应援' %>
+                    <i class="icons flag-funding">&#xe6ae;</i>
+                  <% end %>
+                  <% if item == '话题' %>
+                    <i class="icons flag-topic">&#xe6a4;</i>
+                  <% end %>
+                  <% if item == '直播' %>
+                    <i class="icons flag-subject">&#xe6a5;</i>
+                  <% end %>
+                  <% if item == '问答'%>
+                    <i class="icons flag-question">&#xe6ad;</i>
+                  <% end %>
+                  <% if item == 'O妹精选'%>
+                    <i class="icons flag-media">&#xe6a6;</i>
+                  <% end %>
+                  <div>
+                    <%= item %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="head-highline">
+        <span class="item">发福利</span>
+      </div>
+      <div class="block-area">
+        <div class="row row-10">
+          <% {'图片福利' => 'new_welfare_letter_path','语音福利' => 'audio_home_abouts_path','活动福利' => 'new_welfare_event_path','商品福利' => 'new_welfare_product_path'}.each do |item, url| %>
+          <div class="col-xs-6 col-md-3">
+            <%= link_to eval(url), class: 'publish-item' do %>
+              <div class="translate-middle-y text-center">
+                <% if item == '图片福利'%>
+                  <i class="icons flag-letter">&#xe6aa;</i>
+                <% end %>
+                <% if item == '语音福利'%>
+                  <i class="icons flag-voice">&#xe6af;</i>
+                <% end %>
+                <% if item == '活动福利'%>
+                  <i class="icons flag-welfare-event">&#xe6a9;</i>
+                <% end %>
+                <% if item == '商品福利'%>
+                  <i class="icons flag-welfare-product">&#xe6a8;</i>
+                <% end %>
+              <div>
+                <%= item %>
+              </div>
+              </div>
+            <% end %>
+          </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="head-highline">
+        <span class="item">草稿</span>
+      </div>
+      <div class="block-area">
+        <div class="row row-10">
+          <div class="col-xs-6 col-md-3">
+            <%= link_to drafts_home_users_path, class: 'publish-item' do %>
+            <span class="badge badge-yellow"><%= @drafts_count %></span>
+              <div class="translate-middle-y text-center">
+                <i class="icons flag-drafts">&#xe6a3;</i>
+                <div>
+                  草稿
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

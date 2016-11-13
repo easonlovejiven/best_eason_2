@@ -1,0 +1,7 @@
+zh-CN:
+  activerecord:
+    models:
+      core/image: 背景图
+    attributes:
+      core/user:
+        pic: 图片

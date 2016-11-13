@@ -1,0 +1,50 @@
+<form class="connection">
+  <div class="lead text-center">
+    确认关联Owhat账号
+  </div>
+
+  <div class="connection-avatars clearfix">
+    <div class="avatar-box avatar-box-o pull-left text-center">
+      <%= link_to 'javascript:;', class: 'avatar-round' do %>
+        <%= image_tag @account.tries(:user, :picture_url), class: 'img-circle' %>
+      <% end %>
+      <p class="connect-avatar-name ellipsis">
+        <%= @account.tries(:user, :name) %>
+      </p>
+    </div>
+    <div class="link-arrows pull-left">
+      <div class="text-center icon-avatarlink-1">
+        <i class="icons connect-icons connect-avatar-1">=</i>
+      </div>
+      <div class="text-center icon-avatarlink-2">
+        <i class="icons connect-icons connect-avatar-2">≠</i>
+      </div>
+    </div>
+    <div class="avatar-box-oauth pull-left">
+      <div class="avatar-box oautharea">
+        <% con = @account.connections.active.where(site: @connection.site).first %>
+        <%= link_to 'javascript:;', class: 'avatar-round' do %>
+          <%= image_tag con.picture_url, class: 'img-circle' %>
+        <% end %>
+        <p class="connect-avatar-name ellipsis">
+          <%= con.name %>
+        </p>
+      </div>
+
+      <div class="avatar-box oautharea">
+        <%= link_to 'javascript:;', class: 'avatar-round' do %>
+          <%= image_tag @connection.picture_url, class: 'img-circle' %>
+        <% end %>
+        <p class="connect-avatar-name ellipsis">
+          <%= @connection.name %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <p class="text-center">Owhat账号已经有绑定的<%= @connection.site %>账号，需要继续绑定吗？</p>
+  <div class="connect-btn-group">
+    <%= link_to "确认继续绑定", binding_connection_path(@connection, account_id: @account.id, sign: Digest::MD5.hexdigest("binding#{@account.id}#{@connection.id}#{OAUTH_CONFIG[@connection.site]['secret']}#{@connection.token}").downcase), class: "btn btn-block btn-blue-solid", method: :put %>
+    <%= link_to "关联其他账户", connections_path(connection_id: @connection.id, sign: Digest::MD5.hexdigest("#{@connection.id}#{OAUTH_CONFIG[@connection.site]['secret']}#{@connection.token}").downcase), class: "btn btn-block btn-blue-outline" %>
+  </div>
+</form>

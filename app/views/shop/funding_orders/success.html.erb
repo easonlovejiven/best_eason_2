@@ -1,0 +1,108 @@
+<% obi = params[:total_fee].to_f.round(2) == 0 ? 0 : params[:total_fee].to_f.round(2)*0.1 < 1 ? 1 : ((params[:total_fee].to_f.round(2))*0.1).to_i %>
+<div class="container">
+  <div class="block-area">
+    <div class="order-success">
+      <div class="translate-middle-y">
+        <p class="title">
+          感谢您，订单提交成功!
+        </p>
+        <p>
+          <span>
+            订单号：<%= link_to params[:out_trade_no], shop_funding_order_path(order_no:  params[:out_trade_no]), class: "js-orderNum" %>
+          </span>&nbsp;&nbsp;|&nbsp;&nbsp;<span>在线支付：<span class="text-highlight-r"><%= params[:total_fee] %></span> 元 </span>
+        </p>
+        <p class="">
+          恭喜您已获得 <%= obi  %> O!元奖励！
+        </p>
+
+        <% if @weibo_auto_share[:auto_share_status]=="yes" &&@weibo_auto_share[:has_weibo] && @weibo_auto_share[:weibo_token_active] %>
+          <p>感谢您对 <%= @share_info[:title]%> 的支持，已将应援进度分享至微博，让大家一起来支持O!</p>
+       <% else %>
+          <div class="share-box clearfix">
+            <%= render partial: "shop/shared/share", locals: { object: @funding, type: 'order', text: @share_info[:content]} %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <!-- 弹框分享 -->
+    <!-- @weibo_auto_share[:has_weibo] -->
+    <% if @weibo_auto_share[:auto_share_status] == 'yes' && (@weibo_auto_share[:has_weibo] == false || @weibo_auto_share[:weibo_token_active] == false) %>
+
+    <div class="modal fade no-bordered js-autoShare" tabindex="-1" role="dialog" aria-labelledby="modalwelfareLabel" data-backdrop="static" data-keyboard="false" data-show="false">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <a class="close js_qa_close" href="javascript:;" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+          </div>
+          <div class="modal-body text-center">
+            感谢您对<%= @share_info[:title]%>的支持，目前应援已完成<%= @share_info[:funding_progres]%>%，分享至微博，一起支持O~!
+          </div>
+          <div class="modal-footer text-center">
+            <%= link_to '是', new_share_connections_path(site: 'weibo', redirect: shop_funding_orders_path, order_no: params[:id], category: "Shop::Funding"), class: "btn btn-highlight-outline space-lg-hor js-close ", :target => '_blank'%>
+            <!-- <button type="submit" class="btn btn-highlight-outline space-lg-hor js_qa_start">是</button> -->
+            <a class="btn btn-default space-lg-hor js-close" href="<%= shop_tasks_path(category: 'fundings')%>">否</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+
+    <!-- 弹框是否自动分享 -->
+    <%if @weibo_auto_share[:auto_share_status] == 'null' && @weibo_auto_share[:has_weibo] %>
+    <div class="modal fade no-bordered js-autoShare" tabindex="-1" role="dialog" aria-labelledby="modalwelfareLabel" data-backdrop="static" data-keyboard="false" data-show="false">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <a class="close js_qa_close" href="javascript:;" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+          </div>
+          <div class="modal-body text-center">
+            感谢您对<%= @share_info[:title]%>的支持，目前应援已完成<%= @share_info[:funding_progres]%>%，是否将您参与得应援自动分享至微博，一起支持O~!
+          </div>
+          <div class="modal-footer text-center">
+            <%= link_to '是', new_share_connections_path(site: 'weibo', redirect: shop_funding_orders_path, order_no: params[:id], category: "Shop::Funding"), class: "btn btn-highlight-outline space-lg-hor js-close", :target => '_blank'%>
+            <!-- <button type="submit" class="btn btn-highlight-outline space-lg-hor js_qa_start">是</button> -->
+            <a class="btn btn-default space-lg-hor js-setNoShare" href="<%= shop_tasks_path(category: 'fundings')%>">否</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+
+    <p class="small block-area">
+      已完成支付，您可以：
+      <%= link_to '查看订单状态', shop_funding_orders_path, class: "text-highlight-r" %>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/" class="text-highlight-r">返回首页继续购物</a>
+    </p>
+  </div>
+</div>
+
+<% content_for :tail do %>
+
+  <script type="text/javascript">
+  var orderNum = $(".js-orderNum").text();
+  console.log(orderNum);
+
+  window.onload=function(){
+    $('.js-autoShare').modal('show');
+  };
+
+  $('.js-close').click(function(){
+    $('.js-autoShare').modal('hide');
+  })
+  $('.js-setNoShare').click(function(){
+    $('.js-autoShare').modal('hide');
+    $.ajax({
+      url: '/home/users/<%= @current_user.id %>/set_auto_share.json',
+      type: 'post',
+      dataType:'json',
+      data: {auto_share: 'no'}
+    })
+    .success(function(data){
+      // var data = data.data;
+      console.log(data);
+      // if()
+    })    
+  });
+
+
+  </script>
+<% end %>

@@ -1,0 +1,162 @@
+<div class="container search-results">
+  <form class="form-search form-inline show-sm" action="<%= search_result_home_home_index_path %>" method="get">
+    <div class="input-group">
+      <input type="text" class="form-control js_search_val" name='keyword' placeholder="热搜: <% @hot_records && @hot_records.each do |r| %> <%= r %> <% end %>" value="<%= params[:keyword] %>">
+      <div class="input-group-btn">
+        <button type="submit" class="btn btn-default js_search_btn"><i class="icons">&#xe617;</i></button>
+      </div>
+    </div>
+  </form>
+  <%# cache("#{params[:keyword]}") do %>
+  <%# task_count, star_count, org_count, fans_count, user_count = @task_count.to_i, @star_count.to_i, (@users && @users.where(identity: 2).total_entries).to_i, (@users && @users.where(identity: 1).total_entries).to_i, (@users && @users.where(identity: 0).total_entries).to_i %>
+  <% task_count, star_count, org_count, fans_count, user_count = @task_count.to_i, @star_count.to_i, @org_count.to_i, @fans_count.to_i, @user_count.to_i %>
+
+  <p>
+    搜索<span class="text-highlight-r"><%= @keyword %></span> &gt; 共为您找到 <span><%= [task_count, star_count, org_count, fans_count, user_count].inject(&:+) %></span> 个结果
+  </p>
+
+  <div class="head-highline onav-line">
+    <a href="<%= search_result_home_home_index_path(category: 'task', keyword: @keyword) %>" class="item <%= 'active' if params[:category] == 'task' %>">任务(<%= task_count %>)</a>
+    <a href="<%= search_result_home_home_index_path(category: 'star', keyword: @keyword) %>" class="item <%= 'active' if params[:category] == 'star' %>">Owhat super star(<%= star_count %>)</a>
+    <a href="<%= search_result_home_home_index_path(category: 'org', keyword: @keyword) %>" class="item <%= 'active' if params[:category] == 'org' %>">娱乐机构(<%= org_count %>)</a>
+    <a href="<%= search_result_home_home_index_path(category: 'fans', keyword: @keyword) %>" class="item <%= 'active' if params[:category] == 'fans' %>">粉丝会(<%= fans_count %>)</a>
+    <a href="<%= search_result_home_home_index_path(category: 'user', keyword: @keyword) %>" class="item <%= 'active' if params[:category] == 'user' %>">用户</a>
+  </div>
+  <%# end %>
+
+  <% users_hash = { 'user' => 0, 'fans' => 1, 'org' => 2 } %>
+
+  <!-- 娱乐机构, 明星, 用户, 粉丝会搜索结果列表 -->
+  <% if params[:category] == 'star' %>
+  <%# cache(@stars, expires_in: 30.minutes) do %>
+    <% if @stars.blank? %>
+      <div class="null-content">
+        <div class="text-center translate-middle-y">
+          <p>
+            <%= image_tag 'home/null-content.png', alt: '' %>
+          </p>
+          <p>没有相关明星</p>
+        </div>
+      </div>
+    <% else %>
+      <div class="block-area">
+        <div class="row">
+          <% @stars.each do |star|%>
+            <div class="avatar-head has-bordered clearfix col-sm-6">
+              <%= link_to home_star_path(star), class: 'avatar-round pull-left' do %>
+                <%= image_tag star.app_picture_url.to_s+'?imageMogr2/auto-orient/thumbnail/!62x62r/gravity/Center/crop/62x62', class: 'img-circle', alt: '' %>
+              <% end %>
+
+              <label class="checkbox-stars pull-right" for="">
+                <%= follow_links(star) %>
+              </label>
+              <div class="name-location">
+                <div class="h4 ellipsis">
+                  <a href="<%= home_star_path(star) %>">
+                    <%= star.name %>
+                  </a>
+                  <i class="icons v-icon v-star">&#xe609;</i>
+                </div>
+                <p class="text-gray ellipsis">
+                  粉丝：<%= star.fans_total %>
+                </p>
+                <p class="name-desc ellipsis text-gray"><%= star.sign %></p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <%# end %>
+      <div class="text-center">
+        <%= will_paginate(@stars) if @stars %>
+      </div>
+    <% end %>
+  <% elsif users_hash.keys.include?(params[:category]) %>
+    <% if @users.blank? %>
+      <div class="null-content">
+        <div class="text-center translate-middle-y">
+          <p>
+            <%= image_tag 'home/null-content.png', alt: '' %>
+          </p>
+          <p>
+            <% if params[:category] == 'org' %>
+              没有相关娱乐机构
+            <% elsif params[:category] == 'fans' %>
+              没有相关粉丝会
+            <% else %>
+              没有相关用户
+            <% end %>
+          </p>
+        </div>
+      </div>
+    <% else %>
+      <% cache(@users, expires_in: 30.minutes) do %>
+        <div class="block-area">
+          <div class="row">
+            <% @users.each do |user|%>
+            <div class="avatar-head has-bordered clearfix col-sm-6">
+              <%= link_to home_user_path(user), class: 'avatar-round pull-left' do %>
+                <%= image_tag user.picture_url.to_s+'?imageMogr2/auto-orient/thumbnail/!62x62r/gravity/Center/crop/62x62', class: 'img-circle' %>
+              <% end %>
+
+              <label class="checkbox-stars pull-right" for="">
+                <%= follow_links(user) %>
+              </label>
+              <div class="name-location">
+                <div class="h4 ellipsis">
+                  <%= link_to user.name, home_user_path(user) %>
+                  <%= user_identity_style(user)%>
+                </div>
+                <p class="text-gray ellipsis">
+                  粉丝：<%= user.followers_count %>&nbsp;&nbsp;|&nbsp;&nbsp;关注：<%= user.follow_count %>
+                </p>
+                <p class="name-desc ellipsis text-gray"><%= user.signature && user.signature.html_safe %></p>
+              </div>
+            </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+      <div class="text-center">
+        <%= will_paginate(@users) if @users %>
+      </div>
+    <% end %>
+  <!-- 任务搜索结果列表 -->
+  <% else %>
+    <% cache(@tasks, expires_in: 30.minutes) do %>
+      <% if @tasks.blank? %>
+        <div class="null-content">
+          <div class="text-center translate-middle-y">
+            <p>
+              <%= image_tag 'home/null-content.png', alt: '' %>
+            </p>
+            <p>还没有相关活动哦~去首页看看别的活动吧!</p>
+            <a href="/" class="btn btn-sm btn-default">去首页</a>
+          </div>
+        </div>
+      <% else %>
+        <div class="list">
+          <div class="row row-10">
+            <% @tasks.each do |task| %>
+            <div class="col-sm-6 col-md-3">
+              <%= render partial: 'shop/shared/task_card', locals: {task: task} %>
+            </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+        <div class="text-center">
+            <%= will_paginate(@tasks) if @tasks %>
+        </div>
+    <% end %>
+  <% end %>
+</div>
+<% content_for :head do %>
+  <style media="screen">
+    @media (max-width: 767px){
+      .navbar-fixed-top .form-search{
+        display: none;
+      }
+    }
+  </style>
+<% end %>

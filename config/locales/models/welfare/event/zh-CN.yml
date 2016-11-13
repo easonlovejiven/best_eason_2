@@ -1,0 +1,22 @@
+zh-CN:
+  activerecord:
+    models:
+      welfare/event: 免费活动
+    attributes:
+      welfare/event:
+        user_id: 发布人
+        title: 名称
+        description: 描述
+        descripe_key: 描述图片
+        sale_start_at: 售卖开始时间
+        sale_end_at: 售卖结束时间
+        start_at: 活动开始时间
+        end_at: 活动结束时间
+        address: 地址
+        mobile: 联系电话
+        star_list: 关联明星
+
+        creator_id: 创建人
+        ticket_types: 价格信息
+        ext_infos: 报名信息
+        participator: 参与人数

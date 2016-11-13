@@ -1,0 +1,6 @@
+doctype html
+html
+  head
+    javascript:
+      if (window.opener) window.opener.location.href = (m = window.location.href.match(/redirect=([^&]+)/)) ? decodeURIComponent(m[1]) : '/'
+        window.close()

@@ -1,0 +1,24 @@
+<div class="thumbnail">
+  <div class="thumb-cover index-img-height">
+    <%= link_to welfare.shop, class: "thumb-img", target: "_blank" do %>
+      <%= image_tag(welfare.pic.to_s + '?imageMogr2/auto-orient/thumbnail/!233x175r/gravity/North/crop/233x175', alt: '') %>
+      <span class="task-mark task-mark-<%= home_task_mark(welfare.shop_type) %>"><%= home_task_mark(welfare.shop_type) %></span>
+    <% end %>
+    <!-- 头像 -->
+    <div class="avatar-round avatar-line">
+      <%= link_to home_user_path(welfare.user), class: '' do %>
+        <%= image_tag welfare.tries(:user, :picture_url).blank? ? 'home/user/user.jpeg' : welfare.tries(:user, :picture_url).to_s + '?imageMogr2/auto-orient/thumbnail/!100x100r/gravity/Center/crop/100x100', class: 'img-circle' %>
+        <span class="user-name ellipsis <%= welfare.user.verified ? '' : 'user-no-icon' %>">
+          <%= welfare.tries(:user, :name) %>
+          <% if welfare.tries(:user, :verified) %>
+            <%= user_identity_style(welfare.user)%>
+          <% end %>
+        </span>
+      <% end if welfare.user.present? %>
+    </div>
+  </div>
+  <div class="caption text-center">
+    <h4 class="title ellipsis"><%= welfare.title %></h4>
+    <%= link_to '打开福利', welfare.shop, class: "btn btn-danger btn-outline btn-xs", target: "_blank" %>
+  </div>
+</div>

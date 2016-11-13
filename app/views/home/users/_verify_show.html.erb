@@ -1,0 +1,60 @@
+<ul class="head-highline list-unstyled">
+  <li class="item <%= 'active' if params[:category] == 'task' || params[:category].blank? %>">
+    <%= link_to '全部任务', home_user_path(id: @user.id, category: 'task') %>
+  </li>
+  <li class="item <%= 'active' if params[:category] == 'welfare' %>">
+    <%= link_to '全部福利', home_user_path(id: @user.id, category: 'welfare') %>
+  </li>
+  <li class="item <%= 'active' if params[:category] == 'milestone' %>">
+    <%= link_to '里程碑', home_user_path(id: @user.id, category: 'milestone') %>
+  </li>
+</ul>
+
+<% if @feeds.blank? %>
+  <div class="null-content">
+    <div class="text-center translate-middle-y">
+      <p>
+        <%= image_tag 'home/null-content.png', alt: '' %>
+      </p>
+      <p>Ta还没有发过任何活动~</p>
+    </div>
+  </div>
+<% else %>
+  <div class="timeline list row row-10">
+    <% if params[:category] == 'milestone' %>
+      <!-- 里程碑 -->
+      <% @feeds.each do |task| %>
+        <div class="col-sm-6 col-md-3">
+          <div class="thumbnail">
+            <div class="text-center timeline-data"><%= task.created_at.to_s(:db) %></div>
+            <div class="thumb-cover index-img-height">
+              <%= link_to task.shop_type == 'Shop::Media' ? extlink(task.shop.url) : task.shop, class: 'thumb-img' do %>
+                <%= image_tag "#{task.pic}?imageMogr2/auto-orient/thumbnail/!640x480r/gravity/North/crop/640x480", alt: '' %>
+                <% if task.free %>
+                  <span class="task-mark task-mark-free"><%= home_task_mark(task.shop_type) %></span>
+                <% else %>
+                  <span class="task-mark task-mark-<%= home_task_mark(task.shop_type) %>"><%= home_task_mark(task.shop_type) %></span>
+                <% end %>
+              <% end %>
+            </div>
+
+            <div class="limit-height">
+              <%= link_to task.shop_type == 'Shop::Media' ? extlink(task.shop.url) : task.shop, class: 'link-caption' do %>
+                <h5 class="ellipsis">
+                    <%= task.title %>
+                </h5>
+                <%= render partial: 'shop/shared/complete_status', locals: {task: task} %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <% feeds.includes(:shop).each do |task| %>
+        <div class="col-sm-6 col-md-3">
+          <%= render partial: 'shop/shared/task_card', locals: {task: task} %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

@@ -1,0 +1,13 @@
+<% field_class = {class: 'form-control'}.merge!(f.options[:options_class]) %>
+
+<fieldset class="form-group row">
+  <%= f.label field, class: 'col-md-1 control-label' do -%>
+    <%= raw('<sup>*</sup>') if defined?(required) && required %>
+    <%= model.human_attribute_name(field) %>
+  <% end -%>
+
+  <div class="col-md-11">
+    <% field_class.merge!(required: true) if defined?(required) && required %>
+    <%= f.select field, options, {include_blank: (defined?(include_blank) && include_blank == false)? false : t('helpers.select.prompt')}, field_class %>
+  </div>
+</fieldset>

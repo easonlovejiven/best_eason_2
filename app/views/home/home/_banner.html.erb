@@ -1,0 +1,31 @@
+<% if @banners.present? %>
+<div class="slider-for slider-box">
+  <% @banners.each_with_index do |banner, value| %>
+    <%= link_to image_tag(banner[:pic], alt: ''), banner[:link] %>
+  <% end %>
+</div>
+<% else %>
+<div class="carousel-null">
+  <%= image_tag Core::Banner::DEFAULT_PICTURE %>
+</div>
+<% end %>
+
+<% content_for :tail do %>
+<script type="text/javascript">
+  $(function(){
+    $('.slider-for').slick({
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      autoplay: true,
+      speed: 200,
+      arrows: true,
+      fade: false,
+      prevArrow: '<button type="button" data-role="none" class="slick-prev" aria-label="Previous" tabindex="0" role="button"><i class="icons">&#xe62d;</i></button>',
+      nextArrow: '<button type="button" data-role="none" class="slick-next" aria-label="Next" tabindex="0" role="button"><i class="icons">&#xe62a;</i></button>',
+      // infinite: false,
+      touchThreshold: 100,
+      dots: true
+    });
+  })
+</script>
+<% end %>

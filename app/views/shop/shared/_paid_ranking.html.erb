@@ -1,0 +1,102 @@
+<% unless params[:action] == 'more_users' %>
+  <h5 class="h4 aside-title">
+    <% unless users.blank?  %>
+    <a href="<%= url %>" class="pull-right"><small>更多</small></a>
+    <% end %>
+    <span class="border-l">
+      任务排行榜
+    </span>
+  </h5>
+<% else %>
+  <ol class="breadcrumb">
+    <li><a href="/">首页</a></li>
+    <li class="active">任务排行榜</li>
+  </ol>
+<% end %>
+
+<div class="block-area">
+  <% unless params[:action] == 'more_users' %>
+    <div class="paid-box paid-reward">
+      <div class="row row-10">
+        <% tmp = users[0] %>
+        <% users[0] = users[1] %>
+        <% users[1] = tmp %>
+        <% 3.times do |index| %>
+          <% if users[index].present? %>
+            <% payment = users[index][0] %>
+            <% user = users[index][1] %>
+            <span class="paid-ranking-item text-center col-sm-4 col-xs-4">
+              <%= link_to home_user_path(user), class: "avatar-round" do %>
+                <%= image_tag user.picture_url.to_s + "?imageMogr2/auto-orient/thumbnail/!130x130r/gravity/North/crop/130x130", class: 'img-circle', alt: '' %>
+                <span class="rank-reward"> <i class="icons">&#xe6c1;</i> <span class="translate-middle-y"><%= index == 0 ? 2 : index == 1 ? 1 : 3 %></span> </span>
+              <% end %>
+
+              <div class="user-name ellipsis">
+                <a href="<%= home_user_path(user) %>">
+                  <%= user.name %>
+                </a>
+                <%= user_home_identity_style(user) %>
+              </div>
+              <!-- <p class="desc ellipsis"><%#= user.signature %></p> -->
+              <div class="paid-money-tag ellipsis">
+                <i class="icons">&#xe615;</i><%= payment %>
+              </div>
+            </span>
+          <% else %>
+            <span class="paid-ranking-item text-center col-sm-4 col-xs-4">
+              <%= link_to "javascript:;", class: "avatar-round" do %>
+                <%= image_tag "home/rank-default.png", class: 'img-circle', alt: '' %>
+                <span class="rank-reward"> <i class="icons">&#xe6c1;</i> <span class="translate-middle-y"><%= index == 0 ? 2 : index == 1? 1 : 3 %></span> </span>
+              <% end %>
+
+              <div class="user-name ellipsis">
+                虚位以待
+              </div>
+              <div class="paid-money-tag">
+                上榜
+              </div>
+            </span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row row-10 <%= params[:action] == 'more_users' ? 'rankings-more' : '' %>">
+    <% ((params[:action] == 'more_users' ? users : users[3..-1]) || []).each_with_index do |user, index| %>
+      <% payment = user[0] %>
+      <% user = user[1] %>
+      <div class="<%= params[:action] == 'more_users' ? 'col-sm-6' : 'col-sm-12' %>">
+        <div class="paid-box">
+          <span class="rank-no-l pull-left"> <%= index+4 %> </span>
+          <%= link_to home_user_path(user), class: "avatar-round pull-left" do %>
+            <%= image_tag user.picture_url.to_s + "?imageMogr2/auto-orient/thumbnail/!130x130r/gravity/North/crop/130x130", class: 'img-circle', alt: '' %>
+          <% end %>
+
+          <div class="paid-ranking-money ellipsis pull-right">
+            <% if defined?(kind) && kind == 'welfare'%>
+              <span class="text-gray small">
+                <%= payment %>
+              </span>
+            <% else %>
+              <span class="text-highlight-r">
+                <i class="icons">&#xe615;</i><%= payment %>
+              </span>
+            <% end %>
+          </div>
+          <div class="name-location translate-middle-y">
+            <div class="user-name ellipsis">
+              <a href="<%= home_user_path(user) %>">
+                <%= user.name %>
+              </a>
+              <%= user_home_identity_style(user) %>
+            </div>
+            <%# if user.signature %>
+              <!-- <p class="desc ellipsis"><%#= user.signature %></p> -->
+            <%# end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

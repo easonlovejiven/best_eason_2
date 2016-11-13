@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Owhat 管理后台</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= stylesheet_link_tag 'manage/application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'manage/application', 'data-turbolinks-track' => true %>
+  <%= favicon_link_tag 'home/favicon.ico', :rel => 'shortcut icon' %>
+</head>
+<body>
+  <%= render 'layouts/manage/head' %>
+  <div class="container core-container" id="container">
+    <%= bootstrap_flash %>
+    <!-- 错误提示 end/ -->
+    <%= yield %>
+  </div>
+  <%= yield :tail %>
+</body>
+</html>

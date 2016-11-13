@@ -1,0 +1,509 @@
+// task-card 任务列表项样式
+.thumbnail{
+  padding: 0;
+  border-radius: 2px;
+  border: 0;
+  .limit-height{
+    height: 130px;
+    padding: 15px;
+  }
+  a.link-caption{
+    display: block;
+    div{
+      color: #cccccc;
+      font-size: 12px;
+    }
+    span{
+      color: #888888;
+    }
+  }
+}
+.thumb-cover{
+  position: relative;
+  margin-bottom: 20px;
+  min-height: 42px;
+}
+.thumb-img{
+  display: block;
+  position: relative;
+  height: 100%;
+  overflow-y: hidden;
+  img{
+    width: 100%;
+  }
+}
+// task-card 任务列表项样式 ends
+// 应援榜跟多列表
+.tag-box{
+  padding: 20px;
+  margin-bottom: 20px;
+  line-height: 1.42857143;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  // 应援榜－更多
+  .rankings-list &{
+    position: relative;
+    height: 220px;
+    border: 0;
+    border-radius: 2px;
+  }
+  // 收货地址管理
+  .address-item &{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-radius: 4px;
+  }
+  .letter-images &{
+    border-radius: 4px;
+  }
+  // 购物车 & 确认订单
+  .task-in > &{
+    padding: 0;
+    margin-top: 20px;
+    .btn{
+      line-height: 26px;
+      border-radius: 0;
+    }
+  }
+}
+$rankingMark: 100px;
+.rank-no{
+  height: 26px;
+  max-width: 80px;
+  font-size: 14px;
+  line-height: 14px;
+  color: #ffffff;
+  background-color: #FFBF00;
+  padding: 5px 5px 5px 10px;
+  border-radius: 30px 0 0 30px;
+  position: absolute;
+  right: 0;
+  top: 28px;
+  &.rank-no-highlight{
+    background-color: #FF6B6B;
+  }
+  // 首页－应援榜
+  .index &{
+    max-width: $rankingMark;
+    border-radius: 0;
+    width: $rankingMark;
+    height: $rankingMark;
+    left: -1px;
+    top: -1px;
+    right: auto;
+    color: #fff;
+    padding: 0 20px 20px 5px;
+    background: asset-url("home/ranking-bg2.png") no-repeat left top;
+    text-shadow: 0 0 2px rgba(0,0,0,0.2);
+    span{
+      font-size: 16px;
+      display: block;
+      margin-top: 22px;
+    }
+    .popular-no{
+      font-size: 12px;
+      margin-top: 10px;
+      display: block;
+    }
+    &.ranking-no-1{
+      background-position: -($rankingMark*0) center;
+    }
+    &.ranking-no-2{
+      background-position: -($rankingMark*1) center;
+    }
+    &.ranking-no-3{
+      background-position: -($rankingMark*2) center;
+    }
+  }
+}
+.rankings-list{
+  font-size: 12px;
+  p{
+    margin-bottom: 5px;
+  }
+  .h4{
+    margin-bottom: 18px;
+    margin-top: 0;
+    font-size: 16px;
+  }
+  .limit-height{
+    height: 75px;
+    margin-top: 10px;
+  }
+}
+// 应援榜跟多列表 ends
+// 购买类任务参与用户列表
+.limit-height{
+  p{
+    min-height: 18px;
+  }
+}
+// 参与用户任务排行榜
+$paidBox: 120px;
+$paidBoxPad: 50px;
+.paid-box{
+  border: 1px solid #F0F0F0;
+  border-radius: 2px;
+  padding: 25px 40px 25px 22%;
+  margin-bottom: 16px;
+  min-height: $paidBox;
+  position: relative;
+  .name-location.translate-middle-y{
+    padding-left: 277px;
+    padding-right: $paidBox+20;
+  }
+  .rank-no-l{
+    height: $paidBox;
+    line-height: $paidBox;
+    width: 80px;
+    font-size: 48px;
+    color: #BABABA;
+    position: absolute;
+    left: 60px;
+    top: 0;
+  }
+  .user-name{
+    font-size: 16px;
+    // margin-bottom: 5px;
+    height: 22px;
+    overflow: hidden;
+  }
+  .v-lv{
+    margin-top: -3px;
+  }
+  .desc{
+    font-size: 12px;
+    color: #6A6A6A;
+  }
+
+  .paid-ranking-money{
+    font-size: 16px;
+    max-width: 90px;
+    height: 24px;
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    margin-top: -12px;
+    color: #5C5C5C;
+  }
+  &.paid-reward{
+    padding: 90px 15% 45px;
+    .user-name{
+      margin-bottom: 5px;
+      margin-top: 3px;
+    }
+  }
+
+  //
+  .rankings-more &{
+    padding-left: 40px;
+    .name-location.translate-middle-y{
+      padding-left: 180px;
+    }
+  }
+}
+$rankRewardIcon: 70px;
+.paid-ranking-item{
+  display: inline-block;
+  &:first-child{
+    &,a,.desc{
+      color: #FF5990;
+    }
+    .paid-money-tag{
+      background-color: #FF5990;
+      color: #fff;
+    }
+  }
+  &:nth-child(2){
+    margin-top: -40px;
+    &,a,.desc{
+      color: #FFC900;
+    }
+    .paid-money-tag{
+      background-color: #FFC900;
+      color: #fff;
+    }
+    .rank-reward{
+      height: $rankRewardIcon;
+      .icons{
+        font-size: $rankRewardIcon;
+        line-height: $rankRewardIcon;
+      }
+      span{
+        font-size: 32px;
+      }
+    }
+  }
+  &:nth-child(3){
+    &,a,.desc{
+      color: #00A3FF;
+    }
+    .paid-money-tag{
+      background-color: #00A3FF;
+      color: #fff;
+    }
+  }
+  .paid-money-tag{
+    display: inline-block;
+    padding: 6px 12px;
+    min-width: 100px;
+    margin: 0 auto;
+    border-radius: 2px;
+    // line-height: 32px;
+  }
+}
+$rankRewardSize: 50px;
+.rank-reward{
+  display: inline-block;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -66%);
+  transform: translate(-50%, -66%);
+  height: $rankRewardSize;
+  overflow: hidden;
+  .icons{
+    font-size: $rankRewardSize;
+    line-height: $rankRewardSize;
+  }
+  span{
+    font-size: 18px;
+    color: #fff;
+  }
+}
+// 购买类任务参与用户列表 ends
+// 免费活动、商品福利参与用户
+$welfareRankList: 8.5px;
+.welfare-ranking-list{
+  padding: (15 - $welfareRankList) 0 20px (20 - $welfareRankList);
+  // @extend .block-area;
+  background-color: #fff;
+  margin-bottom: 20px;
+  .parti-item{
+    float: left;
+    padding: $welfareRankList;
+  }
+  .parti-more-btn{
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    line-height: 40px;
+    border-radius: 50%;
+    color: #fff;
+    background-color: #bbbbbb;
+    opacity: 0.8;
+    &:hover{
+      opacity: 1;
+    }
+  }
+}
+// 免费活动、商品福利参与用户 ends
+// 关注按钮
+.checkbox-stars{
+  margin-bottom: 0;
+  .btn{
+    font-size: 12px;
+    width: 100%;
+    min-width: 56px;
+    padding: 6px;
+    border-radius: 2px;
+  }
+  &.checkbox-stars-sm{
+    .btn{
+      padding: 3px 2px 2px;
+      min-width: 50px;
+    }
+  }
+  .rankings-list &{
+    width: 100%;
+    margin-top: 12px;
+  }
+  .aside-area &{
+    margin-top: 14px;
+  }
+  // 详情页右侧边栏－关注按钮
+  .avatar-head &.pull-right{
+    position: relative;
+    top: 10px;
+  }
+}
+// 关注按钮 ends
+
+// 用户信息－头像、昵称、描述、关注按钮
+$avatarAside: 44px;
+$avatarDistance: $avatarAside+14;
+.avatar-head{
+  margin-bottom: 16px;
+  display: block;
+  position: relative;
+  // 评论
+  .comments-list &:last-child{
+    .name-location{
+      border-bottom: 0;
+    }
+  }
+  // 首页-右侧用户信息
+  .current-user &{
+    margin-bottom: 10px;
+  }
+}
+.name-location{
+  padding-left: $avatarDistance;
+  padding-right: $avatarDistance;
+  .title{
+    padding: 5px 0 4px;
+    margin: 0;
+  }
+  p{
+    margin: 10px 0 0;
+    font-size: 12px;
+  }
+  &.name-location-ml{
+    padding-left: 0;
+    margin-left: $avatarDistance;
+  }
+  &.name-location-xml{
+    padding-left: 0;
+    margin-left: $avatarDistance+6;
+  }
+  .has-bordered > &{
+    height: 86px;
+    font-size: 14px;
+    border-bottom: 1px solid $colorGrey;
+  }
+  // 消息中心
+  .notifacations-list &{
+    height: 70px;
+    font-size: 16px;
+  }
+  // 首页-发现
+  .current-user &{
+    padding-left: 95px;
+    padding-right: 0;
+    min-height: 85px;
+    .follow-count{
+      font-size: 14px;
+    }
+  }
+  // 评论
+  .comments-list &{
+    padding: 0 0 20px 0;
+    margin-left: 54px;
+    height: auto;
+  }
+  .reply-item &{
+    padding-left: 54px;
+    margin-left: 0;
+  }
+  // 话题详情
+  .topics &{
+    height: auto;
+  }
+}
+// 用户信息－头像、昵称、描述、关注按钮 ends
+
+// 侧边栏任务推荐列表
+.media-list{
+  background-color: #fff;
+  font-size: 12px;
+  margin-bottom: 20px;
+  .media{
+    display: block;
+    &:hover{
+      color: inherit;
+    }
+  }
+  .media-left{
+    width: 115px;
+    padding-right: 15px;
+    img{
+      display: block;
+    }
+  }
+  .media-title{
+    height: 44px;
+    font-size: 16px;
+    line-height: 22px;
+    margin: 0 0 16px;
+  }
+}
+// 侧边栏任务推荐列表 ends
+.block-area{
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  &.block-area-lg{
+    padding: 50px 20px;
+  }
+  &.block-area-sm{
+    padding: 15px;
+  }
+  &.block-area-radius{
+    border-radius: 4px;
+  }
+  // 发任务
+  .publish-enter &{
+    padding-bottom: 0;
+  }
+}
+// row-10
+$rowSm: 10px;
+.row-10{
+  &.row,
+  .form-horizontal .form-group{
+    margin-left: -$rowSm;
+    margin-right: -$rowSm;
+  }
+  >.col-xs-1,
+  >.col-sm-1,
+  >.col-md-1,
+  >.col-lg-1,
+  >.col-xs-2,
+  >.col-sm-2,
+  >.col-md-2,
+  >.col-lg-2,
+  >.col-xs-3,
+  >.col-sm-3,
+  >.col-md-3,
+  >.col-lg-3,
+  >.col-xs-4,
+  >.col-sm-4,
+  >.col-md-4,
+  >.col-lg-4,
+  >.col-xs-5,
+  >.col-sm-5,
+  >.col-md-5,
+  >.col-lg-5,
+  >.col-xs-6,
+  >.col-sm-6,
+  >.col-md-6,
+  >.col-lg-6,
+  >.col-xs-7,
+  >.col-sm-7,
+  >.col-md-7,
+  >.col-lg-7,
+  >.col-xs-8,
+  >.col-sm-8,
+  >.col-md-8,
+  >.col-lg-8,
+  >.col-xs-9,
+  >.col-sm-9,
+  >.col-md-9,
+  >.col-lg-9,
+  >.col-xs-10,
+  >.col-sm-10,
+  >.col-md-10,
+  >.col-lg-10,
+  >.col-xs-11,
+  >.col-sm-11,
+  >.col-md-11,
+  >.col-lg-11,
+  >.col-xs-12,
+  >.col-sm-12,
+  >.col-md-12,
+  >.col-lg-12{
+    padding-left: $rowSm;
+    padding-right: $rowSm;
+  }
+}

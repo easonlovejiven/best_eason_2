@@ -1,0 +1,58 @@
+<div class="container welfare">
+  <ol class="breadcrumb">
+    <li><a href="/">首页</a></li>
+    <li class="active">福利</li>
+  </ol>
+  <div class="head-highline onav-line onav-line-sm">
+    <a href="<%= welfare_letters_path(order: params[:order]) %>" class="item <%= 'active' unless %w(event product letter voice).include?(params[:type].to_s) %>">全部福利</a>
+    <%= link_to "活动福利", welfare_letters_path(type: 'event', order: params[:order]), class: "item #{'active' if params[:type] == 'event'}" %>
+    <%= link_to "商品福利", welfare_letters_path(type: 'product', order: params[:order]), class: "item #{'active' if params[:type] == 'product'}" %>
+    <%= link_to "图片福利", welfare_letters_path(type: 'letter', order: params[:order]), class: "item #{'active' if params[:type] == 'letter'}" %>
+    <%= link_to "语音福利", welfare_letters_path(type: 'voice', order: params[:order]), class: "item #{'active' if params[:type] == 'voice'}" %>
+
+    <span class="pull-right dropdown hide-sm">
+      <a class="item" href="javascript:;" data-toggle="dropdown">排序 <i class="dropdown-arrow"></i></a>
+      <ul class="dropdown-menu">
+        <li>
+          <%= link_to '推荐', welfare_letters_path(type: params[:type], order: 'home'), class: "#{'active' unless %w(time hot).include?(params[:order].to_s)}"%>
+        </li>
+        <li>
+          <%= link_to '时间', welfare_letters_path(type: params[:type], order: 'time'), class: "#{'active' if params[:order] == 'time'}"%>
+        </li>
+        <li><%= link_to '人气', welfare_letters_path(type: params[:type], order: 'hot'), class: "#{'active' if params[:order] == 'hot'}" %></li>
+      </ul>
+    </span>
+  </div>
+  <div class="clearfix show-sm">
+    <div class="head-highline">
+      <span class="item small text-gray">排序</span>
+      <%= link_to '推荐', welfare_letters_path(type: params[:type], order: 'home'), class: "item small #{'active' unless %w(time hot).include?(params[:order].to_s)}"%>
+      <%= link_to '时间', welfare_letters_path(type: params[:type], order: 'time'), class: "item small #{'active' if params[:order] == 'time'}"%>
+      <%= link_to '人气', welfare_letters_path(type: params[:type], order: 'hot'), class: "item small #{'active' if params[:order] == 'hot'}" %>
+    </div>
+  </div>
+    <% if @welfares.blank? %>
+    <div class="null-content">
+      <div class="text-center translate-middle-y">
+        <p>
+          <%= image_tag 'home/null-content.png', alt: '' %>
+        </p>
+        <p>您还没有打开过福利喔！快去参加吧!</p>
+        <%= link_to "去首页看看", "/", class: "btn btn-sm btn-default" %>
+      </div>
+    </div>
+    <% else %>
+    <div class="list">
+      <div class="row row-10">
+        <% @welfares.each do |welfare| %>
+        <div class="col-sm-6 col-md-3">
+          <%= render partial: 'shop/shared/task_card', locals: {task: welfare} %>
+        </div>
+        <% end %>
+      </div>
+      <div class="text-center">
+        <%= will_paginate(@welfares) %>
+      </div>
+    </div>
+    <% end %>
+</div>

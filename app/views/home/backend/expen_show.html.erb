@@ -1,0 +1,87 @@
+<div class="container m-container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <div class="block-area">
+        <table class="table table-sm table-nobordered">
+          <tr class="form-group">
+            <th for="" class="col-md-2">订单编号</th>
+            <td>
+              <%= @expen.order_no %>
+            </td>
+          </tr>
+          <tr class="form-group">
+            <th for="" class="col-md-2">商品名称</th>
+            <td>
+              <a href="#" class="text-success"><%= @expen.resource.title %></a>
+            </td>
+          </tr>
+          <tr class="form-group">
+            <th for="" class="col-md-2">商品类型</th>
+            <td>
+              <a href="#" class="text-success"><%= @expen.ticket_type.category %>:<%= @expen.ticket_type.second_category %></a>
+            </td>
+          </tr>
+          <tr class="form-group">
+            <th for="" class="col-md-2">数量</th>
+            <td>
+              <%= @expen.quantity %>
+            </td>
+          </tr>
+          <tr class="form-group">
+            <th for="" class="col-md-2">用户</th>
+            <td>
+              <%= @expen.try(:user_name) || @user.name %>
+            </td>
+          </tr>
+          <% if @expen.resource_type == 'Welfare::Product'%>
+            <tr class="form-group">
+              <th for="" class="col-md-2">手机号</th>
+              <td>
+                <%= @expen.try(:phone)%>
+              </td>
+            </tr>
+            <tr class="form-group">
+              <th for="" class="col-md-2">地址</th>
+              <td>
+                <%= @expen.try(:address) %>
+              </td>
+            </tr>
+          <% end %>
+
+          <tr class="form-group">
+            <th for="" class="col-md-2">附加信息</th>
+            <td>
+              <table>
+                <% @ext_info_values.each do |ext_info_value|%>
+                  <tr>
+                    <th class="col-md-2">
+                      <%= @ext_infos[ext_info_value.ext_info_id]%>
+                    </th>
+                    <td>
+                      <%= ext_info_value.value%>
+                    </td>
+                  </tr>
+                <% end%>
+              </table>
+            </td>
+          </tr>
+          <tr class="form-group">
+            <th for="" class="col-md-2">付款时间</th>
+            <td>
+              <%= @expen.created_at %>
+            </td>
+          </tr>
+          <tr class="form-group">
+            <th for="" class="col-md-2">实付金额</th>
+            <td>
+              <%= @expen.amount %>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

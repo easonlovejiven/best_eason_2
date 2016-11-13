@@ -1,0 +1,48 @@
+<h3><%= "#{model.model_name.human}#{t(:index)}" %> (<%= @records.total_entries %>)</h3>
+<% owhat_product_types = { 'Shop::Funding' => "应援", 'Shop::Event' => "活动", 'Shop::Product' => "商品", 'Welfare::Product' => "免费商品", 'Welfare::Event' => "免费活动" } %>
+
+<div class="well well-sm">
+  <!-- 用户搜索 -->
+  <%= form_tag request.path, method: 'get', id: 'search_form', class: 'form-inline clearfix' do %>
+    <%= render 'manage/shared/search/basic', field: 'id' %>
+    <%= render 'manage/shared/search/page' %>
+    <div class="form-group">
+      <%= submit_tag t(:search), name: nil, class: 'btn btn-primary' %>
+      <%#= link_to t(:reset), request.path, class: 'btn btn-info', data: {remote: true} %>
+    </div>
+  <% end %>
+</div>
+<!-- 用户列表 -->
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <% %i{ id user_id task_id task_type file_name created_at }.each do |field| %>
+        <th><%= model.human_attribute_name(field) %></th>
+      <% end %>
+      <th><%= t 'actions' %></th>
+      <th><%= t 'download' %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @records.includes(:user).each do |record| %>
+      <tr>
+        <td><%= record.id %></td>
+        <td><%= record.user.try(:name) %></td>
+        <td><%= record.task_id %></td>
+        <td><%= owhat_product_types[record.task_type] %></td>
+        <td><%= record.name %>
+        <td><%= record.created_at.to_s(:db) %></td>
+        <td>
+          <%= render 'manage/shared/actions', record: record %>
+        </td>
+        <td>
+          <%= render 'manage/shared/download', record: record %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="dt-toolbar-footer">
+  <%= render 'manage/shared/pagination', records: @records %>
+</div>

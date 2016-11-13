@@ -1,0 +1,209 @@
+<div class="container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <%= render 'shop/shared/crumbs' %>
+
+      <%= simple_form_for @funding, url: shop_funding_path, method: :put, html: { class: "publish-form validate-form js-checkForm" } do |f| %>
+        <div class="hidden_field">
+          <%= f.hidden_field :user_id, value: @current_user.id %>
+          <%= f.hidden_field :creator_id, value: @current_user.id %>
+          <%= f.hidden_field :shop_category, value: "shop_fundings"  %>
+        </div>
+        <div class="form-group">
+          <label class="">标题 <span class="text-highlight-r">*</span><small class="text-gray">(最多输入30个字)</small></label>
+          <%= f.input :title, label: false, placeholder: '请勿包含 ＃＊<> & % ^‘等字符', as: :text, class: "form-control", input_html: { rows: "2", maxlength: "30", class: "js_danger_chara js-emoji" } %>
+        </div>
+        <div class="form-group">
+          <label class="">应援目标 <span class="text-highlight-r">*</span><small class="text-gray">(最大应援目标9999999999)</small></label>
+          <%= f.input :funding_target, label: false, placeholder: 200000, as: :integer, class: "form-control", input_html: { rows: "1", min: "1", max: "9999999999", step: "1", class: "js_danger_val" } %>
+        </div>
+        <div class="form-group">
+          <label class="">描述 <span class="text-highlight-r">*</span><small class="text-gray">(最多输入5000个字)</small></label>
+          <%= f.input :description, label: false, placeholder: '填写活动详细的描述信息上半部分', as: :text, class: "form-control", input_html: { rows: "12", maxlength: "5000", class: "js_danger_val js-emoji" } %>
+        </div>
+        <div class="form-group">
+          <label class="">描述图片<small class="text-gray">(支持jpg/jpeg/gif/png格式,大小 &lt; 10M)</small></label>
+          <div class="">
+            <%= f.input :descripe_cover, label: false, placeholder: '上传图片', class: "form-control", input_html:{class:"js_describe_img"} %>
+          </div>
+          <div class="thumb-img hide">
+            <%= image_tag 'home/default-square-sm.png', alt: '' %>
+            支持jpg/gif/png格式，RGB模式，单张（长 &lt; 8000，宽 &lt; 2000，大小 &lt; 10M）
+          </div>
+        </div>
+        <div class="form-group js-tagbox">
+          <label class="">图片1 <span class="text-highlight-r">*</span><small class="text-gray">(支持jpg/jpeg/gif/png格式,大小 &lt; 2M,建议上传640*480px)</small></label>
+          <div class="form-group">
+            <% unless @funding.cover_url(1).present? %>
+              <label class="control-label">无</label>
+            <% else %>
+              <%= link_to (image_tag @funding.cover_url(1), width: 200, height: 200, alt: ""), @funding.cover_url(1), target: '_blank' %>
+            <% end %>
+            <%= f.hidden_field :key1, label: false, placeholder: '上传图片', class: "js-name form-control js-checkName required" %>
+            <p class="js-textError text-highlight-r"></p>
+            <div class="form-control js-photobtn1">上传图片</div>
+          </div>
+          <div class="js-upload-photo-1 hide">
+            <div class="thumb-img-add topics-btn js-upload-photoadd-1"></div>
+          </div>
+        </div>
+        <!-- 图片2 -->
+        <div class="form-group js-tagbox">
+          <label class="">图片2<small class="text-gray">(支持jpg/jpeg/gif/png格式,大小 &lt; 2M,建议上传640*480px)</small></label>
+          <div class="form-group">
+            <% unless @funding.cover_url(2).present? %>
+              <label class="control-label">无</label>
+            <% else %>
+              <%= link_to (image_tag @funding.cover_url(2), width: 200, height: 200, alt: ""), @funding.cover_url(1), target: '_blank' %>
+            <% end %>
+            <%= f.hidden_field :key2, label: false, placeholder: '上传图片', class: "js-name form-control " %>
+            <div class="form-control js-photobtn2">上传图片</div>
+          </div>
+          <div class="js-upload-photo-2 hide">
+            <div class="thumb-img-add topics-btn js-upload-photoadd-2"></div>
+          </div>
+        </div>
+        <div class="form-group js-tagbox">
+          <label class="">图片3<small class="text-gray">(支持jpg/jpeg/gif/png格式,大小 &lt; 2M,建议上传640*480px)</small></label>
+          <div class="form-group">
+            <% unless @funding.cover_url(3).present? %>
+              <label class="control-label">无</label>
+            <% else %>
+              <%= link_to (image_tag @funding.cover_url(3), width: 200, height: 200, alt: ""), @funding.cover_url(1), target: '_blank' %>
+            <% end %>
+            <%= f.hidden_field :key3, label: false, placeholder: '上传图片', class: "js-name form-control " %>
+            <div class="form-control js-photobtn3">上传图片</div>
+            <!-- <label class="input-group-addon" for="set-cover-3">
+              <input class="set-cover" type="radio" name="set-cover" id="set-cover-3" value="">
+              <button type="button" class="btn">设为封面</button>
+            </label> -->
+          </div>
+          <div class="js-upload-photo-3 hide">
+            <div class="thumb-img-add topics-btn js-upload-photoadd-3"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="">活动时间 <span class="text-highlight-r">*</span></label>
+          <div class="form-inline">
+            <span class="datetime-wrap"><input type="text" value="<%= @funding.start_at%>" id="eventDateStart" name="shop_funding[start_at]" class="form-control required" placeholder="活动开始时间"></span>
+            至
+            <span class="datetime-wrap"><input type="text" value="<%= @funding.end_at%>" id="eventDateEnd" name="shop_funding[end_at]" class="form-control required" placeholder="活动结束时间"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="">购买时间 <span class="text-highlight-r">*</span></label>
+          <div class="form-inline">
+            <span class="datetime-wrap"><input type="text" value="<%= @funding.sale_start_at%>" id="sellDateStart" name="shop_funding[sale_start_at]" class="form-control required" placeholder="购买开始时间"></span>
+            至
+            <span class="datetime-wrap"><input type="text" value="<%= @funding.sale_end_at%>" id="sellDateEnd" name="shop_funding[sale_end_at]" class="form-control required" placeholder="购买结束时间"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="">地址<small class="text-gray">(最多输入20个数字)</small></label>
+          <%= f.input :address, label: false, placeholder: '北京市朝阳区', as: :text, class: "form-control", input_html: { rows: "1", maxlength: "20",class: "js-emoji" } %>
+        </div>
+        <div class="form-group">
+          <label class="">联系电话 <span class="text-highlight-r">*</span><small class="text-gray">(只能输入数字，最多输入30个数字)</small></label>
+          <%= f.input :mobile, label: false, placeholder: '请输入您的手机号', as: :text, class: "form-control", input_html: { rows: "1", maxlength: "30" } %>
+        </div>
+        <div class="form-group">
+          <label class="">关联明星 <span class="text-highlight-r">*</span><small class="text-gray">(最多关联10位明星)</small></label>
+          <%= render partial: 'shop/shared/select2_find_tag', locals: {f: f, field: :star_list, options: { selects: Core::Star.where(published: true).select("id, name"), multiple_class: true, auto_suppl: true, auto_url: "/manage/shop/get_star?id=#{@funding.shop_task.try(:id)}", url: '/manage/shop/search_star', tag: false } } %>
+        </div>
+
+        <div class="form-group">
+          <label>应援所需填寄语</label>
+          <table class="table table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th width="60%">名称<small class="text-gray">(最多输入20个数字)</small></th>
+                <th width="20%">必填?</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%= f.simple_fields_for :ext_infos do |ext_info| %>
+                <%= render partial: 'ext_info_fields', locals: {f: ext_info} %>
+              <% end %>
+            </tbody>
+          </table>
+          <%= link_to_add_association '添加报名信息', f, :ext_infos,
+            class: 'btn btn-default',
+            data: {
+              'association-insertion-method' => 'append', 'association-insertion-traversal' => 'prev', 'association-insertion-node' => 'table'} %>
+        </div>
+
+        <% unless @funding.shop_task.published == true %>
+          <div class="form-group">
+            <label>价格信息<span class="text-highlight-r">*</span></label>
+            <div class="table-responsive table-new-price js-price-infos">
+              <table class="table table-bordered table-condensed">
+                <thead>
+                  <tr>
+                    <th width="15%">价格分类<small class="text-gray">(最多输入10个数字)</small></th>
+                    <th width="10%">价格二级分类<small class="text-gray">(最多输入10个数字)</small></th>
+                    <!-- <th width="10%">原价</th> -->
+                    <th width="10%">现价<small class="text-gray">(可输入最大数字为65000)</small></th>
+                    <th width="10%">是否限购<small class="text-gray">(不勾选库存数量不生效,即不限购)</small></th>
+                    <th width="10%">库存数量<small class="text-gray">(最多输入9位数字)</small></th>
+                    <th width="10%">是否每人限购<small class="text-gray">(不勾选每人限购数量不生效)</small></th>
+                    <th width="10%">每人限购数量<small class="text-gray">(最多输入9位数字)</small></th>
+                    <th width="10%">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <%= f.simple_fields_for :ticket_types do |ticket_type| %>
+                    <%= render partial: 'ticket_type_fields', locals: {f: ticket_type} %>
+                  <% end %>
+                </tbody>
+              </table>
+              <%= link_to_add_association '添加新的价格种类', f, :ticket_types,
+                class: 'btn btn-default',
+                data: {
+                  'association-insertion-method' => 'append', 'association-insertion-traversal' => 'prev', 'association-insertion-node' => 'table'} %>
+
+              <% unless @funding.errors[:ticket_types].blank? %>
+                <div class="text-highlight-r" style="margin-top: 3px;"><%= @funding.errors[:ticket_types].join(', ') %></div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="form-group">
+          <div class="checkbox">
+            <label>
+              <%= f.check_box :is_share %>
+              同时作为分享任务发布
+            </label>
+          </div>
+        </div>
+        <% unless @funding.shop_task.published == true %>
+<!--           <div class="form-group">
+            <div class="checkbox">
+              <label>
+                <%#= f.check_box :free, class: 'js-isFree' %>
+                是否免费
+              </label>
+            </div>
+          </div> -->
+        <% end %>
+        <div class="form-group">
+          <div class="checkbox">
+            <label>
+              <%= f.check_box :need_address, class: 'js-isFree' %>
+              是否需要应援者填写地址
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group text-right">
+          <%= f.button :submit, @funding.shop_task.try(:published) == true ? '保存' : "预览", class: 'btn btn-highlight-outline space-lg-hor js-checkButton' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

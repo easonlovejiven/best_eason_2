@@ -1,0 +1,18 @@
+<% kindeditor_tag field, 'default content value' %>
+<% field_class = {class: 'form-control', :as => :kindeditor, :label => false, :input_html => {}.merge(kindeditor_option) }.merge!(f.options[:options_class]) %>
+<fieldset class="form-group row">
+  <%= f.label field, class: 'col-md-1 control-label' do -%>
+    <%= raw('<sup>*</sup>') if defined?(required) && required %>
+    <%= model.human_attribute_name(field) %>
+  <% end -%>
+
+  <div class="col-md-11">
+    <% field_class.merge!(required: true) if defined?(required) && required %>
+    <%= f.input field, field_class %>
+    <% if defined?(p_field) && p_field %>
+      <p class="help-block">
+        <%= p_field %>
+      </p>
+    <% end %>
+  </div>
+</fieldset>

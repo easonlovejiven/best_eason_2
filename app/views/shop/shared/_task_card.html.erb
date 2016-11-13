@@ -1,0 +1,53 @@
+<!-- 首页 -->
+<div class="thumbnail">
+  <div class="thumb-cover index-img-height">
+    <% if task.category == 'task' %>
+      <%= link_to task.shop_type == 'Shop::Media' ? shop_media_path(task.shop) : task.shop, class: 'thumb-img', target: "_blank" do %>
+        <img src="<%= task.web_pic(false) %>" alt=""/>
+        <% if task.free %>
+          <span class="task-mark task-mark-free"><%= home_task_mark(task.shop_type) %></span>
+        <% else %>
+          <span class="task-mark task-mark-<%= home_task_mark(task.shop_type) %>"><%= home_task_mark(task.shop_type) %></span>
+        <% end %>
+      <% end %>
+    <% else %>
+      <%= link_to task.shop, class: 'thumb-img', target: "_blank" do %>
+        <img src="<%= task.web_pic(false) %>" alt=""/>
+        <span class="task-mark task-mark-<%= home_task_mark(task.shop_type) %>"><%= home_task_mark(task.shop_type) %></span>
+      <% end %>
+    <% end %>
+    <!-- 头像 -->
+    <div class="avatar-round avatar-line">
+      <%= link_to home_user_path(task.user), class: '' do %>
+        <%= image_tag task.tries(:user, :picture_url).blank? ? 'home/user/user.jpeg' : task.tries(:user, :picture_url).to_s + '?imageMogr2/auto-orient/thumbnail/!100x100r/gravity/Center/crop/100x100', class: 'img-circle' %>
+        <span class="user-name ellipsis <%= task.user.verified ? '' : 'user-no-icon' %>">
+          <%= task.tries(:user, :name) %>
+          <% if task.tries(:user, :verified) %>
+            <%= user_identity_style(task.user)%>
+          <% end %>
+        </span>
+      <% end if task.user %>
+    </div>
+  </div>
+  <div class="limit-height">
+    <% if task.category == 'task' || (task.shop_type == 'Welfare::Letter' && (task.task_state["#{task.shop_type.to_s}:#{@current_user.try(:id)}"].to_i > 0 || @current_user.try(:id) == task.user_id)) %>
+      <%= link_to task.shop_type == 'Shop::Media' ? shop_media_path(task.shop) : task.shop, class: 'thumb-img', target: "_blank" do %>
+        <h5 class="ellipsis">
+          <%= task.title %>
+        </h5>
+        <% if @current_user %>
+          <%= render partial: 'shop/shared/complete_status', locals: {task: task} %>
+        <% end %>
+      <% end %>
+    <% else %>
+      <%= link_to task.shop, class: 'link-caption' do %>
+        <h5 class="ellipsis">
+          <%= task.title %>
+        </h5>
+        <% if @current_user %>
+          <%= render partial: 'shop/shared/complete_status', locals: {task: task} %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

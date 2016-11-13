@@ -1,0 +1,245 @@
+<div class="navbar navbar-fixed-top has-subnav">
+  <div class="container">
+    <a class="navbar-brand" href="<%= @current_user.try(:identity) == 'expert' ? '/home/backend/manage' : '/home' %>">
+      <img style="display: inline; margin-right: 10px;" height="23px" src="http://owhat.qiniudn.com/assets/logo-4fa22259a11abad745ef71b818ebd6e95cf6a99f35e71b7a3f6948fc5dcec545.png" alt="">
+      管理后台
+    </a>
+    <% if @current_user %>
+      <div class="user-repo">
+        <span class="user-repo-item">
+          <%= t('.hello') %> ,&nbsp;
+          <%= link_to_if can?(:show, @current_user), @current_user.tries(:editor, :name) || @current_user.name, [:manage, :manage, @current_user] %>
+        </span>
+        <span class="user-repo-item">&nbsp;|&nbsp;</span>
+        <%= link_to t('.log_out'), session_path(0, redirect: request.fullpath), method: 'delete', confirm: ' ', class: 'user-repo-item' %>
+      </div>
+    <% end %>
+  </div>
+  <div class="container-fluid navbar navbar-default" style="margin-bottom: 0;">
+    <div class="container">
+      <button class="navbar-toggle" data-target=".navbar-responsive-collapse" data-toggle="collapse" type="button">
+        <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+      </button>
+      <!-- <a class="navbar-brand" href="/manage">Owhat管理后台</a> -->
+      <div class="navbar-collapse collapse navbar-responsive-collapse supernav">
+        <ul class="nav navbar-nav">
+          <li class="<%= params[:controller].match(/^manage\/statistics/) ? 'active' : '' %>">
+            <%= link_to "数据统计", manage_statistics_path %>
+          </li>
+          <li class="<%= params[:controller].match(/^manage\/shop/) ? 'active' : '' %>">
+            <%= link_to "任务", manage_shop_root_path %>
+            <!-- 任务管理 -->
+            <ul class="nav nav-pills subnav">
+              <% if can?(:show, Shop::Event)%>
+                <li class="<%= params[:controller].match(/^manage\/shop\/events/) ? 'active' : '' %>">
+                  <%= link_to "活动", manage_shop_events_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Shop::Product)%>
+                <li class="<%= params[:controller].match(/^manage\/shop\/products/) ? 'active' : '' %>">
+                  <%= link_to "商品", manage_shop_products_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Shop::Funding)%>
+                <li class="<%= params[:controller].match(/^manage\/shop\/fundings/) ? 'active' : '' %>">
+                  <%= link_to "应援", manage_shop_fundings_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Shop::Subject)%>
+                <li class="<%= params[:controller].match(/^manage\/shop\/subjects/) ? 'active' : '' %>">
+                  <%= link_to "直播", manage_shop_subjects_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Shop::Topic)%>
+                <li class="<%= params[:controller].match(/^manage\/shop\/topics/) ? 'active' : '' %>">
+                  <%= link_to "话题", manage_shop_topics_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Shop::TopicDynamic)%>
+                <li class="<%= params[:controller].match(/^manage\/shop\/topic_dynamics/) ? 'active' : '' %>">
+                  <%= link_to "动态", manage_shop_topic_dynamics_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Shop::FreightTemplate)%>
+                <li class="<%= params[:controller].match(/^manage\/shop\/freight_templates/) ? 'active' : '' %>">
+                  <%= link_to "运费模板", manage_shop_freight_templates_path %>
+                </li>
+              <% end %>
+
+              <% if can?(:show, Shop::Task)%>
+                <li class="<%= params[:controller].match(/^manage\/shop\/tasks/) ? 'active' : '' %>">
+                  <%= link_to "任务", manage_shop_tasks_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Shop::Order)%>
+                <li class="<%= params[:controller].match(/^manage\/shop\/order_items/) ? 'active' : '' %>">
+                  <%= link_to "商品活动订单", manage_shop_order_items_path %>
+                </li>
+              <% end %>
+
+              <% if can?(:show, Shop::FundingOrder)%>
+                <li class="<%= params[:controller].match(/^manage\/shop\/funding_orders/) ? 'active' : '' %>">
+                  <%= link_to "应援订单", manage_shop_funding_orders_path %>
+                </li>
+              <% end %>
+
+              <% if can?(:show, Shop::TaskImage)%>
+                <li class="<%= params[:controller].match(/^manage\/shop\/task_images/) ? 'active' : '' %>">
+                  <%= link_to "推荐图", manage_shop_task_images_path %>
+                </li>
+              <% end %>
+
+              <% if can?(:show, Shop::Media)%>
+                <li class="<%= params[:controller].match(/^manage\/shop\/medias/) ? 'active' : '' %>">
+                  <%= link_to "精选", manage_shop_medias_path %>
+                </li>
+              <% end %>
+
+            </ul>
+          </li>
+
+          <li class="<%= (params[:controller].match(/^manage\/welfare/) || params[:controller] == 'manage/core/expens') ? 'active' : '' %>">
+            <%= link_to "福利", manage_welfare_root_path %>
+            <!-- 用户管理 -->
+            <ul class="nav nav-pills subnav">
+              <% if can?(:show, Welfare::Paper)%>
+                <li class="<%= params[:controller].match(/^manage\/welfare\/papers/) ? 'active' : '' %>">
+                  <%= link_to "信纸", manage_welfare_papers_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Welfare::Letter)%>
+                <li class="<%= params[:controller].match(/^manage\/welfare\/letters/) ? 'active' : '' %>">
+                  <%= link_to "图片", manage_welfare_letters_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Welfare::Event)%>
+                <li class="<%= params[:controller].match(/^manage\/welfare\/events/) ? 'active' : '' %>">
+                  <%= link_to "免费活动", manage_welfare_events_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Welfare::Product)%>
+                <li class="<%= params[:controller].match(/^manage\/welfare\/products/) ? 'active' : '' %>">
+                  <%= link_to "免费商品", manage_welfare_products_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Core::Expen)%>
+                <li class="<%= params[:controller].match(/^manage\/core\/expens/) ? 'active' : '' %>">
+                  <%= link_to "免费商品活动订单", manage_core_expens_path %>
+                </li>
+              <% end %>
+            </ul>
+          </li>
+          <li class="<%= (params[:controller].match(/^manage\/core/) && params[:controller] != 'manage/core/expens') ? 'active' : '' %>">
+            <%= link_to "运营", manage_core_root_path %>
+            <!-- 用户管理 -->
+            <ul class="nav nav-pills subnav">
+              <% if can?(:show, Core::User)%>
+                <li class="<%= params[:controller].match(/^manage\/core\/users/) ? 'active' : '' %>">
+                  <%= link_to "用户", manage_core_users_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Core::Star)%>
+                <li class="<%= params[:controller].match(/^manage\/core\/stars/) ? 'active' : '' %>">
+                  <%= link_to "明星", manage_core_stars_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Core::Identity)%>
+                <li class="<%= params[:controller].match(/^manage\/core\/identities/) ? 'active' : '' %>">
+                  <%= link_to "身份", manage_core_identities_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Core::HotRecord)%>
+                <li class="<%= params[:controller].match(/^manage\/core\/hot_records/) ? 'active' : '' %>">
+                  <%= link_to "热搜词管理", manage_core_hot_records_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Core::Recording)%>
+                <li class="<%= params[:controller].match(/^manage\/core\/recordings/) ? 'active' : '' %>">
+                  <%= link_to "搜索记录", manage_core_recordings_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Core::Ad)%>
+                <li class="<%= params[:controller].match(/^manage\/core\/ads/) ? 'active' : '' %>">
+                  <%= link_to "广告", manage_core_ads_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Core::Banner)%>
+                <li class="<%= (params[:controller].match(/^manage\/core\/banners/) && params[:action] != 'show_current_order') ? 'active' : '' %>">
+                  <%= link_to "焦点图", manage_core_banners_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Core::Banner)%>
+                <li class="<%= (params[:controller].match(/^manage\/core\/banners/) && params[:action] == 'show_current_order') ? 'active' : '' %>">
+                  <%= link_to "焦点图预览", show_current_order_manage_core_banners_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Core::Finding)%>
+                <li class="<%= params[:controller].match(/^manage\/core\/findings/) ? 'active' : '' %>">
+                  <%= link_to "发现", manage_core_findings_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Core::Image)%>
+                <li class="<%= params[:controller].match(/^manage\/core\/images/) ? 'active' : '' %>">
+                  <%= link_to "背景图", manage_core_images_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Core::WithdrawOrder)%>
+                <li class="<%= params[:controller].match(/^manage\/core\/withdraw_orders/) ? 'active' : '' %>">
+                  <%= link_to "提现管理", manage_core_withdraw_orders_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Core::ExportedOrder)%>
+                <li class="<%= params[:controller].match(/^manage\/core\/exported_orders/) ? 'active' : '' %>">
+                  <%= link_to "导出订单", manage_core_exported_orders_path %>
+                </li>
+              <% end %>
+            </ul>
+          </li>
+          <li class="<%= params[:controller].match(/^manage\/manage/) ? 'active' : '' %>">
+            <%= link_to "管理", manage_manage_root_path %>
+            <!-- 管理 -->
+            <ul class="nav nav-pills subnav">
+              <% if can?(:show, Manage::Editor)%>
+                <li class="<%= params[:controller].match(/^manage\/manage\/editors/) ? 'active' : '' %>">
+                  <%= link_to "编辑", manage_manage_editors_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Manage::Role)%>
+                <li class="<%= params[:controller].match(/^manage\/manage\/roles/) ? 'active' : '' %>">
+                  <%= link_to "角色", manage_manage_roles_path %>
+                </li>
+              <% end %>
+              <% if can?(:show, Manage::Grant)%>
+                <li class="<%= params[:controller].match(/^manage\/manage\/grants/) ? 'active' : '' %>">
+                  <%= link_to "授予", manage_manage_grants_path %>
+                </li>
+              <% end %>
+            </ul>
+          </li>
+          <li class="<%= params[:controller].match(/^manage\/notification/) ? 'active' : '' %>">
+            <%= link_to "广播消息", manage_notification_sends_path(where: {send_status: 1}) %>
+            <!-- 管理 -->
+            <ul class="nav nav-pills subnav">
+              <% Notification::Send::SEND_STATUS.invert.map do |key, val| %>
+                <li class="<%= (params[:where] || {})[:send_status].to_i == val ? 'active' : '' %>">
+                  <%= link_to key, manage_notification_sends_path(where: {send_status: val}) %>
+                </li>
+              <% end %>
+            </ul>
+          </li>
+          <li class="<%= params[:controller].match(/^manage\/qa/) ? 'active' : '' %>">
+            <%= link_to "死忠粉任务", manage_qa_posters_path %>
+            <!-- 管理 -->
+            <ul class="nav nav-pills subnav">
+              <% if can?(:show, Qa::Poster)%>
+                <li class="<%= params[:controller].match(/^manage\/qa\/posters/) ? 'active' : '' %>">
+                  <%= link_to "死忠粉任务", manage_qa_posters_path %>
+                </li>
+              <% end %>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

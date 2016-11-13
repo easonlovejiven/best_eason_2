@@ -1,0 +1,48 @@
+<% show = !%w[new edit].include?(params[:action]) && @record.valid? %>
+<% auto_suppl = %w[edit show].include?(params[:action]) && @record.present? %>
+<% options_class = show ? {disabled: 'true'} : {} %>
+<%= simple_form_for @record, url: [:manage, @record], method: @record.new_record? ? :post : :put, html: {class: 'form-horizontal'} do |f| %>
+  <% f.options.merge!(options_class: options_class) %>
+
+  <div class="modal-body">
+
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :order_no, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :resource_id, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :resource_type, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :quantity, required: true } %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :amount, required: true } %>
+
+    <% if params[:action] == 'show' %>
+      <% if @record.resource_type == 'Welfare::Product' %>
+        <strong>收货人信息</strong>
+        <table>
+          <tr>
+            <td class="col-md-2"> 收货人姓名 </td>
+            <td> <%= @record.try(:user_name) %> </td>
+          </tr>
+          <tr>
+            <td class="col-md-2"> 手机 </td>
+            <td> <%= @record.try(:phone) %> </td>
+          </tr>
+          <tr>
+            <td class="col-md-2"> 地址 </td>
+            <td> <%= @record.try(:address) %> </td>
+          </tr>
+        </table>
+      <% end %>
+      <br>
+      <strong>附加信息：</strong>
+      <table>
+        <% @ext_info_values.each do |ext_info_value|%>
+          <tr>
+            <th class="col-md-2">
+              <%= @ext_infos[ext_info_value.ext_info_id]%>
+            </th>
+            <td>
+              <%= ext_info_value.value%>
+            </td>
+          </tr>
+        <% end%>
+      </table>
+    <% end %>
+<% end %>

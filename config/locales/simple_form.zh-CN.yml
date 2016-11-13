@@ -1,0 +1,81 @@
+zh-CN:
+  simple_form:
+    "yes": '是'
+    "no": '否'
+    required:
+      text: '必须'
+      mark: '*'
+      # You can uncomment the line below if you need to overwrite the whole required html.
+      # When using html, text and mark won't be used.
+      # html: '<abbr title="required">*</abbr>'
+    error_notification:
+      default_message: "保存时出现如下错误:"
+    labels:
+      shop_event:
+        product_type: 商品类型
+        funding_target: 应援目标
+        title: 标题
+        description: 描述
+        cover1: 图片1
+        cover2: 图片2
+        cover3: 图片3
+      shop_product:
+        product_type: 商品类型
+        funding_target: 应援目标
+        title: 标题
+        description: 描述
+        cover1: 图片1
+        cover2: 图片2
+        cover3: 图片3
+
+  activemodel:
+    errors:
+      models:
+        shop_event:
+          attributes:
+            title:
+              blank: "内容不能为空"
+            start_at:
+              blank: "活动时间不能为空"
+            end_at:
+              blank: "活动结束时间不能为空"
+            sale_start_at:
+              blank: "购票时间不能为空"
+        shop_production:
+          attributes:
+            title:
+              blank: "内容不能为空"
+            start_at:
+              blank: "活动时间不能为空"
+            end_at:
+              blank: "活动结束时间不能为空"
+            sale_start_at:
+              blank: "购票时间不能为空"
+        shop_funding:
+          attributes:
+            title:
+              blank: "内容不能为空"
+            start_at:
+              blank: "活动时间不能为空"
+            end_at:
+              blank: "活动结束时间不能为空"
+            sale_start_at:
+              blank: "购票时间不能为空"
+        shop_subject:
+          attributes:
+            title:
+              blank: "内容不能为空"
+            guide:
+              blank: "口号不能为空"
+              length: "长度范围应在2到15字"
+        shop_media:
+          attributes:
+            title:
+              blank: "内容不能为空"
+            guide:
+              blank: "口号不能为空"
+              length: "长度范围应在2到15字"
+        shop_price_category:
+          attributes:
+            name:
+              blank: "价格分类名称必须填写"

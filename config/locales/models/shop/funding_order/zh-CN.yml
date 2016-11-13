@@ -1,0 +1,38 @@
+zh-CN:
+  enums:
+    shop/funding_order:
+      status:
+        pending: 待付款
+        paid: 已付款
+        checked: 已完成
+        deleted: 已删除
+        canceled: 已取消
+      pay_type:
+        bank_pay: 银行
+        alipay: 支付宝
+        wx_pay: 微信
+        free: 免费
+  activerecord:
+    models:
+      shop/funding_order: 应援订单
+    attributes:
+      shop/funding_order:
+        order_no: 订单号
+        shop_funding_id: 应援 ID
+        shop_funding_type: 应援 类型
+        user_id: 用户
+        status: 订单状态
+        pay_type: 支付方式
+        quantity: 数量
+        payment: 支付钱数
+        paid_at: 支付时间
+        canceled_at: 取消时间
+        owner_id: 发布人
+        shop_ticket_type_id: 价格ID
+        memo: 附件信息
+        platform: 来源平台
+        user_name: 客户姓名
+        phone: 客户电话
+        address: 客户地址
+        freight_fee: 运费
+        exclude_free: 是否过滤免费订单

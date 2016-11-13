@@ -1,0 +1,82 @@
+<% field_class = {class: 'form-control select2'}.merge!(f.options[:options_class]).merge!(options[:multiple_class] ? {multiple: 'multiple', id: field} : {id: field} ) %>
+
+<fieldset class="form-group row">
+  <%= f.label field, class: 'col-md-1 control-label' do -%>
+    <%= raw('<sup>*</sup>') if defined?(required) && required %>
+    <%= model.human_attribute_name(field) %>
+  <% end -%>
+
+  <div class="col-md-11">
+    <% field_class.merge!(required: true) if defined?(required) && required %>
+    <%= f.select field, options, {include_blank: t('helpers.select.prompt')}, field_class %>
+
+    <% if defined?(p_field) && p_field %>
+      <p class="help-block">
+        <%= p_field %>
+      </p>
+    <% end %>
+  </div>
+</fieldset>
+<script type="text/javascript">
+  $(document).ready(function(){
+    if(<%= options[:auto_suppl] %> == true){
+      var $element = $("#<%= field%>").select2(); // the select element you are working with
+
+      var $request = $.ajax({
+        url: "<%= options[:auto_url] %>", // wherever your data is actually coming from
+      });
+
+      $request.then(function (data) {
+        for (var d = 0; d < data.stars.length; d++) {
+          var item = data.stars[d];
+
+          var option = new Option(item.name, item.id, true, true);
+
+          $element.append(option);
+        }
+
+        $element.trigger('change');
+      });
+    }
+
+    $("#<%= field%>").select2({
+      // tokenSeparators: [',', ' '],
+      tags: "<% options[:tag] ? true : false %>",
+      placeholder: "请至少选择一个选项",
+      maximumSelectionLength: 10,
+      ajax: {
+        url: "<%= options[:url] %>",
+        dataType: 'json',
+        delay: 250,
+        type: "POST",
+        data: function (params) {
+          return {
+            name: params, // search term
+            // page: params.page
+          };
+        },
+        processResults: function (data, page) {
+          // parse the results into the format expected by Select2.
+          // since we are using custom formatting functions we do not need to
+          // alter the remote JSON data
+          return { results: $.map( data.stars, function(client, i) {
+                    return { id: client.id, text: client.name }
+                } ) };
+        },
+        cache: true
+      },
+      escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+      minimumInputLength: 1
+
+    });
+    var value = $.map($('.select2').select2('data'), function(client, i) {
+      client.name
+    });
+    $('input.select2').val(value.join(','));
+  })
+</script>
+<style media="screen">
+  .select2-hidden-accessible{
+    visibility: hidden;
+  }
+</style>

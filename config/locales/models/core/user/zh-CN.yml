@@ -1,0 +1,31 @@
+zh-CN:
+  activerecord:
+    models:
+      core/user: 用户
+    attributes:
+      core/user:
+        name: 姓名
+        followers_count: 粉丝
+        identity: 身份
+        sex: 性别
+        email__core_accounts: 邮箱
+        phone__core_accounts: 手机号
+        birthday: 生日
+        pic: 头像
+        role: 角色
+        verified: 认证？
+        participants: 人气值
+        obi: O!币
+        level: 等级
+        empirical_value: 经验值
+        phone: 主账号绑定手机
+        email: 主账号绑定邮箱
+    enums:
+      core/user:
+        sex:
+          male: 先生
+          female: 女士
+        identity:
+          common: 普通
+          expert: 达人
+          organization: 机构

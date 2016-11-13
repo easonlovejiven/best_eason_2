@@ -1,0 +1,71 @@
+<div class="container checkout">
+  <div class="head-highline">
+    <span class="item active">选择支付方式</span>
+  </div>
+  <%= form_tag settlement_shop_order_path(params[:id]), class: "task-in block-area" do %>
+    <div class="order-list">
+      <% @order[:shop_order].each do |item| %>
+        <p>
+          <%= Shop::TicketType.find(item[:ticket_type_id]).task.title %> X <%= item[:quantity]%> <!-- 数量 -->
+        </p>
+      <% end %>
+      <hr class="hr-xs">
+      <p class="clearfix">
+        <span class="pull-right">
+          <span class="color-red"> 应付金额：￥<%= @order[:sum_fee].to_f.round(2) %></span>
+        </span>
+      </p>
+    </div>
+    <div class="bank-container">
+      <h4>支付宝支付</h4>
+      <ul class="list-unstyled clearfix">
+        <li class="cashier-bank">
+          <label class="radio">
+            <input type="radio" name="banks" checked="checked" id="debit-alipay" value="alipay"><i class="rounded-x"></i>
+            <span class="bank-name">支付宝</span>
+            <span class="bank-icon icon-alipay" title="支付宝"></span>
+          </label>
+        </li>
+      </ul>
+      <h4>微信支付</h4>
+      <ul class="list-unstyled clearfix">
+        <li class="cashier-bank">
+          <label class="radio">
+            <input type="radio" name="banks" id="debit-weixin" value="wx_pay"><i class="rounded-x"></i>
+            <span class="bank-name">微信</span>
+            <span class="bank-icon icon-weixin-pay" title="微信"></span>
+          </label>
+        </li>
+      </ul>
+    </div>
+    <input type="hidden" value="" class="js_check_phone" name="web_type"/>
+    <div class="">
+      <%= submit_tag "结算", class: "btn btn-highlight-r space-lg-hor hide-sm"  %>
+      <%= submit_tag "结算", class: "btn btn-highlight-r btn-block show-sm"  %>
+    </div>
+  <% end %>
+</div>
+<script type="text/javascript">
+  function checkWeb(){
+    var system = {
+      win: false,
+      mac: false,
+      xll: false,
+      ipad:false
+    };
+    var p = navigator.platform;
+    system.win = p.indexOf("Win") == 0;
+    system.mac = p.indexOf("Mac") == 0;
+    system.x11 = (p == "X11") || (p.indexOf("Linux") == 0);
+    system.ipad = (navigator.userAgent.match(/iPad/i) != null)?true:false;
+    if (system.win || system.mac || system.xll||system.ipad) {
+      return 'web';
+    } else {
+      return 'phone';
+    }
+  }
+  window.onload=function(){
+    var str = checkWeb();
+    document.querySelector('.js_check_phone').value=str;
+  };
+</script>

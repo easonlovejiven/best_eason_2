@@ -1,0 +1,141 @@
+<div class="container checkout">
+  <div class="head-highline">
+    <span class="item active">我的购物车</span>
+  </div>
+  <% if @my_carts.blank? %>
+    <div class="null-content">
+      <div class="text-center translate-middle-y">
+        <p>
+          <%= image_tag 'home/null-content.png', alt: '' %>
+        </p>
+        <p>您的购物车还是空的，赶紧行动参加我们的活动吧！</p>
+        <a href="/home" class="btn btn-sm btn-default">去首页</a>
+      </div>
+    </div>
+  <% else %>
+    <%= form_tag checkout_shop_carts_path, method: :get, class: "task-in" do %>
+      <div class="table-responsive ">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th></th>
+              <th width="60%">订单信息</th>
+              <th>单价</th>
+              <th>数量</th>
+              <th>实付款</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody class="js-shoptr">
+            <% @my_carts.each do |key, products| %>
+              <% products = eval(products) %>
+              <tr>
+                <td><input type="checkbox" class="js-checkparent js-check" data-group="<%= key%>"></td>
+                <td colspan="5" class="text-left shop-name">
+                  <%= Core::User.find_by(id: key.to_i).name %>
+                </td>
+              </tr>
+              <% i = 0 %>
+              <% products.each do |ticket_type_id, product| %>
+                <% i+=1 %>
+                <tr class="js-tr">
+                  <td>
+                    <% if product['sale_end_at'] && product['sale_end_at'].to_time < Time.now %>
+                      <input type="checkbox" name="ticket_types[<%= key%>][<%= i %>][][id]" class="js-check js-checkone" data-group="<%= key%>" value="<%= ticket_type_id %>" disabled='disabled'>
+                    <% else %>
+                      <input type="checkbox" name="ticket_types[<%= key%>][<%= i %>][][id]" class="js-check js-checkone" data-group="<%= key%>" value="<%= ticket_type_id %>">
+                    <% end %>
+                    <input type="hidden" value="<%= product['infos'] ? product['infos'] : '' %>" name="ticket_types[<%= key%>][<%= i %>][][info]">
+                    <input type="hidden" value="<%= product['split_memo'] ? product['split_memo'] : '' %>" name="ticket_types[<%= key%>][<%= i %>][][split_memo]">
+                    <input type="hidden" value="<%= @current_user.id %>" name="user_id">
+                  </td>
+                  <td class="text-left">
+                    <div class="task-in-image pull-left">
+                      <%= link_to "/#{product['shop_category'].gsub("_", "/")}/#{product['shop_id']}", class: 'thumb-img' do %>
+                        <img src="<%= product['cover1'] %>" alt="">
+                      <% end %>
+                    </div>
+                    <div class="task-in-desc">
+                      <h4 class="task-in-title"><%= product['title'] %></h4>
+                      <div>
+                        <div class="small text-gray">分类: <%= product['category'] %></div>
+                        <div class="text-gray"><%= product['start_at'] && product['start_at'].to_date %></div>
+                        <div class="text-gray"><%= product['address'] %></div>
+                        <input type="hidden" class="js-shopId" value="<%= ticket_type_id %>" data-shopEvents="<%= product['shop_category'] %>" />
+                      </div>
+                    </div>
+                  </td>
+                  <td class="js-unitprice"><%= product['fee'] %></td>
+                  <td>
+                    <div class="product-quantity">
+                      <button name="button" type="button" class="quantity-button reduce-quantity js-shopminus">-</button>
+                      <input type="number" min="1" data-maxVal="<%= product['each_limit']%>" value="<%= product["quantity"]%>" class="quantity-field js-length" name="ticket_types[<%= key%>][<%= i %>][][quantity]" onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false">
+                      <button name="button" type="button" class="quantity-button add-quantity js-shopadd" data-target-name="quantity">+</button>
+                    </div>
+                    <% unless product['each_limit'] == 99999999 %>
+                    <div class="text-center text-gray">每人限购数量：<span class="js-shopLimit"><%= product['each_limit']%></span></div>
+                    <% end %>
+                  </td>
+                  <td class="text-highlight-r js-realprice"><%= product['total_fee'] %></td>
+                  <td>
+                    <%= link_to "删除", shop_cart_path(ticket_type_id: ticket_type_id, quantity: product['quantity']), remote: true, method: :delete, data: { confirm: '确定要删除该商品？' }, class: 'btn btn-default btn-sm js-shopCarDelete' %>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="6">
+                    <div>
+                      <span>附加信息</span>
+                      <span><%= product['infos'] ? product['infos'] : "" %></span>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <div class="tag-box  sm-tag-box clearfix">
+        <div class="pull-left unfloat-sm clearfix">
+          <div class="pull-left check-all">
+            <label class="checkbox">
+              <input type="checkbox" class="js-checkall js-check" name="all">
+              <span>全选</span>
+            </label>
+          </div>
+
+          <div class="pull-left">
+            <a data-toggle="modal" data-target="#empty-cart" class="btn btn-link">清空购物车</a>
+
+            <div class="modal fade text-left" id="empty-cart" tabindex="-1" role="dialog" aria-labelledby="empty-cart" aria-hidden="true" data-backdrop="static">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h5 class="modal-title">清空购物车</h5>
+                  </div>
+                  <div class="modal-body text-center">
+                    您确定要清空购物车吗?
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-highlight-r" data-dismiss="modal">取消</button>
+                    <%= link_to "清空", shop_cart_path(status: 'all'), remote: true, method: :delete, class: 'btn btn-default', id: 'js-clearshopcar', 'data-dismiss': 'modal' %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-right">
+          <span class="block-sm">
+            共<span class="text-highlight-r" id="js-shopcount">0</span>件商品
+            共计：￥<span class="text-highlight-r" id="js-shopprice">00.00</span>
+          </span>
+          <button name="button" type="submit" class="btn btn-highlight-r space-lg-hor hide-sm js-checkout">结算</button>
+          <button name="button" type="submit" class="btn btn-highlight-r btn-block show-sm js-checkout">结算</button>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

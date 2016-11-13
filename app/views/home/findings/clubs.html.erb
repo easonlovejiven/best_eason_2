@@ -1,0 +1,37 @@
+<div class="container">
+  <ol class="breadcrumb">
+    <li><a href="/">首页</a></li>
+    <li><a href="/">发现</a></li>
+    <li class="active">粉丝会</li>
+  </ol>
+  <div class="list rankings-list">
+    <!-- 粉丝会 -->
+    <div class="row row-10">
+      <% @clubs.each do |user| %>
+      <div class="col-sm-6 col-md-3">
+        <div class="tag-box text-center">
+          <!-- 头像 -->
+          <%= link_to (image_tag user.picture_url.to_s + "?imageMogr2/auto-orient/thumbnail/!80x80r/gravity/Center/crop/80x80", class: 'img-circle', alt: ''), home_user_path(user), class: 'avatar-round' %>
+
+          <div class="limit-height">
+            <div class="h4 ellipsis">
+              <%= link_to user.name, home_user_path(user) %>
+              <i class="icons v-icon v-expert">&#xe609;</i>
+            </div>
+            <p class="text-gray ellipsis">
+              粉丝：<%= user.followers_count %></span>&nbsp;&nbsp;|&nbsp;&nbsp;<span>关注：<%= user.follow_count %>
+            </p>
+            <p class="text-gray ellipsis"><%= raw user.signature && user.signature.html_safe %></p>
+          </div>
+          <label class="checkbox-stars" for="">
+            <%= follow_links(user) %>
+          </label>
+        </div>
+      </div>
+      <% end %>
+    </div>
+    <div class="text-center">
+      <%= will_paginate(@clubs) %>
+    </div>
+  </div>
+</div>

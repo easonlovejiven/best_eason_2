@@ -1,0 +1,10 @@
+zh-CN:
+  manage:
+    shared:
+      search:
+        export:
+          export: 导出
+          format: 格式
+          phone: 手机号
+          department: 部门
+          all: 全部

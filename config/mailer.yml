@@ -1,0 +1,37 @@
+production:
+  address: smtp.exmail.qq.com
+  domain: owhat.cn
+  port: 25
+  authentication: :login
+  user_name: noreply@owhat.cn
+  password: owhat123123
+  enable_starttls_auto: :false
+  from:
+    default: noreply@owhat.cn
+    activation: noreply@owhat.cn
+
+development:
+  address: smtp.exmail.qq.com
+  domain: owhat.cn
+  port: 25
+  authentication: :login
+  user_name: noreply@owhat.cn
+  password: owhat123123
+  enable_starttls_auto: :false
+  from:
+    default: noreply@owhat.cn
+    activation: noreply@owhat.cn
+staging:
+  address: smtp.exmail.qq.com
+  domain: owhat.cn
+  port: 25
+  authentication: :login
+  user_name: noreply@owhat.cn
+  password: owhat123123
+  enable_starttls_auto: :false
+  from:
+    default: noreply@owhat.cn
+    activation: noreply@owhat.cn
+  send_cloud:
+    apiUser: owhattest
+    apiKey: JpjeXA9sUNozzZ9N

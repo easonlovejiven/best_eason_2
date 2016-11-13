@@ -1,0 +1,8 @@
+cd lineman
+lineman build
+cd ..
+rm app/views/beta/index.html.erb
+mv lineman/dist/index.html app/views/beta/index.html.erb
+sed -i .bak -e "s/css\/app/http\:\/\/owhat\-prod\.qiniudn\.com\/beta\/css\/app/g" app/views/beta/index.html.erb
+sed -i .bak -e "s/js\/app/http\:\/\/owhat\-prod\.qiniudn\.com\/beta\/js\/app/g" app/views/beta/index.html.erb
+rm app/views/beta/index.html.erb.bak

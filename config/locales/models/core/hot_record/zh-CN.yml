@@ -1,0 +1,7 @@
+zh-CN:
+  activerecord:
+    models:
+      core/hot_record: 热搜词管理
+    attributes:
+      core/hot_record:
+        synonym: 同义词

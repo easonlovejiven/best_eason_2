@@ -1,0 +1,5 @@
+<tr class="nested-fields">
+  <td><%= f.input :title, label: false, placeholder: '请输入报名所需信息',input_html: { maxlength: "20", class: "form-control js-emoji" } %></td>
+  <td><%= f.input :require, :as => :boolean, label: false %></td>
+  <td><%= link_to_remove_association "删除", f, class: 'btn btn-link text-highlight-r' %></td>
+</tr>

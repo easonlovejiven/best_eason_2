@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+
+  <meta name="description" content="Owhat是明星忠实粉丝的互动平台，为娱乐公司和粉丝后援会提供包括在线交易、传播管理、活跃度管理和明星福利互动等一站式的便捷互动工具。为明星更好的经营粉丝，为粉丝更好的支持偶像。" />
+  <meta name="keywords" content="明星,粉丝,娱乐,演出,演唱会,订票,owhat,爱豆,EXO,鹿晗,TFBOYS,华晨宇,吴亦凡,电影,音乐,流行音乐,八卦,艺人" />
+  <meta name="author" content="owhat, bjoffice@owhat.cn" />
+  <!-- 定义页面的最新版本 -->
+  <meta name="revised" content="owhat 3.0" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta property="wb:webmaster" content="812fe9cf7d8ad52c" />
+  <meta property="qc:admins" content="3636716316677014636" />
+  <meta property="qc:admins" content="3636716113145677014636" />
+  <%= favicon_link_tag asset_path('home/favicon.ico'), rel: 'shortcut icon' %>
+  <title><%= content_for?(:title) ? "#{yield(:title)} - Owhat - 最强粉丝应援互动平台，给偶像最好的支持" : "Owhat - 最强粉丝应援互动平台，给偶像最好的支持" %></title>
+  <%#= csrf_meta_tags %>
+  <%= stylesheet_link_tag "home/application", media: "all", "data-turbolinks-track" => true %>
+
+  <%= yield :head %>
+  <!-- google分析 -->
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-76295437-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <!-- google分析 ends -->
+</head>
+<body>
+  <%= render 'layouts/home/topbar' %>
+  <%= bootstrap_flash %>
+
+  <%= yield %>
+
+  <%= render 'layouts/home/footer' %>
+  <%= javascript_include_tag "home/application" %>
+  <%= yield :tail %>
+</body>
+</html>

@@ -1,0 +1,21 @@
+zh-CN:
+  activerecord:
+    models:
+      core/expen: 免费商品活动订单
+    attributes:
+      core/expen:
+        user_id: 用户
+        order_no: 订单号
+        resource_id: 任务ID
+        resource_type: 任务类型
+        status: 订单状态
+        amount: 支付钱数
+        action: 行为
+        currency: 货币
+        shop_ticket_type_id: 价格ID
+        task_id: 任务id
+        quantity: 数量
+        address: 下单地址
+        address_id: 下单地址 ID
+        phone: 手机
+        user_name: 收货人

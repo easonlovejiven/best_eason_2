@@ -1,0 +1,93 @@
+<% show = !%w[new edit].include?(params[:action]) && @record.valid? %>
+<% options_class = show ? {disabled: 'true'} : {} %>
+
+<style>
+.role-col{
+  width: 11.5%;
+}
+</style>
+
+<%= form_for @record, url: [:manage, @record], method: @record.new_record? ? :post : :put, html: {id: 'togglingForm', class: 'form-horizontal readonly-form'} do |f| %>
+  <% f.options.merge!(options_class: options_class) %>
+  <div class="modal-body">
+    <%= render 'manage/shared/modal/id', {f: f} if show %>
+    <%= render 'manage/shared/modal/text_field', {f: f, field: :name, required: true} %>
+    <%= render 'manage/shared/modal/text_area', {f: f, field: :description} %>
+    <div class="row">
+      <%= f.label :role, '<sup>*</sup> 权限'.html_safe, {class: 'col-md-1 control-label',id:'margin-left-text'} %>
+      <div class="col-md-11">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>
+                <label class="checkbox-inline">
+                  <%= check_box_tag '', '', false, {id: 'colall', class: 'checkbox in-control-all'}.merge(options_class) %> 全选/反
+                </label>
+              </th>
+              <th>
+                <label class="checkbox-inline">
+                  <%= check_box_tag '', '', false, {id:'colIndex', class: 'checkbox in-control-index col'}.merge(options_class) %> 列表
+                </label>
+              </th>
+              <th>
+                <label class="checkbox-inline">
+                  <%= check_box_tag '', '', false, {id:'colShow', class: 'checkbox in-control-show col'}.merge(options_class) %> 显示
+                </label>
+              </th>
+              <th>
+                <label class="checkbox-inline">
+                  <%= check_box_tag '', '', false, {id:'colCreate', class: 'checkbox in-control-create col'}.merge(options_class) %> 创建
+                </label>
+              </th>
+              <th>
+                <label class="checkbox-inline">
+                  <%= check_box_tag '', '', false, {id:'colUpdate', class: 'checkbox in-control-update col'}.merge(options_class) %> 更新
+                </label>
+              </th>
+              <th>
+                <label class="checkbox-inline">
+                  <%= check_box_tag '', '', false, {id:'colDestory', class: 'checkbox in-control-destory col'}.merge(options_class) %> 删除
+                </label>
+              </th>
+              <th>
+                <label class="checkbox-inline">
+                  <%= check_box_tag '', '', false, {id:'colPublish', class: 'checkbox in-control-publish col'}.merge(options_class) %> 发布
+                </label>
+              </th>
+              <th>
+                <label class="checkbox-inline">
+                  <%= check_box_tag '', '', false, {id:'colManage', class: 'checkbox in-control-manage col'}.merge(options_class) %> 管理
+                </label>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @record.attributes.slice(*@record.class.const_get('RESOURCES')).each do |field, ids| %>
+            <tr>
+              <td>
+                <label class="checkbox-inline">
+                  <%= check_box_tag '', '', false, {class: 'checkbox all row', 'data-name' => "#{field}"}.merge(options_class) %> <%= t(field.to_s) %>
+                </label>
+              </td>
+              <%= f.hidden_field field, {id: "#{field}_num"} %>
+              <% @record.class.const_get('FUNCTIONS').each do |num, action| %>
+              <td>
+                <label class="checkbox-inline">
+                  <%= check_box_tag field, num, @record.get_manage_attrs(ids).include?(num), disabled: show, class: "checkbox action_role #{field}", id: '', action: field, style: 'color:silver', name: "#{field}_num" %> <%= [t(".#{action}".to_sym), t(field)].join %>
+                </label>
+              </td>
+              <% end %>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <%= render 'manage/shared/modal/timestamps', {f: f} if show %>
+
+    <div class="modal-footer">
+      <%= render 'manage/shared/modal/footer', {f: f} unless show %>
+    </div>
+  </div>
+  <%= javascript_include_tag 'manage/role/role' %>
+<% end %>

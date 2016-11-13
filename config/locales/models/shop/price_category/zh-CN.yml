@@ -1,0 +1,8 @@
+zh-CN:
+  activerecord:
+    models:
+      shop/price_category: 价格类型
+    attributes:
+      shop/price_category:
+        name: 名称
+        user_id: 用户

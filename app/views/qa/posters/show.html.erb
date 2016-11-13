@@ -1,0 +1,198 @@
+<div class="container questions">
+  <ol class="breadcrumb">
+    <li><a href="/">首页</a></li>
+    <li><%= link_to '任务', shop_tasks_path %></li>
+    <li><a href="/shop/tasks?category=questions">死忠粉任务</a></li>
+  </ol>
+  <div class="clearfix<%= ' js_qa_user_login' if @current_user %>">
+    <div class="content-left block-area">
+      <%= simple_form_for @poster, url: @poster, method: :put, :html => {multipart: true, class: 'question-form' } do |f|%>
+        <h4 class="h4 form-group">
+          <%= @poster.title %>
+        </h4>
+        <span class="pull-right current-question">共5题&nbsp;当前第<i class="js-current-question">1</i>题</span>
+        <input type="hidden" value="<%= @poster.id %>" class="js-qaCheck">
+
+        <!-- 复制的 -->
+        <div class="form-currentGroup">
+        <% @poster.questions.each_with_index do |question, i| %>
+          <div class="form-group clearfix js-questionP" data-answered='0'>
+            <div class="pull-left unfloat-sm">
+              <%= image_tag question.picture_url.to_s + "?imageMogr2/auto-orient/thumbnail/!340x255r/gravity/Center/crop/340x255" %>
+            </div>
+            <div class="question-right">
+              <h4 class="title-question"><%= i+1 %>.<%= question.title %></h4>
+              <% question.answers.shuffle.each_with_index do |answer, j| %>
+              <div class="radio">
+                <label class="qa-radio form-control">
+                  <input type="radio" name="qa-a" value="" id="qa-<%= j %>" class="question">
+                  <span class=" ellipsis ellipsis-l2 translate-middle-y" style="padding:8px;">
+                  <i class="answer-select">
+                    <% if j == 0 %>
+                      A.
+                    <% elsif j == 1 %>
+                      B.
+                    <% elsif j == 2 %>
+                      C.
+                    <% else %>
+                      D.
+                    <% end %>
+                  </i>
+                  &nbsp;<%= answer.content %>
+                  </span>
+                  <input type="hidden" value="<%= question.id %>" class="js-question">
+                  <input type="hidden" value="<%= answer.id %>" class="js-answer">
+                </label>
+              </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+        <% end %>
+        </div>
+
+      <div class="share-box">
+        <%= render partial: "shop/shared/share", locals: {object: @poster, type: 'task', text: '看看你是不是死忠粉'} %>
+      </div>
+
+      <!-- 参与用户或排行榜 -->
+      <%= render "/shop/shared/ranking", users: @parti_users, url: "/qa/posters/#{@poster.id}/more_users" %>
+    </div>
+    <div class="content-right block-area js-qa-count">
+      <h5 class="h4 aside-title"><span class="border-l">计分板</span></h5>
+      <div class="time-counter">
+        <span class="count-right">正确  :</span>
+        <span class="time-bg js-right">00</span>
+        <span class="count-wrong">错误  :</span>
+        <span class="time-bg js-wrong">00</span>
+      </div>
+    </div>
+    <div class="content-right block-area js-qa-timer">
+      <h5 class="h4 aside-title"><span class="border-l">倒计时</span></h5>
+      <div class="time-counter js-timer" data-time="5000">
+        <span class="time-bg minute">00</span> :
+        <span class="time-bg second">00</span> .
+        <span class="time-bg ms">00</span>
+      </div>
+    </div>
+    <!-- 右侧边栏 -->
+    <%= render "layouts/home/aside", publish_user: @poster.user %>
+  </div>
+
+  <!-- Modal -->
+  <!-- 继续答题的modal -->
+<div class="modal fade no-bordered" id="qa-start-again" tabindex="-1" role="dialog" aria-labelledby="modalwelfareLabel" data-backdrop="static" data-keyboard="false" data-show="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+     <!--    <a class="close" href="/shop/tasks?category=questions" aria-label="Close"><span aria-hidden="true">&times;</span></a> -->
+      </div>
+      <div class="modal-body text-center">
+        答题开始！
+      </div>
+      <div class="modal-footer text-center">
+        <button type="submit" class="btn btn-highlight-outline space-lg-hor js_qa_again_start">Ready,Go!</button>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- 问答刚打开的modal -->
+<div class="modal fade no-bordered" id="qa-start" tabindex="-1" role="dialog" aria-labelledby="modalwelfareLabel" data-backdrop="static" data-keyboard="false" data-show="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+<!--         <a class="close js_qa_close" href="javascript:;" aria-label="Close"><span aria-hidden="true">&times;</span></a> -->
+      </div>
+      <div class="modal-body text-center">
+        请在规定时间内答题，每题限时5秒钟O~
+      </div>
+      <div class="modal-footer text-center">
+        <button type="submit" class="btn btn-highlight-outline space-lg-hor js_qa_start">开始答题</button>
+        <a class="btn btn-default space-lg-hor" href="<%= shop_tasks_path(category: 'questions')%>">放弃答题</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--登录注册-->
+<div class="modal fade no-bordered" id="qa-login" tabindex="-1" role="dialog" aria-labelledby="modalwelfareLabel" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body text-center">
+        答题请登录
+      </div>
+      <div class="modal-footer text-center">
+        <a class="btn btn-default space-lg-hor js_qa_login_timer" href="/sessions/new?redirect=/qa/posters/<%= @poster.id %>?time=20">登录</a>
+        <a class="btn btn-default space-lg-hor" href="/accounts/new">注册</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Modal -->
+  <!-- 答题完成 -->
+  <div class="modal fade text-center modal-tips" id="questionsDoneModal" tabindex="-1" role="dialog" aria-labelledby="questionsDoneModalLabel" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <% if @current_user.present? %>
+            <% if @poster.shop_task.task_state["#{@poster.class.name}:#{@current_user.id}"].to_i > 0 %>
+              <%= image_tag 'home/modal/tips-done.png', class: 'tips-icon' %>
+              <h4 class="modal-title">
+                总共答对 <span class='js-trueAnswer'>0</span> 道题O～
+              </h4>
+              <div class="text-highlight-r">
+                您已答过，经验值和O币不可重复领取！
+              </div>
+            <% else %>
+              <%= image_tag 'home/modal/tips-done.png', class: 'tips-icon' %>
+              <h4 class="modal-title">
+                总共答对 <span class='js-trueAnswer'>0</span> 道题哦～
+              </h4>
+              <div class="text-highlight-r">
+                <small class="js-qaInfo">
+                  获得经验值 ＋<span class="js-trueExp">0</span>&nbsp;&nbsp;&nbsp;&nbsp;O币 ＋<span class="js-trueRMB">0</span>
+                </small>
+              </div>
+            <% end %>
+          <% else %>
+            <%= image_tag 'home/modal/tips-done.png', class: 'tips-icon' %>
+            <h4 class="modal-title">
+              总共答对 <span class='js-trueAnswer'>0</span> 道题哦～
+            </h4>
+            <div class="text-highlight-r js-qaInfo">
+            </div>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-default" data-dismiss="modal" aria-label="Close">好哒~</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 时间结束的div -->
+  <div class="modal fade no-bordered" id="qa-start-continue" tabindex="-1" role="dialog" aria-labelledby="modalwelfareLabel" data-backdrop="static" data-keyboard="false" data-show="false">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- <a class="close" href="/shop/tasks?category=questions" aria-label="Close"><span aria-hidden="true">&times;</span></a> -->
+        </div>
+        <div class="modal-body text-center">
+          别走神O~继续答题吧~
+        </div>
+        <div class="modal-footer text-center">
+          <button type="submit" class="btn btn-highlight-outline space-lg-hor js_qa_again_continue">继续答题</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<% content_for :tail do %>
+  <script type="text/javascript">
+  </script>
+<% end %>

@@ -1,0 +1,6 @@
+zh-CN:
+  activerecord:
+    models:
+      manage/grant: 授予
+    attributes:
+      manage/grant:

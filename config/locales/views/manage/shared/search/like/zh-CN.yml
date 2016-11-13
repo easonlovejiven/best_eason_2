@@ -1,0 +1,7 @@
+zh-CN:
+  manage:
+    shared:
+      search:
+        like:
+          title: 名称
+          name: 名字

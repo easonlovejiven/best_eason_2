@@ -1,0 +1,15 @@
+zh-CN:
+  activerecord:
+    models:
+      shop/ticket_type: 应援
+    attributes:
+      shop/ticket_type:
+        category: 价格分类
+        second_category: 价格二级分类
+        category_id: 价格分类
+        original_fee: 原价
+        fee: 现价
+        ticket_limit: 数量
+        is_limit: 是否限购
+        each_limit: 每人限购数量
+        is_each_limit: 是否每人限购

@@ -1,0 +1,28 @@
+<div class="container">
+  <ol class="breadcrumb">
+    <li><a href="/">首页</a></li>
+    <li><a href="/">发现</a></li>
+    <li class="active">任务推荐</li>
+  </ol>
+  <div class="head-highline onav-line onav-line-sm">
+    <%= link_to "推荐", home_root_path, class: "item #{'active' unless %w(events fundings topics questions subjects media).include?(params[:category].to_s)}" %>
+    <%= link_to "shop", tasks_findings_path(category: 'events'), class: "item #{'active' if params[:category] == 'events'}" %>
+    <%= link_to "应援", tasks_findings_path(category: 'fundings'), class: "item #{'active' if params[:category] == 'fundings'}" %>
+    <%= link_to "话题", tasks_findings_path(category: 'topics'), class: "item #{'active' if params[:category] == 'topics'}" %>
+    <%= link_to "问答", tasks_findings_path(category: 'questions'), class: "item #{'active' if params[:category] == 'questions'}" %>
+    <%= link_to "O妹精选", tasks_findings_path(category: 'media'), class: "item #{'active' if params[:category] == 'media'}" %>
+    <%= link_to "直播", tasks_findings_path(category: 'subjects'), class: "item #{'active' if params[:category] == 'subjects'}" %>
+  </div>
+  <div class="list">
+    <div class="row row-10">
+      <% @tasks.each do |task| %>
+      <div class="col-sm-6 col-md-3">
+        <%= render partial: 'shop/shared/task_card', locals: {task: task} %>
+      </div>
+      <% end %>
+    </div>
+    <div class="text-center">
+      <%= will_paginate(@tasks) %>
+    </div>
+  </div>
+</div>

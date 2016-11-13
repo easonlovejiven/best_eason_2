@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Owhat 管理后台</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= stylesheet_link_tag 'manage/application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'manage/login' %>
+  <%= favicon_link_tag 'home/favicon.ico', :rel => 'shortcut icon' %>
+  <style type="text/css">
+    .navbar-default .navbar-brand{
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="/manage">
+        <img style="display: inline; margin-right: 10px;" height="23px" src="http://owhat.qiniudn.com/assets/logo-4fa22259a11abad745ef71b818ebd6e95cf6a99f35e71b7a3f6948fc5dcec545.png" alt="">
+        管理后台
+      </a>
+    </div>
+  </div>
+  <div class="container core-container" id="container">
+    <%= bootstrap_flash %>
+
+    <div class="panel panel-default panel-sm">
+      <div class="panel-body">
+        <h4>登录</h4>
+        <!--id userlogin 用于登录的js ajax-->
+        <%= form_tag sessions_path, :id => "new_session_form" do %>
+          <%= hidden_field_tag 'redirect', (redirect ||= params[:redirect] || manage_root_path) %>
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon">用户</span>
+              <input type="text" name="account[login]" class="form-control" placeholder="请输入手机号或邮箱">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon">密码</span>
+              <input type="password" name="account[password]" class="form-control" placeholder="请输入密码" size="20" tabindex="20">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <input type="submit" class="btn btn-block btn-danger" value="登录"/>
+          </div>
+          <div class="form-group">
+            <a href="<%= find_accounts_path %>" class="pull-right">忘记密码</a>
+            <span>还没有Owhat账号？</span><a href="<%= new_account_path %>">立即注册</a>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

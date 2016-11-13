@@ -1,0 +1,12 @@
+- action = action
+.form-inline.nested-fields.nested-fields-inline
+  = f.input :category, label: '价格分类', placeholder: "最多输入20个字", maxlength: "20"
+  = f.input :second_category, label: '价格二级分类', placeholder: "最多输入20个字", maxlength: "20"
+  = f.input :original_fee, input_html: {class: "required", min: "0"}
+  = f.input :fee, label: raw('现价<small class="text-gray">(可输入最大数字为65000)</small>'), input_html: {class: "js-salePrice required", min: "0", max: '65000'}
+  = f.input :is_limit, :as => :boolean ,label: raw('是否限购<small class="text-gray">(不勾选库存数量不生效,即不限购)</small>')  
+  = f.input :ticket_limit, label: raw('库存数量<small class="text-gray">(最多输入9位数字)</small>'), input_html: {class: "required js-limitNum", min: "0", max: '999999999'}
+  = f.input :is_each_limit, :as => :boolean,label: raw('是否每人限购<small class="text-gray">(不勾选每人限购数量不生效)</small>')
+  = f.input :each_limit, label: raw('每人限购数量<small class="text-gray">(最多输入9位数字)</small>'), input_html: {class: "required js-limitNum", min: "0", max: '999999999'}
+  - unless action == "edit"
+    = link_to_remove_association "删除应援价格信息", f, class: "btn btn-link"

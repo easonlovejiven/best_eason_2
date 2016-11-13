@@ -1,0 +1,60 @@
+<div class="container">
+  <ol class="breadcrumb">
+    <li><a href="/">首页</a></li>
+    <li class="active">明星列表</li>
+  </ol>
+  <% if @stars.blank? %>
+  <div class="null-content">
+    <div class="text-center translate-middle-y">
+      <p>
+        <%= image_tag 'home/null-content.png', alt: '' %>
+      </p>
+      <p>您还没有关注哦！快去关注吧！</p>
+      <a href="#" class="btn btn-sm btn-default">去关注</a>
+    </div>
+  </div>
+  <% else %>
+    <div class="head-highline onav-line">
+      <span class="item active">关注</span>
+      <span class="pull-right dropdown">
+        <a class="item" href="javascript:;" data-toggle="dropdown">排序 <i class="dropdown-arrow"></i></a>
+        <ul class="dropdown-menu">
+          <li>
+            <%= link_to "人气", home_stars_path, class: "#{'active' if params[:order].to_s != 'name'}" %>
+          </li>
+          <li>
+            <%= link_to "a～z", home_stars_path(order: 'name'), class: "#{'active' if params[:order].to_s == 'name'}" %>
+          </li>
+        </ul>
+      </span>
+    </div>
+    <div class="block-area">
+      <% @stars.each do |star|%>
+        <div class="avatar-head has-bordered">
+          <%= link_to home_star_path(star), class: 'avatar-round pull-left' do %>
+            <%= image_tag star.picture_url.to_s + '?imageMogr2/auto-orient/thumbnail/!62x62r/gravity/Center/crop/62x62', class: 'img-circle', alt: '' %>
+          <% end %>
+
+          <label class="checkbox-stars pull-right" for="">
+            <%= follow_links(star) %>
+          </label>
+          <div class="name-location">
+            <div class="ellipsis">
+              <a href="<%= home_star_path(star) %>">
+                <%= star.name %>
+              </a>
+              <i class="icons v-icon v-star">&#xe609;</i>
+            </div>
+            <p class="text-gray ellipsis">
+              粉丝：<%= star.fans_total %>
+            </p>
+            <p class="name-desc ellipsis text-gray"><%= star.sign %></p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+  <div class="text-center">
+    <%= will_paginate(@tasks) %>
+  </div>
+</div>

@@ -1,0 +1,104 @@
+<style>
+  p{width:65px;}
+  .red{background:#FFCCFF;}
+</style>
+<h3><%= "#{model.model_name.human}#{t(:index)}" %> (<%= @records.total_entries %>)</h3>
+
+<div class="well well-sm">
+  <!-- 用户搜索 -->
+  <%= form_tag request.path, method: 'get', id: 'search_form', class: 'form-inline clearfix' do %>
+    <%= render 'manage/shared/search/basic', field: 'id' %>
+    <%= render 'manage/shared/search/page' %>
+    <div class="form-group">
+      <%= submit_tag t(:search),  name: nil, class: 'btn btn-primary' %>
+      <%#= link_to t(:reset), request.path, class: 'btn btn-info', data: {remote: true} %>
+    </div>
+    <%= link_to t('new'), [:new, :manage, model.model_name.singular], class: 'btn btn-primary pull-right' if can?(:create, model) %>
+  <% end %>
+  <!-- 用户搜索 end/ -->
+</div>
+<!-- 用户列表 -->
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <% if @records.where(send_status: 1).present? || params[:where][:send_status].to_i == 1 %>
+        <td>倒计时</td>
+      <% end %>
+      <!-- <td>发送类型</td> -->
+      <td>消息ID</td>
+      <td>消息内容</td>
+      <td>发送人</td>
+      <td>发送时间</td>
+      <td>推送对象</td>
+      <td>最后编辑人</td>
+      <td>最后编辑时间</td>
+      <th><%= t 'actions' %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @records.each do |record| %>
+      <tr>
+        <% if record.send_status == 1 %>
+          <td>
+            <p class="count" data-time="<%= record.count_down %>"></p>
+          </td>
+        <% end %>
+        <!-- <td><%= Notification::Send::PUSH_TYPE[record.push_type] %></td> -->
+        <td><%= record.id %></td>
+        <td><%= record.content %></td>
+        <td><%= record.sendor.try(:name) %></td>
+        <td><%= record.send_date.present? ? record.send_date.strftime("%Y-%m-%d %H:%M") : '' %></td>
+        <td>全部</td>
+        <td><%= record.updater.try(:name) %></td>
+        <td><%= record.updated_at.strftime("%Y-%m-%d %H:%M:%S") %>
+        <td>
+          <%= link_to t('show'), [:manage, record], class: 'btn btn-xs btn-default' %>
+          <% if record.send_status == 1 %>
+            <%= link_to t('edit'), [:edit, :manage, record], class: 'btn btn-xs btn-default' %>
+            <%= link_to '撤销', [:cancel, :manage, record], method: :post, data: {confirm: "是否撤销该消息？\r注意：消息被撤销后不可再次发送。如需发送相同内容，请复制后新增消息。"}, class: 'btn btn-danger btn-xs' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="dt-toolbar-footer">
+  <%= render 'manage/shared/pagination', records: @records %>
+</div>
+<script>
+$(function(){
+  var count = document.querySelectorAll('.count');
+  for(var i =0 ;i<count.length;i++){
+    countDown(count[i].getAttribute('data-time'),count[i])
+  }
+  function countDown(n,obj){
+    var timer = null,str='00:00:00';
+    timer=setInterval(function(){
+      n--;
+      var h = '0'+parseInt(n/60/60);
+      var m = ('0'+parseInt(n/60%60)).slice(-2);
+      var s = ('0'+parseInt(n%60)).slice(-2);
+      if(n<3600){
+        if(obj.className.indexOf('red') == -1){
+           obj.className += ' red';
+        }
+      }
+      if(n<0){
+        clearInterval(timer);
+        str="00:00:00";
+      }else if(n>86400){
+        str="24:00:00+";
+      }else{
+        if(h.length<4){
+          h = h.slice(-2);
+        }else{
+          h= h.slice(-(h.length-1));
+        }
+        str=h+':'+m+':'+s;
+      }
+      obj.innerHTML=str;
+    },1000);
+  }
+});
+</script>

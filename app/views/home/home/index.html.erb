@@ -1,0 +1,502 @@
+<%= render 'banner' %>
+<div class="container index">
+  <div class="block-area navbar-sm show-sm">
+    <div class="row row-10">
+      <div class="col-xs-3">
+        <a href="<%= shop_tasks_path %>" class="item">
+          <i class="icons text-highlight">&#xe6bf;</i><br>
+          任务
+        </a>
+      </div>
+      <div class="col-xs-3">
+        <a href="<%= welfare_letters_path %>" class="item">
+          <i class="icons text-highlight-r">&#xe6a8;</i><br>
+          福利
+        </a>
+      </div>
+      <div class="col-xs-3">
+        <a href="<%= stars_home_rankings_path %>" class="item">
+          <i class="icons text-yellow">&#xe6ae;</i><br>
+          应援榜
+        </a>
+      </div>
+      <div class="col-xs-3">
+        <a href="<%= home_stars_path %>" class="item">
+          <i class="icons text-highlight-r">&#xe6b1;</i><br>
+          关注
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="clearfix">
+    <div class="download-app show-sm">
+      <a href="http://a.app.qq.com/o/simple.jsp?pkgname=cn.owhat" class="pull-left"><i class="icons">&#xe672;</i></a>
+      <a href="http://a.app.qq.com/o/simple.jsp?pkgname=cn.owhat"><i class="icons">&#xe6a1;</i>下载客户端</a>
+    </div>
+    <div class="container-left">
+      <!-- 首页－推荐关注明星 -->
+      <div class="head-highline">
+        <span class="item text-yellow"><i class="icons">&#xe60f;</i>推荐关注</span>
+        <a href="<%= home_stars_path %>" class="item pull-right" style="line-height: 26px;">更多</a>
+      </div>
+      <div class="block-area clearfix">
+        <% @populars_stars.each do |star| %>
+          <div class="star-item">
+            <a class="avatar-round" href="<%= home_star_path(star[:id]) %>">
+              <%= image_tag star[:app_picture_url], alt: '', class: 'img-circle' %>
+              <i class="icons v-bordered v-star"><span>&#xe60e;</span></i>
+            </a>
+            <p class="ellipsis">
+              <a href="<%= home_star_path(star[:id]) %>"><%= star[:name] %></a>
+            </p>
+            <label class="checkbox-stars checkbox-stars-sm">
+              <%= follow_links_index_page_star star[:id] %>
+            </label>
+          </div>
+        <% end %>
+        <div class="star-item">
+          <a href="<%= home_stars_path %>" class="avatar-round star-more"><i class="icons">&#xe61e;</i></a>
+          <p>
+            <a href="<%= home_stars_path %>" class="text-yellow">更多明星</a>
+          </p>
+        </div>
+      </div>
+      <!-- 首页-关注－任务 -->
+      <div class="head-highline">
+        <span class="item text-highlight-r"><i class="icons">&#xe60f;</i>关注</span>
+        <%= link_to '更多', home_suggestions_path, class: "item pull-right", style: 'line-height: 26px;' %>
+      </div>
+      <% if @tasks.blank? %>
+        <div class="null-content block-area">
+          <div class="text-center translate-middle-y">
+            <p>
+              <%= image_tag 'home/null-content.png', alt: '' %>
+            </p>
+            <p>您关注的明星没有新任务哦~~如果您还没有关注明星,快去关注吧！</p>
+            <%= link_to "去关注", home_stars_path, class: "btn btn-sm btn-default" %>
+          </div>
+        </div>
+      <% else %>
+      <div class="task-group row row-10">
+        <% @tasks[0..4].each_with_index do |task, i| %>
+          <div class="task-<%= case i when 0; 'A'; when 1,2; 'B';else 'C' end %>">
+            <div class="task-item">
+              <%= link_to task[:shop_type] == 'Shop::Media' ? shop_media_path(task[:shop]) : task[:shop], class: "task-item-thumb" do %>
+                <%= image_tag 'http://qimage.owhat.cn/9.png', class: 'lazy', data: {'original': task[:web_pic]} %>
+                <% if task[:free] %>
+                  <span class="task-mark task-mark-free"><%= home_task_mark(task[:shop_type]) %></span>
+                <% else %>
+                  <span class="task-mark task-mark-<%= home_task_mark(task[:shop_type]) %>"><%= home_task_mark(task[:shop_type]) %></span>
+                <% end %>
+              <% end %>
+              <div class="limit-height">
+                <h5 class="title ellipsis">
+                  <%= link_to task[:title], task[:shop_type] == 'Shop::Media' ? shop_media_path(task[:shop]) : task[:shop] %>
+                </h5>
+                <div class="ellipsis">
+                  <%= link_to task[:user_name], home_user_path(task[:user]) if task[:user] %> <i class="icons v-icon v-expert"><span>&#xe609;</span></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <% end %>
+
+      <!-- 首页－任务 -->
+      <ul class="head-highline onav-line onav-line-b js_home_ajax">
+        <li><span class="item text-highlight"><i class="icons">&#xe60f;</i>任务</span></li>
+        <li class="<%= 'active' unless %w(events fundings topics questions subjects media).include?(params[:category].to_s) %>"><%= link_to "推荐", "#hot-tasks", role: "tab", data: {"toggle": "tab", "category": ""}, class: "item" %></li>
+        <li><span class="text-gray">|</span></li>
+        <li class="<%= 'active' if params[:category] == 'events' %>"><%= link_to "shop", "#events", role: "tab", data: {"toggle": "tab", "category": "events"}, class: "item" %></li>
+        <li><span class="text-gray">|</span></li>
+        <li class="<%= 'active' if params[:category] == 'fundings' %>"><%= link_to "应援", "#fundings", role: "tab", data: {"toggle": "tab", "category": "fundings"}, class: "item" %></li>
+        <li><span class="text-gray">|</span></li>
+        <li class="<%= 'active' if params[:category] == 'topics' %>"><%= link_to "话题", "#topics", role: "tab", data: {"toggle": "tab", "category": "topics"}, class: "item" %></li>
+        <li><span class="text-gray">|</span></li>
+        <li class="<%= 'active' if params[:category] == 'questions' %>"><%= link_to "问答", "#questions", role: "tab", data: {"toggle": "tab", "category": "questions"}, class: "item" %></li>
+        <li><span class="text-gray">|</span></li>
+        <li class="<%= 'active' if params[:category] == 'media' %>"><%= link_to "O妹精选", "#media", role: "tab", data: {"toggle": "tab", "category": "media"}, class: "item" %></li>
+        <li><span class="text-gray">|</span></li>
+        <li class="<%= 'active' if params[:category] == 'subjects' %>"><%= link_to "直播", "#subjects", role: "tab", data: {"toggle": "tab", "category": "subjects"}, class: "item" %></li>
+        <li class="pull-right">
+          <%= link_to shop_tasks_path, class: 'item' do %>
+            更多
+          <% end %>
+        </li>
+      </ul>
+
+      <div class="tab-content">
+        <div class="task-group tab-pane active row row-10" role="tabpanel" id="hot-tasks">
+          <% if @all_tasks.blank? %>
+            <div class="col-xs-12">
+              <div class="null-content">
+                <div class="text-center translate-middle-y">
+                  <p>
+                    <%= image_tag 'home/null-content.png', alt: '' %>
+                  </p>
+                  <p>您关注的明星没有新任务哦~~如果您还没有关注明星,快去关注吧！</p>
+                  <%= link_to "去关注", home_stars_path, class: "btn btn-sm btn-default" %>
+                </div>
+              </div>
+            </div>
+          <% else %>
+            <% @all_tasks.each_with_index do |task, i|%>
+              <div class="task-<%= case i when 0; 'D';when 1,2,3,4;'E';else 'F' end %>">
+                <div class="task-item">
+
+                  <%= link_to task[:shop_type] == 'Shop::Media' ? shop_media_path(task[:shop]) : task[:shop], class: "task-item-thumb" do %>
+                    <%= image_tag 'http://qimage.owhat.cn/9.png', class: 'lazy', data: {'original': task[:web_pic]} %>
+                    <% if task[:free] %>
+                      <span class="task-mark task-mark-free"><%= home_task_mark(task[:shop_type]) %></span>
+                    <% else %>
+                      <span class="task-mark task-mark-<%= home_task_mark(task[:shop_type]) %>"><%= home_task_mark(task[:shop_type]) %></span>
+                    <% end %>
+                  <% end %>
+                  <div class="limit-height">
+                    <h5 class="title ellipsis">
+                      <%= link_to task[:title], task[:shop_type] == 'Shop::Media' ? shop_media_path(task[:shop]) : task[:shop] %>
+                    </h5>
+                    <div class="ellipsis">
+                      <%= link_to task[:user_name], home_user_path(task[:user]) if task[:user] %> <i class="icons v-icon v-expert"><span>&#xe609;</span></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="task-group tab-pane row row-10" role="tabpanel" id="events">
+          <div class="col-xs-12 text-center">
+            <div class="block-area">
+              <%= image_tag "home/loadingres.gif", style: "max-width: 300px;" %>
+            </div>
+          </div>
+        </div>
+        <div class="task-group tab-pane row row-10" role="tabpanel" id="fundings">
+          <div class="col-xs-12 text-center">
+            <div class="block-area">
+              <%= image_tag "home/loadingres.gif", style: "max-width: 300px;" %>
+            </div>
+          </div>
+        </div>
+        <div class="task-group tab-pane row row-10" role="tabpanel" id="topics">
+          <div class="col-xs-12 text-center">
+            <div class="block-area">
+              <%= image_tag "home/loadingres.gif", style: "max-width: 300px;" %>
+            </div>
+          </div>
+        </div>
+        <div class="task-group tab-pane row row-10" role="tabpanel" id="questions">
+          <div class="col-xs-12 text-center">
+            <div class="block-area">
+              <%= image_tag "home/loadingres.gif", style: "max-width: 300px;" %>
+            </div>
+          </div>
+        </div>
+        <div class="task-group tab-pane row row-10" role="tabpanel" id="media">
+          <div class="col-xs-12 text-center">
+            <div class="block-area">
+              <%= image_tag "home/loadingres.gif", style: "max-width: 300px;" %>
+            </div>
+          </div>
+        </div>
+        <div class="task-group tab-pane row row-10" role="tabpanel" id="subjects">
+          <div class="col-xs-12 text-center">
+            <div class="block-area">
+              <%= image_tag "home/loadingres.gif", style: "max-width: 300px;" %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 首页-福利 -->
+      <ul class="head-highline onav-line onav-line-r js_welfare_ajax">
+        <li><span class="item text-highlight-r"><i class="icons">&#xe60f;</i>福利</span></li>
+        <li class="active"><%= link_to "全部福利", "#welfare-all", role: "tab", data: {"toggle": "tab", "category": "all"}, class: "item" %></li>
+        <li><span class="text-gray">|</span></li>
+        <li><%= link_to "活动福利", "#welfare-events", role: "tab", data: {"toggle": "tab", "category": "event"}, class: "item" %></li>
+        <li><span class="text-gray">|</span></li>
+        <li><%= link_to "商品福利", "#welfare-products", role: "tab", data: {"toggle": "tab", "category": "product"}, class: "item" %></li>
+        <li><span class="text-gray">|</span></li>
+        <li><%= link_to "图片福利", "#welfare-letters", role: "tab", data: {"toggle": "tab", "category": "letter"}, class: "item" %></li>
+        <li><span class="text-gray">|</span></li>
+        <li><%= link_to "语音福利", "#welfare-voices", role: "tab", data: {"toggle": "tab", "category": "voice"}, class: "item" %></li>
+        <li class="pull-right">
+          <a href="<%= welfare_letters_path %>" class="item">
+            更多
+          </a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div class="task-group tab-pane active row row-10" id="welfare-all">
+          <% @welfares.each_with_index do |welfare, i| %>
+          <div class="task-<%= case i when 0; 'D';when 1,2,3,4; 'E';else 'F' end %>">
+            <div class="task-item">
+              <%= link_to welfare[:shop_type] == 'Shop::Media' ? shop_media_path(welfare[:shop]) : welfare[:shop], class: 'task-item-thumb' do %>
+                <%= image_tag 'http://qimage.owhat.cn/9.png', class: 'lazy', data: {'original': welfare[:web_pic]} %>
+                <% if welfare[:free] %>
+                  <span class="task-mark task-mark-free"><%= home_task_mark(welfare[:shop_type]) %></span>
+                <% else %>
+                  <span class="task-mark task-mark-<%= home_task_mark(welfare[:shop_type]) %>"><%= home_task_mark(welfare[:shop_type]) %></span>
+                <% end %>
+              <% end %>
+              <div class="limit-height">
+                <h5 class="title ellipsis">
+                  <%= link_to welfare[:title], welfare[:shop_type] == 'Shop::Media' ? shop_media_path(welfare[:shop]) : welfare[:shop] %>
+                </h5>
+                <div class="ellipsis">
+                  <%= link_to welfare[:user_name], home_user_path(welfare[:user]) if welfare[:user] %> <i class="icons v-icon v-expert"><span>&#xe609;</span></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% end %>
+        </div>
+        <div class="task-group tab-pane row row-10" id="welfare-events">
+          <div class="col-xs-12 text-center">
+            <div class="block-area">
+              <%= image_tag "home/loadingres.gif", style: "max-width: 300px;" %>
+            </div>
+          </div>
+        </div>
+        <div class="task-group tab-pane row row-10" id="welfare-products">
+          <div class="col-xs-12 text-center">
+            <div class="block-area">
+              <%= image_tag "home/loadingres.gif", style: "max-width: 300px;" %>
+            </div>
+          </div>
+        </div>
+        <div class="task-group tab-pane row row-10" id="welfare-letters">
+          <div class="col-xs-12 text-center">
+            <div class="block-area">
+              <%= image_tag "home/loadingres.gif", style: "max-width: 300px;" %>
+            </div>
+          </div>
+        </div>
+        <div class="task-group tab-pane row row-10" id="welfare-voices">
+          <div class="col-xs-12 text-center">
+            <div class="block-area">
+              <%= image_tag "home/loadingres.gif", style: "max-width: 300px;" %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 首页－应援榜 -->
+      <ul class="head-highline onav-line onav-line-y">
+        <li><span class="item text-yellow"><i class="icons">&#xe60f;</i>应援榜</span></li>
+        <li class="pull-right">
+          <a href="<%= stars_home_rankings_path %>" class="item">
+            更多
+          </a>
+        </li>
+      </ul>
+      <div class="rankings-list">
+        <div class="row row-10">
+          <% @populars_stars[0..2].each_with_index do |star, i| %>
+            <div class="col-sm-4">
+              <div class="tag-box text-center">
+                <% if params[:page].to_i < 2 %>
+                  <div class="rank-no ranking-no-<%= i+1 %>">
+                    <span>NO.<%= i+1 %></span>
+                    <small class="popular-no ellipsis">
+                      人气：<%= star[:participants] %>
+                    </small>
+                  </div>
+                <% end %>
+                <!-- 头像 -->
+                <%= link_to (image_tag star[:picture_url].to_s + "?imageMogr2/auto-orient/thumbnail/!50x50r/gravity/Center/crop/50x50", class: 'img-circle', alt: ''), home_star_path(star[:id]), class: 'avatar-round' %>
+                <div class="limit-height">
+                  <div class="h4 ellipsis">
+                    <%= link_to star[:name], home_star_path(star[:id]) %>
+                    <i class="icons v-icon v-star">&#xe609;</i>
+                  </div>
+                  <p class="text-gray ellipsis">
+                    粉丝：<%= star[:fans_total] %>
+                  </p>
+                  <p class="text-gray ellipsis"><%= star[:sign] %></p>
+                </div>
+                <label class="checkbox-stars" for="">
+                  <%= follow_links_index_page_star(star[:id]) %>
+                </label>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- 首页－发现 -->
+    <div class="container-right">
+      <div class="download-app download-app-sm">
+        <div>
+          <%= image_tag "home/download/qrcode.png", alt: "", style: "width: 100%;" %>
+        </div>
+        <a href="http://a.app.qq.com/o/simple.jsp?pkgname=cn.owhat" class="btn btn-block"><i class="icons">&#xe6a1;</i>下载客户端</a>
+      </div>
+      <div class="download-app hide-sm">
+        <a href="#" class="pull-left js-download"><i class="icons">&#xe672;</i></a>
+        <a href="#" class="js-download"><i class="icons">&#xe6a1;</i>下载客户端</a>
+        <div class="download-app-pop">
+          <div class="container">
+            <%= link_to image_tag("home/logo.png"), home_root_path, alt: "Owhat logo", class: 'logo', data: {'no-turbolink':true} %>
+            <div class="h4">
+              最强粉丝应援平台，给偶像最好的支持！这一个APP就够了😂
+            </div>
+            <div class="clearfix">
+              <div class="download-left">
+                <div class="download-label">
+                  直接下载
+                </div>
+                <a href="http://a.app.qq.com/o/simple.jsp?pkgname=cn.owhat" class="btn btn-block btn-iphone">iPhone  下载</a>
+                <a href="http://a.app.qq.com/o/simple.jsp?pkgname=cn.owhat" class="btn btn-block btn-android">Android 下载</a>
+              </div>
+              <div class="download-right">
+                <div class="download-label">
+                  扫描二维码下载
+                </div>
+                <div>
+                  <%= image_tag "home/download/qrcode.png", alt: "" %>
+                </div>
+              </div>
+            </div>
+            <div class="">
+              <br>
+              也可在各大应用市场搜索“Owhat”下载
+            </div>
+          </div>
+        </div>
+      </div>
+      <% if @current_user %>
+        <div class="block-area block-area-sm current-user hide-sm">
+          <div class="avatar-head">
+            <%= link_to home_user_path(@current_user), class: 'avatar-square pull-left' do %>
+              <%= image_tag @current_user.picture_url.to_s + "?imageMogr2/auto-orient/thumbnail/!85x85r/gravity/Center/crop/85x85", class: '', alt: "" %>
+            <% end %>
+
+            <div class="name-location">
+              <div class="ellipsis">
+                <a href="<%= home_user_path(@current_user) %>">
+                  <%= @current_user.name %>
+                  <%= user_identity_style(@current_user)%>
+                </a>
+              </div>
+              <p class="row row-10">
+                <a href="<%= followers_home_user_path(@current_user) %>" class="col-xs-6 text-gray">
+                  <span class="follow-count"><%= @current_user.followers_count %></span><br>粉丝
+                </a>
+                <!-- &nbsp;&nbsp;|&nbsp;&nbsp; -->
+                <%= link_to follows_home_user_path(@current_user), class: "col-xs-6 text-gray" do%>
+                  <span class="follow-count"><%= @current_user.follow_count %></span><br>关注
+                <% end %>
+              </p>
+            </div>
+          </div>
+
+          <% if @current_user.verified %>
+            <div class="row row-10">
+              <div class="col-md-6">
+                <a href="<%= manage_home_backend_index_path %>" class="btn btn-default btn-block"><i class="icons">&#xe630;</i>管理中心</a>
+              </div>
+              <div class="col-md-6">
+                <a href="<%= personal_center_home_users_path %>" class="btn btn-default btn-block"><i class="icons">&#xe60b;</i>发布任务</a>
+              </div>
+            </div>
+          <% else %>
+            <div class="row row-10">
+              <div class="col-md-6">
+                <a href="<%= shop_cart_path(@current_user) %>" class="btn btn-default btn-block"><i class="icons">&#xe60d;</i>购物车</a>
+              </div>
+              <div class="col-md-6">
+                <a href="<%= home_stars_path %>" class="btn btn-default btn-block"><i class="icons">&#xe608;</i>关注</a>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="block-area block-area-sm hide-sm">
+          <p>
+            登录Owhat，给偶像最好的支持！
+          </p>
+          <a href="<%= new_session_path %>" class="btn btn-highlight-outline btn-block btn-lg">用户登录</a>
+        </div>
+      <% end %>
+
+      <div class="head-highline head-nomargin">
+        <span class="item text-highlight">推荐娱乐机构</span>
+        <a href="<%= companies_findings_path %>" class="item pull-right">更多</a>
+        <hr style="margin: 0 15px;">
+      </div>
+      <div class="block-area block-area-sm aside-user-list">
+        <% @populars_identity_2.each do |user| %>
+        <div class="avatar-head has-bordered">
+          <%= link_to home_user_path(user[:id]), class: 'avatar-round avatar-xs pull-left' do %>
+            <%= image_tag user[:picture_url], class: "img-circle", alt: "" %>
+          <% end %>
+          <label class="checkbox-stars checkbox-stars-sm pull-right">
+            <%= follow_links user[:data] %>
+          </label>
+          <div class="name-location name-location-ml">
+            <div class="ellipsis">
+              <%= link_to user[:name], home_user_path(user[:id]) %>
+              <i class="icons v-icon v-organ">&#xe609;</i>
+            </div>
+            <p class="text-gray ellipsis">
+              <%= user[:signature] %>
+            </p>
+          </div>
+        </div>
+        <% end %>
+      </div>
+      <div class="head-highline head-nomargin">
+        <span class="item text-pink">推荐粉丝会</span>
+        <%= link_to '更多', clubs_findings_path, class: 'item pull-right' %>
+        <hr style="margin: 0 15px;">
+      </div>
+      <div class="block-area block-area-sm aside-user-list">
+        <% @populars_identity_1.each do |user| %>
+        <div class="avatar-head has-bordered">
+          <%= link_to home_user_path(user[:id]), class: 'avatar-round avatar-xs pull-left' do %>
+            <%= image_tag user[:app_picture_url], class: "img-circle", alt: "" %>
+          <% end %>
+          <label class="checkbox-stars checkbox-stars-sm pull-right">
+            <%= follow_links user[:data] %>
+          </label>
+          <div class="name-location name-location-ml">
+            <div class="ellipsis">
+              <%= link_to user[:name], home_user_path(user[:id]) %>
+              <i class="icons v-icon v-expert">&#xe609;</i>
+            </div>
+            <p class="text-gray ellipsis">
+              <%= user[:signature] %>
+            </p>
+          </div>
+        </div>
+        <% end %>
+      </div>
+    </div>
+    <!-- 首页－发现 ends -->
+  </div>
+</div>
+
+
+<% content_for :head do %>
+  <style media="screen">
+    body{
+      padding-top: 60px;
+    }
+  </style>
+<% end %>
+
+
+<% content_for :tail do %>
+  <script type="text/javascript">
+    $(function(){
+      $('.js-download').click(function(){
+        $(this).parent('.download-app').toggleClass('open');
+      });
+      $("img.lazy").lazyload({
+        effect: "fadeIn",
+        placeholder:''
+      });
+    });
+  </script>
+<% end %>

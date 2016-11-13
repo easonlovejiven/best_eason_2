@@ -1,0 +1,25 @@
+zh-CN:
+  activerecord:
+    models:
+      core/identity: 身份
+    attributes:
+      core/identity:
+        name: 申请人
+        org_name: 申请名称
+        status: 状态
+        id_pic: 身份证正面图
+        id_pic2: 身份证背面图
+        org_pic: 营业执照
+        related_ids: 关联明星
+        user_id: 申请人
+        is_org: 类型
+        count: 更新数
+        description: 描述
+        phone: 联系方式
+        position: 负责人职位
+    enums:
+      core/identity:
+        status:
+          pending: 待审核
+          accept: 接受
+          reject: 拒绝

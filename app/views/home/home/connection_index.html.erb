@@ -1,0 +1,18 @@
+<div class="connection">
+  <div class="text-center" style="margin-bottom: 20px;">
+    <%= link_to 'javascript:;', class: 'avatar-round' do %>
+      <%= image_tag 'http://7oxirl.com1.z0.glb.clouddn.com/user.jpeg', class: 'img-circle' %>
+    <% end %>
+    <p class="connect-avatar-name">
+      Jane!
+    </p>
+  </div>
+  <div class="lead">
+    欢迎使用Owhat
+  </div>
+  <p class="">为了给您提供更好的服务，请关联一个Owhat账号</p>
+  <div class="connect-btn-group">
+    <%= link_to "已有Owhat账？立即关联", connection_new_home_home_index_path, class: "btn btn-block btn-blue-solid" %>
+    <%= link_to "没有Owhat账号？立即注册", new_account_path, class: "btn btn-block btn-blue-outline" %>
+  </div>
+</div>

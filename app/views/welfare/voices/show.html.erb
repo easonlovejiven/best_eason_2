@@ -1,0 +1,118 @@
+<div class="letter-show">
+  <div class="letter-header voice-header text-center">
+    <a class="avatar-round" href="/home/users/<%= @user.id %>">
+      <img class="img-circle" src="<%= @user.picture_url%>">
+    </a>
+    <p class="h5 ellipsis">
+      <%= @user.try(:name) %>
+    </p>
+    <p class="small ellipsis">
+      <%= @user.try(:signature) %>
+    </p>
+    <p class="ellipsis">
+      粉丝：<%= @user.followers_count%>&nbsp;&nbsp;|&nbsp;&nbsp;关注：<%= @user.follow_count%>
+    </p>
+  </div>
+  <div class="letter-body text-center">
+    <h3 class="title"><%= @voice.title %></h3>
+    <div class="voice-main">
+      <% if @voice.shop_task.task_state["#{@voice.class.to_s}:#{@current_user.try(:id)}"].to_i > 0 || @current_user.try(:id) == @voice.user_id %>
+        <img src="<%= @voice.default_pic%>" alt="" />
+        <a  href="javascript:;" class="audio-play" data-id="js_audio"><i class="icons">&#xe6b0;</i></a>
+        <audio class="welfare-audio" id='js_audio' controls="controls">
+          Your browser does not support the <code>audio</code> element.
+          <source src="<%= @voice.default_voice %>" type="audio/mp3">
+        </audio>
+      <% else %>
+        <p>
+          <%= image_tag "home/letter-image.png" %>
+        </p>
+        <p>点击打开福利收听语音内容</p>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% unless @voice.shop_task.task_state["#{@voice.class.to_s}:#{@current_user.try(:id)}"].to_i > 0 || @current_user.try(:id) == @voice.user_id %>
+  <div class="task-preview text-center welfare-open">
+    <div class="container">
+      <a class="btn btn-highlight-outline" href="#welfare-open" data-toggle="modal">打开福利</a>
+    </div>
+  </div>
+<% end %>
+<!-- 未打开福利展示 -->
+<div class="modal fade no-bordered" id="welfare-open" tabindex="-1" role="dialog" aria-labelledby="modalwelfareLabel" data-backdrop="static">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body text-center">
+        打开福利需要消耗5 O!元
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-highlight-outline space-lg-hor js_voice_open">打开</button>
+        <button type="button" class="btn btn-default space-lg-hor" data-dismiss="modal">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= content_for :head do %>
+  <style media="screen">
+  body{
+    padding-top: 34px;
+  }
+  .navbar,
+  .status-bar{
+    background-color: transparent;
+    box-shadow: none;
+  }
+  .status-bar,
+  .status-bar a{
+    color: #fff;
+  }
+  .navbar-fixed-top{
+    position: absolute;
+  }
+  .navbar-link{
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+  }
+  .navbar-link.active,
+  .navbar-link:hover{
+    background: none;
+    opacity: .8;
+    color: #fff;
+  }
+  .dropdown-group .dropdown-arrow{
+    border-color: #fff transparent transparent transparent;
+  }
+  </style>
+<% end %>
+<% content_for :tail do %>
+  <script>
+    $(function() {
+      $('.js_voice_open').on('click', function (e) {
+        // do something...
+        $(this).prop('disabled',true);
+        $.ajax({
+          type:'post',
+          url:'/welfare/voices/'+<%= @voice.id %>+'/buy.json',
+          success:function(msg){
+            if(msg.success){
+              location.reload();
+            }else{
+              $('#welfare-open').modal('hide');
+              $('.js_voice_open').prop('disabled',false);
+              alert(msg.error);
+            }
+          },
+          error:function(){
+            alert('服务器正忙，请稍候重试');
+            $('.js_voice_open').prop('disabled',false);
+          }
+        });
+      })
+    })
+  </script>
+<% end %>

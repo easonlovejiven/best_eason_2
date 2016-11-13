@@ -1,0 +1,6 @@
+<div class="container">
+  <%= render "/shop/shared/paid_ranking", users: @users, url: "/shop/events/#{@task.id}/more_users" %>
+  <div class="text-center">
+    <%= will_paginate(@users) %>
+  </div>
+</div>

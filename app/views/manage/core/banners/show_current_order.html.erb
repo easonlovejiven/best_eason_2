@@ -1,0 +1,41 @@
+<div class="alert alert-info">tips:你可以在【焦点图】列表中编辑，以改变当前页面的内容。未发布或已过期的，不会在当前页面显示。</div>
+<div class="btn-group">
+  <%= link_to "app", show_current_order_manage_core_banners_path(genre: 'phone'), class: "btn btn-default #{(params[:genre].blank? || params[:genre] == 'phone') ? "active" : ""}" %>
+  <%= link_to "网站", show_current_order_manage_core_banners_path(genre: 'web'), class: "btn btn-default #{params[:genre] == 'web' ? "active" : ""}"  %>
+</div>
+</br>
+</br>
+<% if @banners.present? %>
+  <% start_num = (((@banners.current_page || 1) - 1) * @banners.per_page) + 1 %>
+  <% @banners.each_with_index do |banner, i|%>
+
+    <div class="col-md-3 banner-card-div">
+      <div class="banner-card <%= banner.start_at > Time.now ? 'tag-gray' : ''%>">
+        <div class="banner-card-id">
+          <p class="banner-card-text">ID: <%= banner.id%></p>
+        </div>
+        <%= image_tag(banner.pic2.present? ? banner.pic2 : banner.pic, width: '100%', height: '150px') %>
+        <p class="banner-card-text">状态：<%= banner.start_at > Time.now ? '未生效' : '已生效'%></p>
+        <p class="banner-card-text">开始：<%= banner.start_at.present? ? banner.start_at.to_s(:db) : '无'%></p>
+        <p class="banner-card-text">结束：<%= banner.end_at.present? ? banner.end_at.to_s(:db) : '无'%></p>
+      </div>
+      <h4><%= i+start_num %></h4>
+    </div>
+  <% end %>
+  <div class="col-md-12">
+    <%= will_paginate @banners %>
+  </div>
+<% else %>
+  <div class="col-md-3 banner-card-div">
+    <div class="banner-card">
+      <div class="banner-card-id">
+        <p class="banner-card-text">默认焦点图</p>
+      </div>
+      <%= image_tag(Core::Banner::DEFAULT_PICTURE, width: '100%', height: '150px') %>
+      <p class="banner-card-text">状态：已生效</p>
+      <p class="banner-card-text">开始：无</p>
+      <p class="banner-card-text">结束：无</p>
+    </div>
+    <h4>1</h4>
+  </div>
+<% end %>

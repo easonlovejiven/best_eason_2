@@ -1,0 +1,20 @@
+zh-CN:
+  activerecord:
+    models:
+      shop/task: 任务
+    attributes:
+      shop/task:
+        title: 名称
+        guide: 口号
+        description: 描述
+        shop_type: 类型
+        shop_id: 类型ID
+        category: 分类
+        user_id: 发布人
+        creator_id: 创建人
+        star_list: 关联明星
+        participants: 参与人数
+        position: 位置
+        is_top: 是否置顶
+        expired_at: 过期时间
+        created_time: 创建时间

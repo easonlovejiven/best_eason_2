@@ -1,0 +1,102 @@
+// 死忠粉问题详情页面
+.questions{
+  .time-counter{
+    color: $colorHighLightR;
+
+    font-size: 40px;
+    line-height: 40px;
+  }
+  .time-bg{
+    display: inline-block;
+    border-radius: 4px;
+    border: 1px solid rgba(255,71,45,.3);
+    // background-color: #000;
+    color: #FF472D;
+    padding: 2%;
+    // line-height: 62px;
+    // width: 68px;
+  }
+}
+.question-form{
+  .h4{
+    font-size: 20px;
+    color: #373A3C;
+    display: inline-block;
+  }
+  .answer{
+    color: #fff;
+    opacity: 0.75;
+  }
+  .answer-right{
+    background-color: rgba(0,163,255,100);
+  }
+  .answer-wrong{
+    background-color: rgba(255,89,144,100);
+  }
+  .radio{
+    min-height: 22px;
+    input[type="radio"]{
+      margin-top: 3px;
+    }
+  }
+}
+
+.question-right{
+  margin-left: 350px;
+  margin-top: 20px;
+  .radio{
+    width: 45%;
+    height: 80px;
+    display: inline-block;
+    margin-bottom:15px;
+    margin-left: 10px;
+    .form-control{
+      position:absolute;
+      text-align: center;
+      padding:8px;
+      height: 100%;
+      border-radius:0;
+    }
+  }
+
+  input[type="radio"]{
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;    
+  }
+}
+.answer-select{
+  font-style: normal;
+}
+.title-question{
+  font-size: 18px;
+  font-weight: normal;
+  margin-bottom: 24px;
+  margin-top: 0;
+}
+.count-right,
+.count-wrong{
+  font-size: 16px;
+  color: #4A4A4A;
+  padding-right:3px;
+  line-height: 32px;
+}
+.questions .js-right{
+  color:#00A3FF;
+  border-color: #00A3FF;
+}
+.form-currentGroup{
+  height: 268px;
+  overflow: hidden;
+}
+.current-question{
+  margin-bottom: 20px;
+  margin-top: 10px;
+  color:#666;
+  .js-current-question{
+    font-style: normal;
+  }
+}
+ .question-right .qa-radio:hover{
+    background-color:#ccc;
+ }  

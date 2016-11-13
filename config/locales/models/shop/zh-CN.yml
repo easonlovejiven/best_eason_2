@@ -1,0 +1,4 @@
+zh-CN:
+  activerecord:
+    models:
+      shop: 任务

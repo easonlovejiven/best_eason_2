@@ -1,0 +1,19 @@
+zh-CN:
+  activerecord:
+    models:
+      core/ad: 广告
+    attributes:
+      core/ad:
+        title: 标题
+        genre: 类型
+        link: 链接
+        pic: 图片
+        duration: 显示时间(秒)
+        start_at: 开始时间
+        end_at: 结束时间
+    enums:
+      "core/ad":
+        genre:
+          web: 网站
+          ios: 苹果
+          android: 安卓

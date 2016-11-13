@@ -1,0 +1,94 @@
+<div class="topic-item">
+  <div class="avatar-head has-bordered">
+    <% if sort %>
+    <span class="pull-right text-gray">第<%= index %>楼</span>
+    <% end %>
+    <a class="avatar-round avatar-xs pull-left" href="/home/users/<%= dynamic.user.id %>">
+      <%= image_tag dynamic.user.picture_url, class: "img-circle"  %>
+    </a>
+    <div class="name-location name-location-ml">
+      <div class="ellipsis"><a href="/home/users/<%= dynamic.user.id %>"><%= dynamic.user.name %> &nbsp;&nbsp;<%= user_identity_style(dynamic.user) %></a></div>
+      <small class="text-gray"><%= dynamic.created_at.to_s(:db) %></small>
+      <div class="topic-article word-bread">
+        <%= link_to shop_dynamic_comments_path(dynamic_id: dynamic) do %>
+          <%= dynamic.content.html_safe %>
+        <% end %>
+
+        <div class="topic-images clearfix">
+          <!-- 动态视频显示，最多显示一个视频 -->
+          <% dynamic.videos.each do |video| %>
+            <video width="80%" controls>
+              <source src="<%= video.key_url %>" type="video/mp4">
+              Your browser doesn't support HTML5 video tag.
+            </video>
+          <% end %>
+          <% vote =  @votes[dynamic.id]%>
+          <% dynamic.pictures.each do |picture| %>
+            <div class="image-item">
+              <a href="<%= picture.key_url %>" data-lightbox="dynamic_img<%= dynamic.id %>">
+                <%= image_tag picture.key_url.to_s + "#{(vote.present?) ? '' : '?imageMogr2/auto-orient/thumbnail/!484x484r/gravity/Center/crop/484x484'}" , class: "" %>
+              </a>
+            </div>
+          <% end %>      
+          <% if vote.present? %>
+            <div class="progressBox">
+              <!-- 开始有的js_progress_btn  点了就没了 -->
+              <% vote[:detail].each do |v|%>
+                <div class="progress-default <%= !(@current_user.present? && vote[:is_voted]) ? 'js_progress_btn' : ''%>">
+                  <!-- progress-show-you 点了就有 width= 600*% px-->
+                  <% vote_count_proportion = (vote[:participator] == 0 || v[:voted_count] == 0) ? 0 : (v[:voted_count] * 100.0/ vote[:participator]).to_f.round(1)%>
+                  <span class="js_show progress-world-left" data-id='<%= v[:id]%>'><%= v[:content]%></span>
+
+                  <span class="js_show_progress <%= vote[:is_voted] ? v[:is_choosed] ? 'progress-show-you' : 'progress-show-other' : ''%>">
+                  </span>
+
+                  <span class="progress-world-right <%= !(@current_user.present? && vote[:is_voted]) ? 'hide': ''%>">
+                    <span class="js_vote_now"><%= v[:voted_count] %></span>票
+                    <span class="progress-world"><%= vote_count_proportion.to_i == vote_count_proportion ? vote_count_proportion.to_i : vote_count_proportion %>%
+                    </span>
+                  </span>
+                
+                </div>
+              <% end %>
+            </div>
+            <div class="js_vote_next">
+              <span class="js_vote_all"><%=vote[:participator]%></span><span>人参与此投票</span>
+            </div>
+          <% end %>
+        </div>
+        
+        
+
+        <div class="">
+          <% if @current_user %>
+            <%= link_to dynamic_like_shop_topic_path(dynamic_id: dynamic.id), method: :put, class: "like-num", id: "dynamic_like_#{dynamic.id}", remote: true do %>
+              <% @list = Redis::List.new "shop_topic_dynamic_#{dynamic.id}_likes"  %>
+              <% if @current_user && @list.values.include?(@current_user.id.to_s) %>
+                <i class="icons text-highlight-r">&#xe641;</i> <%= dynamic.like_count %>
+              <% else %>
+                <i class="icons">&#xe61c;</i> <%= dynamic.like_count %>
+              <% end %>
+            <% end %>
+          <% else %>
+            <%= link_to new_session_path, class: "like-num" do %>
+              <% @list = Redis::List.new "shop_topic_dynamic_#{dynamic.id}_likes"  %>
+              <% if @current_user && @list.values.include?(@current_user.id.to_s) %>
+                <i class="icons text-highlight-r">&#xe641;</i> <%= dynamic.like_count %>
+              <% else %>
+                <i class="icons">&#xe61c;</i> <%= dynamic.like_count %>
+              <% end %>
+            <% end %>
+          <% end %>
+          <%= link_to @current_user ? shop_dynamic_comments_path(dynamic_id: dynamic) : new_session_path, class: "comment-num" do %>
+            <i class="icons">&#xe6c4;</i> <%= dynamic.comment_count %>
+          <% end %>
+          <a href="javascript:;" class="share-num js-myTopicsShareBtn"><i class="icons">&#xe6c6;</i> <%= dynamic.foward_count %></a>
+          <div class="js-myTopicsShare hide share-box">
+            <%= render partial: "shop/shared/share", locals: {object: dynamic, type: 'topic_dynamic', text: '分享一个有趣的动态'} %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

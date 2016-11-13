@@ -1,0 +1,146 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "kindeditor.js" %>
+<% end %>
+<div class="container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <%= render 'shop/shared/crumbs' %>
+
+      <%= simple_form_for object, url: url, method: method, html: { class: "publish-form block-area validate-form js-checkForm" } do |f| %>
+        <div class="hidden_field">
+          <%= f.hidden_field :user_id, value: current_user.id %>
+          <%= f.hidden_field :creator_id, value: current_user.id %>
+        </div>
+        <div class="form-group">
+          <label class="">标题 <span class="text-highlight-r">*</span><small class="text-gray">(最多输入40个字)</small></label>
+          <%= f.input :title, label: false, placeholder: '请勿包含 ＃＊<> & % ^‘集资等非法字符', as: :text, class: "form-control", input_html: { rows: "2", maxlength: "40", class: "js_danger_chara js-emoji" } %>
+        </div>
+
+        <div class="form-group js-tagbox">
+          <label class="">描述图片 <span class="text-highlight-r">*</span><small class="text-gray">(支持jpg/jpeg/gif/png格式,大小 &lt; 2M,建议上传640*480px)</small></label>
+          <div class="form-group">
+            <% if action == 'update' %>
+              <% unless object.cover_pic.present? %>
+                <label class="control-label">无</label>
+              <% else %>
+                <%= link_to (image_tag object.cover_pic, width: 200, height: 200, alt: ""), object.cover_pic, target: '_blank' %>
+              <% end %>
+            <% end %>
+            <%= f.hidden_field :descripe_key, label: false, placeholder: '上传图片', class: "js-name form-control js-checkName" %>
+            <div class="form-control js-photobtn1">上传图片</div>
+            <p class="js-textError text-highlight-r"></p>
+          </div>
+          <div class="js-upload-photo-1 hide">
+            <div class="thumb-img-add topics-btn js-upload-photoadd-1"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="">编辑内容 <span class="text-highlight-r">*</span><small class="text-gray">(最多输入5000个字,如需输入表情符号,请通过本输入框顶部的工具栏添加。通过电脑/手机输入法添加的表情将会被系统自动过滤)</small></label>
+          <%= f.input :description, as: :kindeditor, label: false, input_html: {style: "width:847px;height:300px;"}.merge(kindeditor_option) %>
+        </div>
+
+        <div class="form-group">
+          <label class="">活动时间 <span class="text-highlight-r">*</span></label>
+          <div class="form-inline">
+            <span class="datetime-wrap"><input type="text" value= "<%= action == 'update' ? object.start_at : "" %>" id="eventDateStart" name="welfare_<%= kind%>[start_at]" class="form-control required" placeholder="开始时间"></span>
+            至
+            <span class="datetime-wrap"><input type="text" value= "<%= action == 'update' ? object.end_at : "" %>" id="eventDateEnd" name="welfare_<%= kind%>[end_at]" class="form-control required" placeholder="结束时间"></span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-inline">
+            <label class="">购买时间 <span class="text-highlight-r">*</span></label>
+            <div>
+              <span class="datetime-wrap"><input type="text" value= "<%= action == 'update' ? object.sale_start_at : "" %>" id="sellDateStart" name="welfare_<%= kind%>[sale_start_at]" class="form-control required" placeholder="购买开始时间"></span>
+              至
+              <span class="datetime-wrap"><input type="text" value= "<%= action == 'update' ? object.sale_end_at : "" %>" id="sellDateEnd" name="welfare_<%= kind%>[sale_end_at]" class="form-control required" placeholder="购买结束时间"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="">地址<small class="text-gray">(最多输入20个字)</small></label>
+          <%= f.input :address, label: false, placeholder: '北京市朝阳区', as: :text, class: "form-control js_danger_val", input_html: { rows: "1", maxlength: "20", class: "js_danger_val js-emoji" } %>
+        </div>
+        <div class="form-group">
+          <label class="">联系电话 <span class="text-highlight-r">*</span><small class="text-gray">(只能输入数字，最多输入30个数字)</small></label>
+          <%= f.input :mobile, label: false, placeholder: '请输入您的手机号', class: "form-control js_danger_val", input_html: { rows: "1", maxlength: "30", class: "js_danger_val input_number" , type: "number" } %>
+        </div>
+        <div class="form-group">
+          <label class="">关联明星 <span class="text-highlight-r">*</span><small class="text-gray">(最多关联10位明星)</small></label>
+          <% if action == 'update' %>
+            <%= render partial: 'shop/shared/select2_find_tag', locals: {f: f, field: :star_list, options: { selects: Core::Star.where(published: true).select("id, name"), multiple_class: true, auto_suppl: true, auto_url: "/manage/shop/get_star?id=#{object.shop_task.try(:id)}", url: '/manage/shop/search_star', tag: false } } %>
+          <% else %>
+            <%= render partial: 'shop/shared/select2_tag', locals: {f: f, field: :star_list, options: { selects: Core::Star.where(published: true).select("id, name"), multiple_class: true, url: '/manage/shop/search_star', tag: false } } %>
+          <% end %>
+        </div>
+
+        <div class="form-group">
+          <label>报名所需信息</label>
+          <table class="table table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th width="60%">名称<small class="text-gray">(最多输入20个字)</small></th>
+                <th width="20%">必填?</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%= f.simple_fields_for :ext_infos do |ext_info| %>
+                <%= render partial: 'welfare/shared/ext_info_fields', locals: {f: ext_info} %>
+              <% end %>
+            </tbody>
+          </table>
+          <%= link_to_add_association '添加报名信息', f, :ext_infos,
+            partial: 'welfare/shared/ext_info_fields',
+            class: 'btn btn-default',
+            data: {
+              'association-insertion-method' => 'append', 'association-insertion-traversal' => 'prev', 'association-insertion-node' => 'table'} %>
+        </div>
+
+        <% unless object.tries(:shop_task, :published) == true %>
+          <div class="form-group">
+            <label>价格信息 <span class="text-highlight-r">*</span></label>
+            <div class="table-responsive table-new-price js-price-infos">
+              <table class="table table-bordered table-condensed">
+                <thead>
+                  <tr>
+                    <th width="20%">价格分类<small class="text-gray">(最多输入20个字)</small></th>
+                    <th width="20%">价格二级分类<small class="text-gray">(最多输入20个字)</small></th>
+                    <th>限购份数<small class="text-gray">(最多输入9位数字,输入0为不限份数)</small></th>
+                    <th>是否限购</th>
+                    <th>是否每人限购</th>
+                    <th>每人限购数量<small class="text-gray">(最多输入9位数字)</small></th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <%= f.simple_fields_for :ticket_types do |ticket_type| %>
+                    <%= render partial: 'welfare/shared/ticket_type_fields', locals: {f: ticket_type} %>
+                  <% end %>
+                </tbody>
+              </table>
+              <%= link_to_add_association '添加新的价格种类', f, :ticket_types,
+                partial: 'welfare/shared/ticket_type_fields',
+                class: 'btn btn-default',
+                data: {
+                  'association-insertion-method' => 'append', 'association-insertion-traversal' => 'prev', 'association-insertion-node' => 'table'} %>
+              <% unless object.errors[:ticket_types].blank? %>
+                <div class="text-highlight-r" style="margin-top: 3px;"><%= object.errors[:ticket_types].join(', ') %></div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="form-group text-right">
+          <%= f.button :submit, object.shop_task.try(:published) == true ? '保存' : "预览", class: 'btn btn-highlight-outline space-lg-hor js-checkButton' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

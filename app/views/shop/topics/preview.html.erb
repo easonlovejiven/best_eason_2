@@ -1,0 +1,48 @@
+<%= content_for :title do %>
+  <%= @topic.title %>
+<% end %>
+<div class="container preview-container">
+  <ol class="breadcrumb">
+    <li><a href="/home">首页</a></li>
+    <li><a href="/home/suggestions?category=topics">话题任务</a></li>
+  </ol>
+
+  <div class="block-area">
+    <h4 class="h4 form-group"><%= @topic.title %></h4>
+    <div class="topics-cover text-center">
+      <img src="<%= @topic.picture_url %>">
+    </div>
+
+    <div class="share-box text-center">
+      <%= render partial: "shop/shared/share", locals: {object: @topic, type: 'preview', text: '我喜欢这个话题'}%>
+    </div>
+  </div>
+  <h5 class="h4 aside-title">
+    <span class="border-l">关联明星</span>
+  </h5>
+  <div class="block-area">
+    <% @topic.shop_task.core_stars.each do |star| %>
+      <%= link_to star.name, home_star_path(star) ? home_star_path(star) : 'javascript:;' %>&nbsp;&nbsp;
+    <% end %>
+  </div>
+  <h5 class="h4 aside-title">
+    <span class="border-l">话题详情</span>
+  </h5>
+  <div class="article-area">
+    <%= simple_format h @topic.description %>
+  </div>
+</div>
+<div class="task-preview text-right">
+  <div class="container">
+    <%= link_to '返回编辑', edit_shop_topic_path(@topic), method: :get, class: 'btn btn-highlight space-lg-hor' %>
+    <%= link_to '发布', publish_shop_task_path(@topic.shop_task), method: :put, class: 'btn btn-highlight space-lg-hor' %>
+  </div>
+</div>
+
+<% content_for :head do %>
+  <style media="screen">
+    body{
+      padding-bottom: 60px;
+    }
+  </style>
+<% end %>

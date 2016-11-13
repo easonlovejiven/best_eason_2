@@ -1,0 +1,15 @@
+zh-CN:
+  manage:
+    manage:
+      roles:
+        show:
+          index: 列表
+          show: 显示
+          edit: 编辑
+          publish: 发布
+          update: 更新
+          destroy: 删除
+          create: 创建
+          manage: 管理
+          download: 下载
+          manual_download: 去下载

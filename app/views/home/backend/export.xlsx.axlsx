@@ -1,0 +1,59 @@
+wb = xlsx_package.workbook
+wb.use_shared_strings = true
+wrap_text = wb.styles.add_style({:alignment => {:horizontal => :center, :vertical => :center, :wrap_text => true}}  )
+ext_infos = (task_id.present? && task_type.present?) ? eval(task_type).where(id: task_id).first.try(:ext_infos) : []
+show_ext_infos = task_id.present? && task_type.present? && ext_infos.present?
+wb.add_worksheet(name: "商品活动任务订单列表") do |sheet|
+  row = %W(总订单号 子订单号 商品名 商品类型 用户名字 用户昵称 用户电话 用户地址 报名时间 支付时间 数量 支付钱数 支付类型 支付来源 taskID task类型 用户id 运费)
+  row += ext_infos.map(&:title) if show_ext_infos
+  sheet.add_row row
+
+  if orders.present?
+    orders.includes([:ticket_type, :owhat_product, :user]).each_with_index do |order, tindex|
+      sheet.add_row [
+        order.order.try(:order_no),
+        order.order_no,
+        order.owhat_product.try(:title),
+        "#{order.ticket_type.try(:category)} #{order.ticket_type.try(:second_category)}",
+        order.user.try(:name),
+        order.user_name,
+        order.phone,
+        order.address,
+        order.created_at ? order.created_at.to_s(:db) : '',
+        order.paid_at ? order.paid_at.to_s(:db) : '',
+        order.quantity,
+        order.payment,
+        order.pay_type == 'alipay' ? '支付宝' : '微信',
+        order.platform == 'web' ? '网站' : (order.platform || ''),
+        order.owhat_product_id,
+        order.owhat_product_type == 'Shop::Product' ? '商品' : order.owhat_product_type == 'Shop::Event' ? '活动' : '应援' ,
+        order.user_id,
+        order.freight_fee,
+      ] + (show_ext_infos ? order.split_memo.gsub(/%&\*/, " %&*").split("%&*") : []), :style => wrap_text, :types => [:string, :string]
+    end
+  end
+  if miss_orders.present?
+    miss_orders.includes([:ticket_type, :owhat_product, :user]).each_with_index do |order, tindex|
+      sheet.add_row [
+        order.order.try(:order_no),
+        order.order_no,
+        order.owhat_product.try(:title),
+        "#{order.ticket_type.try(:category)} #{order.ticket_type.try(:second_category)}",
+        order.user.try(:name),
+        order.user_name,
+        order.phone,
+        order.address,
+        order.created_at ? order.created_at.to_s(:db) : '',
+        order.paid_at ? order.paid_at.to_s(:db) : '',
+        order.quantity,
+        order.payment,
+        order.pay_type == 'alipay' ? '支付宝' : '微信',
+        order.platform == 'web' ? '网站' : (order.platform || ''),
+        order.owhat_product_id,
+        order.owhat_product_type == 'Shop::Product' ? '商品' : order.owhat_product_type == 'Shop::Event' ? '活动' : '应援' ,
+        order.user_id,
+        order.freight_fee,
+      ] + (show_ext_infos ? order.split_memo.gsub(/%&\*/, " %&*").split("%&*") : []), :style => wrap_text, :types => [:string, :string]
+    end
+  end
+end

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+
+    <meta name="description" content="Owhat是明星忠实粉丝的互动平台，为娱乐公司和粉丝后援会提供包括在线交易、传播管理、活跃度管理和明星福利互动等一站式的便捷互动工具。为明星更好的经营粉丝，为粉丝更好的支持偶像。" />
+    <meta name="keywords" content="明星,粉丝,娱乐,演出,演唱会,订票,owhat,爱豆,EXO,鹿晗,TFBOYS,华晨宇,吴亦凡,电影,音乐,流行音乐,八卦,艺人" />
+    <meta name="author" content="owhat, bjoffice@owhat.cn" />
+    <!-- 定义页面的最新版本 -->
+    <meta name="revised" content="owhat 3.0" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta property="wb:webmaster" content="812fe9cf7d8ad52c" />
+    <title><%=(Time.now - 1.days).to_s(:db)%>-<%= Time.now.to_s(:db) %>owhat3系统统计报告</title>
+  </head>
+
+  <body>
+    <table cellpadding="0" cellspacing="5" width="100%" border="0" align="center" bgcolor="#f3f3f2">
+      <tbody>
+        <tr>
+          <td bgcolor="#FFFFFF">
+            <table cellpadding="0" cellspacing="0" width="100%" border="0" align="center">
+              <tbody>
+                <tr style=""><td height="20" style="line-height:20px;" colspan="3">&nbsp;</td></tr>
+                <tr>
+                  <td width="10"></td>
+                  <td width="">
+                    <table cellpadding="0" cellspacing="0" width="100%" border="0" align="center">
+                      <tbody>
+                        <tr>
+                          <td>
+                            <a href="www.owhat.cn" style="display: block;">
+                              <img height="32" src="http://<%= HOSTS['asset'] %>/assets/home/logo-eceb537fcb81c5877db3ad2cc7154dccbd3071ce76f69625a3d31364d3014fc2.png" alt="Owhat是明星忠实粉丝的互动平台，为娱乐公司和粉丝后援会提供包括在线交易、传播管理、活跃度管理和明星福利互动等一站式的便捷互动工具。为明星更好的经营粉丝，为粉丝更好的支持偶像。" />
+                            </a>
+                          </td>
+                        </tr>
+                        <tr style=""><td height="16" style="line-height:16px;border-bottom:solid 1px #e5e5e5;">&nbsp;</td></tr>
+                      </tbody>
+                    </table>
+                  </td>
+                  <td width="10"></td>
+                </tr>
+                <tr>
+                  <td width="10"></td>
+                  <td width="">
+                    <table cellpadding="0" cellspacing="0" width="100%" border="0" align="center">
+                      <tbody>
+                        <tr style=""><td height="20" style="line-height:20px;">&nbsp;</td></tr>
+                        <tr style=""><td height="20" style="line-height:20px;">&nbsp;</td></tr>
+                        <tr>
+                          <td style="font-size: 12px; color: #5b5b5b; padding-top: 5px; padding-bottom: 5px; line-height: 24px;">
+                            总用户数：<%= @all_users%></br>
+                            新用户数：<%= @n_users%></br>
+                            支付订单数：<%= @pay_orders%></br>
+                            总订单数：<%= @all_orders%></br>
+                            总支付金额：<%= @all_payments%></br>
+                          </td>
+                        </tr>
+                        <tr style=""><td height="16" style="line-height:16px;">&nbsp;</td></tr>
+                      </tbody>
+                    </table>
+                  </td>
+                  <td width="10"></td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

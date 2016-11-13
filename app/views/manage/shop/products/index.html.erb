@@ -1,0 +1,88 @@
+<h3><%= "#{model.model_name.human}#{t(:index)}" %> (<%= @records.total_entries %>)</h3>
+
+<div class="well well-sm">
+  <!-- 用户搜索 -->
+  <%= form_tag request.path, method: 'get', id: 'search_form', class: 'form-inline clearfix' do %>
+    <%= render 'manage/shared/search/basic', field: 'id' %>
+    <%= render 'manage/shared/search/like', field: 'title' %>
+    <%#= render 'manage/shared/search/range', field: 'created_at' %>
+    <%= render 'manage/shared/search/range', field: 'created_at', provide: 'datepicker-time-second-inline' %>
+    <%= render 'manage/shared/search/select2', field: 'user_id', options: { selects: [], url: "/manage/core/search_user" , multiple_class: false, auto_suppl: true, auto_url: "/manage/core/get_user?id=#{(params[:where] || {})[:user_id]}" } %>
+    <%= render 'manage/shared/search/order', fields: [], need_timestamp: false %>
+    <%#= render 'manage/shared/search/page' %>
+    <div class="form-group">
+      <%= submit_tag t(:search), name: nil, class: 'btn btn-primary' %>
+      <%#= link_to t(:reset), request.path, class: 'btn btn-info', data: {remote: true} %>
+    </div>
+    <%= link_to t('new'), [:new, :manage, model.model_name.singular], class: 'btn btn-primary pull-right' if can?(:create, model) %>
+  <% end %>
+  <!-- 用户搜索 end/ -->
+</div>
+<!-- 用户列表 -->
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <% %i{ id title 状态 cover1 user_id creator_id 已排队人数 sale_end_at created_at 交易额 }.each do |field| %>
+        <th><%= model.human_attribute_name(field) %></th>
+      <% end %>
+      <th><%= t 'actions' %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tasks.each do |record| %>
+      <tr>
+        <td><%= link_to record.id, manage_shop_product_path(record) %></td>
+        <td><%= record.title %></td>
+        <td><%= record.shop_task.try(:published) == true ? '已发布' : '编辑中' %></td>
+        <td><%= image_tag(record.cover_url(1) ? "#{record.cover_url(1)}?imageMogr2/auto-orient/thumbnail/!50x50r/gravity/Center/crop/50x50" : "", width: '50px', height: '50px') %></td>
+        <td><%= record.user.try(:name) %>
+        <td><%= record.creator.try(:name) %>
+        <td><%= record.task_participator.to_i %></td>
+        <td><%= record.sale_end_at && record.sale_end_at.to_s(:db) %></td>
+        <td><%= record.created_at.to_s(:db) %></td>
+        <td><%= record.sum_fee %></td>
+        <td>
+          <%= render 'manage/shared/actions', record: record %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="dt-toolbar-footer">
+  <%= render 'manage/shared/pagination', records: @records %>
+</div>
+
+<script>
+  var nowTime = new Date();
+  var nowYear = nowTime.getFullYear();
+  var nowMonth = nowTime.getMonth()+1;
+  var nowDate = nowTime.getDate();
+  var now = nowYear+'-'+nowMonth+'-'+nowDate+' 00:00:00';
+  $('#where_created_at_start').click(function(){
+    $(this).val(now);
+  });
+  $('#where_created_at_end').click(function(){
+    $(this).val(now);
+  });
+  $('#search_form input:submit').click(function(event){
+    event.preventDefault();
+    var startTime = $('#where_created_at_start').val();
+    var endTime = $('#where_created_at_end').val();
+    var oDayChange = 2;
+    if(endTime != ''){
+      oDayChange = new Date(endTime).getTime()-new Date(startTime).getTime();;
+    }
+    var oDayNow = new Date(startTime).getTime()-new Date().getTime();
+    console.log('开始时间比当前时间大'+oDayNow+'结束时间比开始时间大'+oDayChange);
+    if(oDayNow>0){
+      event.preventDefault();
+      alert('开始时间不可晚于当前时间,请调整后,重试.');
+    }else if(oDayChange < 0){
+      event.preventDefault();
+      alert('结束时间不可早于开始时间,请调整后,重试.');
+    }else{
+      $('#search_form').submit();
+    }
+  });
+</script>

@@ -1,0 +1,2 @@
+- permission = can?(:manage, record) if permission === nil
+= link_to t('download'), [:download, :manage, record], class: 'btn btn-default btn-xs' if permission

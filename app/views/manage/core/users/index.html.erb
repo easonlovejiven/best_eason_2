@@ -1,0 +1,57 @@
+
+<div class="well well-sm">
+  <!-- 用户搜索 -->
+  <%= form_tag request.path, method: 'get', id: 'search_form', class: 'form-inline clearfix' do %>
+    <%= render 'manage/shared/search/basic', field: 'id' %>
+    <%= render 'manage/shared/search/like', field: 'name' %>
+    <%= render 'manage/shared/search/join', field: 'phone__core_accounts' %>
+    <%= render 'manage/shared/search/join', field: 'email__core_accounts'%>
+    <%= render 'manage/shared/search/select', field: 'identity', options: Core::User.identities %>
+    <%= render 'manage/shared/search/range', field: 'created_at' %>
+    <%#= render 'manage/shared/search/order', fields: %w[ position participants ]%>
+    <%= render 'manage/shared/search/page' %>
+    <div class="form-group">
+      <%= submit_tag t(:search), name: nil, class: 'btn btn-info' %>
+      <%#= link_to t(:reset), request.path, class: 'btn btn-info', data: {remote: true} %>
+    </div>
+    <!-- 没有新增用户， 只能用户注册 -->
+    <%#= link_to t('new'), [:new, :manage, model.model_name.singular], class: 'btn btn-info pull-right' if can?(:create, model) %>
+  <% end %>
+  <!-- 用户搜索 end/ -->
+</div>
+<!-- 用户列表 -->
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <% %i{ id name email phone obi level empirical_value identity sex position participants created_at }.each do |field| %>
+        <th><%= model.human_attribute_name(field) %></th>
+      <% end %>
+      <th><%= t 'actions' %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @records.each do |record| %>
+      <tr>
+        <td><%= record.id %></td>
+        <td><%= record.name %></td>
+        <td><%= record.tries(:account, :email) %></td>
+        <td><%= record.tries(:account, :phone) %></td>
+        <td><%= record.obi %></td>
+        <td><%= record.level %></td>
+        <td><%= record.empirical_value %></td>
+        <td><%= model.human_attribute_name("identity.#{record.identity}") %></td>
+        <td><%= record.sex %></td>
+        <td><%= record.position %></td>
+        <td><%= record.participants %></td>
+        <td><%= record.created_at.to_s(:db) %></td>
+        <td>
+          <%= render 'manage/shared/actions', record: record %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="dt-toolbar-footer">
+  <%= render 'manage/shared/pagination', records: @records %>
+</div>

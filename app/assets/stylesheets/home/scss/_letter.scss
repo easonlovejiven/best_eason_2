@@ -1,0 +1,116 @@
+// 书信详情
+.letter-header{
+  max-height: 350px;
+  overflow: hidden;
+  margin-top: -34px;
+  padding: 64px 15px 100px;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  .small{
+    font-size: 12px;
+    color: #8a8a8a;
+  }
+  .h5{
+    font-size: 16px;
+  }
+}
+.letter-body{
+  max-width: 1020px;
+  margin: -70px auto 50px;
+  padding: 40px 50px;
+  background-color: #fff;
+  border-radius: 8px;
+  font-family: "PingFang SC";
+  box-shadow: 0 4px 10px 0 rgba(83,232,232,0.05);
+  .title{
+    margin-top: 0;
+  }
+  .article{
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+}
+.letter-images{
+  img{
+    border-radius: 4px;
+    width: 100%;
+  }
+  .item{
+    margin-bottom: 21px;
+  }
+  .tag-box{
+    position: relative;
+    margin-bottom: 21px;
+  }
+  .text-desc{
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    white-space: nowrap;
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+  }
+}
+.letter-footer{
+  padding-bottom: 20px;
+  span{
+    font-size: 18px;
+  }
+  div{
+    color: #9B9B9B;
+  }
+}
+.welfare-open{
+  background-color: rgba(255,255,255,.9);
+  .btn{
+    width: 300px;
+  }
+}
+#welfare-open{
+  .btn + .btn{
+    margin-left: 16px;
+  }
+}
+// 语音详情
+.voice-header{
+  background-image: asset-url('home/letters/voice-cover.png');
+  &,a{
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0,0,0,.5);
+  }
+}
+.voice-main{
+  max-width: 500px;
+  margin: 40px auto 20px;
+  position: relative;
+  img{
+    border-radius: 4px;
+    height: 300px;
+  }
+  .welfare-audio{
+    width: 100%;
+    display: none;
+  }
+  .audio-play{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    border: 1px solid $colorHighLight;
+    border-radius: 50%;
+    background-color: #fff;
+    font-size: 34px;
+    color: $colorHighLight;
+    line-height: 56px;
+    padding-left: 2px;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+}

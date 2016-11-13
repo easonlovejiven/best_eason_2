@@ -1,0 +1,15 @@
+zh-CN:
+  activerecord:
+    models:
+      shop/topic: 话题
+    attributes:
+      shop/topic:
+        title: 名称
+        description: 描述
+        kinder_description: 富文本描述
+        user_id: 发布人
+        creator_id: 创建人
+        cover1: 封面
+        is_share: 是否分享
+        star_list: 关联明星
+        guide: 口号

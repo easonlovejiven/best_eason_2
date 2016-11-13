@@ -1,0 +1,86 @@
+<div class="container m-container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <ol class="breadcrumb">
+        <li><a href="<%= manage_home_backend_index_path %>">管理中心</a></li>
+        <li><a href="<%= welfares_home_backend_index_path( shop_category: 'welfare_events') %>">福利管理</a></li>
+        <li><a href="<%= welfares_home_backend_index_path(shop_category: 'welfare_events') %>">活动管理</a></li>
+        <li class="active">活动福利订单列表</li>
+      </ol>
+
+      <div class="block-area">
+        <div class="form-group">
+          当前活动总收入：<strong><%= @task.sum_fee %></strong>
+        </div>
+        <div class="form-group">
+          截至：<%= Time.now.strftime("%Y-%m-%d")  %>
+        </div>
+        <br>
+        <%= form_tag expens_home_backend_index_path, method: :get, class: "row row-10"  do %>
+          <%= hidden_field_tag "shop_category", params[:shop_category] %>
+          <%= hidden_field_tag "task_id", params[:task_id] %>
+          <div class="form-group col-sm-10">
+            <label class="control-label">订单编号</label>
+            <%= text_field_tag 'order_no', params[:order_no], class: "form-control", placeholder: "671b9060985a0133a8cb6c400891d81e" %>
+          </div>
+          <button type="submit" class="btn btn-highlight-outline btn-md">搜索</button>
+        <% end %>
+
+        <%= form_tag export_home_backend_index_path, method: :get, class: "row row-10"  do %>
+          <%= hidden_field_tag "shop_category", params[:shop_category] %>
+          <%= hidden_field_tag "task_id", params[:task_id] %>
+          <div class="form-group col-sm-10">
+            <label class="control-label">导出格式</label>
+            <%= select_tag 'format', options_for_select(['xlsx'], params[:format]), class: 'form-control' %>
+          </div>
+          <button type="submit" class="btn btn-highlight-outline btn-md">导出订单</button>
+        <% end %>
+
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="col-md-2">订单编号</th>
+                <th>数量</th>
+                <th>实付金额</th>
+                <th>用户</th>
+                <% if params[:shop_category] == 'Welfare::Product'%>
+                  <th>联系方式</th>
+                <% end %>
+                <th>付款时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @expens.each do |expen|  %>
+                <tr>
+                  <td class="">
+                    <%= expen.order_no %>
+                    <br>
+                    <a href="#" class="text-success"><%= @task.title %></a>
+                  </td>
+                  <td class=""><%= expen.quantity %></td>
+                  <td class=""><%= expen.amount %></td>
+                  <td class=""><%= expen.try(:user_name) || expen.user.try(:name) %></td>
+                  <% if expen.resource_type == 'Welfare::Product'%>
+                    <td class=""><%= expen.try(:phone)%></td>
+                  <% end %>
+                  <td class=""><%= expen.created_at.to_s(:db) %></td>
+                  <td class="">
+                    <%= link_to '详情', expen_show_home_backend_index_path(order_no: expen.order_no, shop_category: params[:shop_category]), class: 'btn btn-default btn-sm' %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="text-center">
+        <%= will_paginate @expens %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<div class="container core-container">
+    <div class="headline clearfix">
+      <h4 class="pull-left heading-icon">
+        <i class="heading-icons heading-o"></i>
+        关注
+      </h4>
+      <ul class="nav nav-pills pull-right">
+        <li class="<%= 'active' unless %w(events fundings topics questions subjects media).include?(params[:category].to_s) %>">
+          <%= link_to '推荐', home_suggestions_path %>
+        </li>
+        <li class="<%= 'active' if params[:category] == 'events'%>">
+          <%= link_to 'shop', home_suggestions_path(category: 'events') %>
+        </li>
+        <li class="<%= 'active' if params[:category] == 'fundings'%>">
+          <%= link_to '应援', home_suggestions_path(category: 'fundings') %>
+        <li class="<%= 'active' if params[:category] == 'topics'%>">
+          <%= link_to '话题', home_suggestions_path(category: 'topics') %>
+        </li>
+        <li class="<%= 'active' if params[:category] == 'questions'%>">
+          <%= link_to '问答', home_suggestions_path(category: 'questions') %>
+        </li>
+
+        <li class="<%= 'active' if params[:category] == 'media'%>">
+          <%= link_to 'O妹精选', home_suggestions_path(category: 'media') %>
+        </li>
+        <li class="<%= 'active' if params[:category] == 'subjects'%>">
+          <%= link_to '直播', home_suggestions_path(category: 'subjects') %>
+        </li>
+      </ul>
+    </div>
+    <div class="list">
+      <div class="row row-10">
+        <% @tasks.each do |task| %>
+        <div class="col-sm-6 col-md-3">
+          <%= render partial: 'shop/shared/task_card', locals: {task: task} %>
+        </div>
+        <% end %>
+      </div>
+      <div class="text-center">
+        <%= will_paginate(@tasks) %>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+<div class="csserror">
+  <%= flash[:notice] %>
+  <span class="close">x</span>
+</div>
+<div class="logon block-area">
+  <!--id userlogin 用于登录的js ajax-->
+  <form action="<%= sessions_path %>" method="post" id="userlogin" class="validate-form">
+    <div class="form-group">
+      <input type="text" name="account[login]" class="form-control js-user required" placeholder="请输入手机号或邮箱">
+    </div>
+    <div class="form-group">
+      <input type="password" name="account[password]" class="form-control js-pass required" placeholder="请输入暗号">
+    </div>
+    <p>
+      <input type="submit" class="btn btn-highlight-r btn-block js-submit" value="登录"/>
+    </p>
+    <div class="text-right">
+      <% if @connection.blank? %>
+        <a href="<%= new_account_path %>" class="pull-left">立即注册</a>
+      <% end %>
+      <%= link_to '忘记密码', find_accounts_path if @connection.blank? %>
+			<%= hidden_field_tag 'redirect', params[:redirect] || '/', id: "user_login_redirect" %>
+      <% if @connection %>
+        <%= hidden_field_tag 'connection_id', @connection.try(:id), id: 'account_connection_id' %>
+        <%= hidden_field_tag 'connection_sign', Digest::MD5.hexdigest("login#{@connection.id}#{OAUTH_CONFIG[@connection.site]['secret']}#{@connection.token}").downcase, id: 'account_connection_sign' %>
+      <% end %>
+    </div>
+    <% if @connection.blank? %>
+      <div class="line text-center">
+        <span>第三方登录</span>
+      </div>
+      <div class="connect-linkurl">
+        <% [{ name: 'weibo', width: 600, height: 600, text: "微博", iconColor: "text-weibo",iconCode: '&#xe601;' }, { name: 'wechat', width: 600, height: 600, text: "微信", iconColor: "text-weixin",iconCode: '&#xe607;' }, { name: 'qq', width: 600, height: 600, text: "QQ", iconColor: "text-QQ",iconCode: '&#xe606;' }, { name: 'baidu', width: 600, height: 600, text: "百度", iconColor: "text-baidu",iconCode: '&#xe605;' } ].each do |site| %>
+          <a href="<%= new_connection_path(site: site[:name], redirect: params[:redirect] || '/') %>" class="link-a" target='_blank' data-site="<%= site.to_json %>" rel="nofollow">
+            <i class="icons <%= site[:iconColor] %>"><%= raw site[:iconCode] %></i>
+          </a>
+        <% end %>
+      </div>
+    <% end %>
+  </form>
+</div>
+
+
+<% content_for :head do %>
+<style media="screen">
+  body{
+    background-color: #F5F7F7;
+  }
+</style>
+<% end %>

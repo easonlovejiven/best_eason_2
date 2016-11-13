@@ -1,0 +1,15 @@
+<li class="reply-item has-bordered word-break">
+  <a class="avatar-round avatar-xs pull-left" href="#">
+    <%= image_tag son_comment.user.picture_url, class: "img-circle"  %>
+    <%= user_identity_style(son_comment.user) %>
+  </a>
+  <div class="name-location">
+    <p>
+      <span><%= son_comment.user.name %>: </span>
+      回复 <span class="text-highlight">@<%= parent_username %></span>: <%= son_comment.content %>
+    </p>
+    <p class="text-gray">
+      <%= son_comment.created_at.to_s(:db) %>
+    </p>
+  </div>
+</li>

@@ -1,0 +1,74 @@
+// Owhat3.1 css
+.content-left,
+.content-right,
+.container-left,
+.container-right{
+  float: left;
+}
+// 详情页布局－整体页面
+.content-left{
+  width: 70%;
+}
+.content-right{
+  width: 28%;
+  margin-left: 2%;
+}
+// 详情页布局－整体页面 ends
+// 首页布局
+.container-left{
+  width: 75%;
+}
+.container-right{
+  width: 23.5%;
+  margin-left: 100% - (75%+23.5%);
+}
+@media (max-width: 767px){
+  .container-left,
+  .container-right{
+    width: 100%;
+    float: none;
+    margin: 0;
+  }
+}
+
+// 首页布局 ends
+@media (max-width: 992px) {
+  .content-left,
+  .content-right{
+    width: 100%;
+    margin-left: 0;
+  }
+  // 问答
+  .questions{
+    .js_qa_user_login{
+      position: relative;
+      padding-top: 320px;
+    }
+    .js-qa-count{
+      position: absolute;
+      top: 0;
+    }
+    .js-qa-timer{
+      position: absolute;
+      top: 180px;
+    }
+  }
+}
+@media (max-width: 384px){
+  .questions{
+    .js_qa_user_login{
+      padding-top:300px;
+    }
+    .js-qa-timer{
+      top: 160px;
+    }
+  }
+}
+@media (min-width: 1200px) {
+  .container{
+    width: $container;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+// Owhat3.1 css ends

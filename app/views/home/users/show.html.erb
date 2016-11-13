@@ -1,0 +1,135 @@
+<%= content_for :title do %>
+  <%= @user.name %>
+<% end %>
+<div class="container profile">
+  <div class="profile-header">
+    <div class="profile-cover">
+      <%= image_tag (@user.tries(:image, :picture_url) && @user.tries(:image, :picture_url).to_s+'?imageMogr2/auto-orient/thumbnail/!1200x433r/gravity/Center/crop/1200x433') || (Core::Image.published.first.tries(:picture_url) && Core::Image.published.first.tries(:picture_url).to_s+'?imageMogr2/auto-orient/thumbnail/!1200x433r/gravity/Center/crop/1200x433'), alt: "", class: "js-usersImgGet" %>
+      <div class="overlay-share text-center <%= 'hide-sm' if (@user == @current_user) && !@current_user.verified %>">
+        <div class="share-box hide-sm">
+          <%= render partial: "shop/shared/share", locals: { object: @user, type: 'user' } %>
+        </div>
+      </div>
+
+
+    </div>
+    <div class="profile-info">
+      
+      <a href="#" class="avatar-square">
+        <%= image_tag @user.try(:picture_url).to_s + '?imageMogr2/auto-orient/thumbnail/!134x134r/gravity/Center/crop/134x134', alt: '' %>
+      </a>
+      <div class="profile-text">
+        <div class="h5 ellipsis">
+          <%= @user.name %>
+          <%= user_home_identity_style(@user) %>
+        </div>
+        <p class="small ellipsis text-gray"><%= @user.signature %></p>
+        <%# if @user.verified.blank? %>
+        <div class="text-gray ellipsis">
+          <a href="<%= followers_home_user_path(@user) %>" class="text-gray">
+            粉丝：<%= @user.followers_count%>
+          </a>
+          &nbsp;&nbsp;|&nbsp;&nbsp;
+          <a href="<%= follows_home_user_path(@user) %>" class="text-gray">
+            关注：<%= @user.follow_count%>
+          </a>
+
+          <%= link_to '编辑资料', edit_home_user_path(@user), class: 'btn btn-default btn-sm hide-sm btn-smChange' if @user == @current_user %>
+       <!-- 本人&认证用户可以看到上传封面 -->
+            <% if (@user == @current_user) && @current_user.verified %>
+            <a href="#updateCover" class="js-upload btn btn-default btn-sm btn-smChange" data-toggle='modal'>修改封面</a>
+            <% end %>          
+          <% if @current_user != @user %>
+          <label class="checkbox-stars checkbox-stars-sm">
+            <%= follow_links(@user) %>
+          </label>
+          <% end %>
+        </div>
+        <%# end %>
+      </div>
+      <div class="share-box show-sm">
+        <%= render partial: "shop/shared/share", locals: { object: @user, type: 'user' } %>
+      </div>
+      <%= link_to '编辑资料', edit_home_user_path(@user), class: 'btn btn-default btn-block show-sm' if @user == @current_user %>
+    </div>
+  </div>
+
+  <!-- 认证用户个人主页 -->
+  <% if @user.verified %>
+    <%= render partial: 'verify_show', locals: {feeds: @feeds, user: @user}  %>
+  <% else %>
+    <%= render partial: 'commen_show', locals: {feeds: @feeds, user: @user}  %>
+  <% end %>
+  <div class="text-center">
+    <%= will_paginate @feeds %>
+  </div>
+</div>
+
+<div class="modal fade js-modal" id="updateCover" tabindex="-1" role="dialog" aria-labelledby="updateCoverLabel" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">选取背景图</h4>
+      </div>
+      <div class="modal-body">
+        <p>选取默认背景</p>
+        <div class="row envelope-opts">
+          <% Core::Image.published.each do |image| %>
+          <div class="col-xs-6 col-md-4">
+            <div class="envelope-item js-usersImg">
+              <div class="envelope-thumb">
+                <%= image_tag image.picture_url, alt: '', class: 'envelope-thumb js-usersImgSet' %>
+              </div>
+              <label class="input-group-addon">
+                <!-- 此处每道题的input name属性值相同 -->
+                <% if @user.image_id == image.id %>
+                  <input class="set-cover" type="radio" name="set-answer" value="<%= image.id %>" checked="checked" >
+                <% else %>
+                  <input class="set-cover" type="radio" name="set-answer" value="<%= image.id %>" >
+                <% end %>
+                <%= image_tag "home/letters/letter-checked.png", alt: "", class: "envelope-checked" %>
+                <!--js-usersput传数据-->
+                <input type="hidden" data-src="" data-ral="" class="js-usersPut" data_user_id="<%= @user.id %>">
+              </label>
+            </div>
+          </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default js-deleteBcImg" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-danger js-restoreBcImg">保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :tail do %>
+  <script>
+  $(function(){
+    $('.js-restoreBcImg').click(function(){
+      var oRadioVal=$('.js-usersPut').attr('data-ral');
+      var oImgSrc=$('.js-usersPut').attr('data-src');
+      var oUsersId=$('.js-usersPut').attr('data_user_id');
+      if(oImgSrc !== ''){
+        $('.js-usersImgGet').attr('src',oImgSrc+'?imageMogr2/auto-orient/thumbnail/!1200x433r/gravity/North/crop/1200x433');
+        $.ajax({
+          url:'/home/users/'+oUsersId+'/update_cover',
+          type:'PUT',
+          data:{
+            image_id:oRadioVal
+          }
+        });
+      }
+      $('#updateCover').modal('hide');
+    });
+    $('.js-usersImg').click(function(){
+      var oRadioVal=$(this).find('input:radio').val();
+      var oImgSrc=$(this).find('.js-usersImgSet').attr('src');
+      $('.js-usersPut').attr('data-src',oImgSrc);
+      $('.js-usersPut').attr('data-ral',oRadioVal);
+    });
+  })
+  </script>
+<% end %>

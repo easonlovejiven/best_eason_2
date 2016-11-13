@@ -1,0 +1,308 @@
+<div class="container personal-edit">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "panel" %>
+    </div>
+    <div class="col-sm-9">
+      <%= simple_form_for @current_user, url: home_user_path(@current_user), method: :put, :html => {multipart: true, class: 'form-horizontal block-area js-formInfo' } do |f|%>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">头像</label>
+          <div class="col-sm-9">
+            <a class="edit-avatar" href="#editAvatar" data-toggle="modal">
+              <%= image_tag @current_user.picture_url.to_s + '?imageMogr2/auto-orient/thumbnail/!80x80r/gravity/Center/crop/80x80', class: 'js-imgSet' %>
+              <i class="icons">&#xe644;</i>
+            </a>
+            <div class="control-label" style="text-align:left;">支持jpg/jpeg/png格式,大小 &lt; 2M</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="core_user_name" class="col-sm-3 control-label">昵称</label>
+          <div class="col-sm-5">
+            <% if @current_user.verified?%>
+              <div class="control-label"><%=@current_user.name%></div>
+              <label class="text-gray" style='font-weight:normal;'>认证的用户需要联系O妹才能修改昵称哟 ~</label>
+            <% else%>
+              <%= f.text_field :name, class: 'form-control', placeholder: "昵称" , maxlength: "32" %>
+              <label class="control-label">不超过32个字符</label>
+            <% end%>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">性别</label>
+          <div class="col-sm-9">
+            <label class="radio-inline">
+              <%= f.radio_button :sex, 'male' %>男
+            </label>
+            <label class="radio-inline">
+              <%= f.radio_button :sex, 'female' %>女
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">个人简介</label>
+          <div class="col-sm-7">
+            <%= f.text_area :signature, rows: 4, cols: 40, placeholder: '个人简介', class: "form-control" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">自动将应援结果分享至微博</label>
+          <div class="col-sm-9">
+            <label class="radio-inline">
+              <%= f.radio_button :is_auto_share, true %>是
+            </label>
+            <label class="radio-inline">
+              <%= f.radio_button :is_auto_share, false %>否
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-3 col-sm-9">
+            <button class="btn btn-highlight-outline space-lg-hor js-saveInfo" id="user_save_info">保存</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">账号绑定</label>
+          <!-- 社交账号绑定 -->
+          <div class="col-sm-9 sns-icons">
+            <% connections = @current_account.connections.active %>
+            <% [{ name: 'weibo', width: 600, height: 600, encoder: '&#xe601;' }, { name: 'qq', width: 600, height: 600, encoder: '&#xe606;' },  { name: 'wechat', width: 600, height: 600, encoder: '&#xe607;' }].each do |site| %>
+              <% connection = connections.where(site: site[:name]).last %>
+              <% if connection.tries(:site).to_s == site[:name] %>
+                <%= link_to raw("#{site[:encoder]}"), connection_path(connection), method: 'delete', data: {confirm: '确定解除绑定吗？'}, class: "icons text-highlight-r" %>
+              <% else %>
+                <%= link_to raw("#{site[:encoder]}"), new_connection_path(site: site[:name], redirect: edit_home_users_path), class: "icons text-gray js_user_connection", :target => '_blank', 'data-site' => site.to_json, 'data-url' => "#{edit_home_users_path}", :rel => "nofollow" %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="editAvatar" tabindex="-1" role="dialog" aria-labelledby="editAvatarLabel" data-backdrop="static">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">修改头像</h4>
+      </div>
+      <div class="modal-body">
+        <div class="js-photo">
+          <div class="thumb-img-add topics-btn js-photoadd"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-highlight js-saveHeadImg">保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade no-bordered" tabindex="-1" id="weibo-account" role="dialog" aria-labelledby="modalwelfareLabel" data-backdrop="static" data-keyboard="false" data-show="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header" style="padding-bottom:0">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center" style="padding-top
+        :15px;">提示</h4>
+      </div>
+      <div class="modal-body text-center">
+        您暂时没有关联微博账户或登录失效，是否马上关联，分享更多动态!
+      </div>
+      <div class="modal-footer text-center">
+        <%= link_to '是', new_share_connections_path(site: 'weibo', redirect: edit_home_users_path), class: "btn btn-highlight-outline space-lg-hor js-weiboShare", :target => '_blank'%>
+        <!-- <button type="submit" class="btn btn-highlight-outline space-lg-hor">是</button> -->
+        <a class="btn btn-default space-lg-hor js-weiboclose" href="#">否</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :tail do %>
+  <script type="text/javascript">
+  $(function() {
+    $('#editAvatar').on('shown.bs.modal', function (e) {
+      fnuploadphoto('.js-photoadd','.js-photo',1);
+    });
+    $('.js-weiboclose').click(function(){
+      $("#weibo-account").modal('hide');
+      $('#core_user_is_auto_share_true').removeAttr("checked");
+      // $('#core_user_is_auto_share_false').get(0).checked=true;
+    });
+    $('.js-weiboShare').click(function(){
+      $("#weibo-account").modal('hide');
+    })
+    $('.js-saveHeadImg').click(function(){
+        var str=$('.js-photo img').attr('data-src');
+        if(str !== undefined){
+          var oImgGet=$('.js-photo img').attr('src');
+          $('.js-imgSet').attr('src',oImgGet);
+          $.ajax({
+            url:"/home/users/<%= @current_user.id %>/update_avatar.json",
+            type:'PUT',
+            data:{
+              pic:str
+            }
+          });
+        }
+        $('#editAvatar').modal('hide');
+    })
+    $('#editAvatar').on('hidden.bs.modal', function (e) {
+      var str='<div class="thumb-img-add topics-btn js-photoadd"></div>';
+      $('.js-photo').html(str);
+    });
+    $('.js-saveInfo').on('click',function(){
+      $.ajax({
+        url:$('.js-formInfo').attr('action'),
+        type:'PUT',
+        data: $('.js-formInfo').serialize(),
+        success:function(msg){
+          console.log(msg);
+          if(msg.error){
+            if(msg.has_weibo == false){
+              $("#weibo-account").modal('show');
+            }
+            else if(msg.weibo_token_active == false){
+              $("#weibo-account").modal('show');
+            }
+            else{
+              alert(msg.error);
+            }
+          }else{
+            alert('提交成功');
+          }
+        },
+        error:function(){
+          alert('提交失败');
+        }
+      });
+      return false;
+    });
+    function fnuploadphoto(oPhotoAdd,oPhoto,maxlen){
+      var oPhotoAdd2=document.querySelector(oPhotoAdd);
+      var oPhoto2=document.querySelector(oPhoto);
+      var imglen=0;
+      $.ajax({
+        type:'post',
+        url:'/api/qiniu_uptoken',
+        success:function(msg){
+            // 引入Plupload 、qiniu.js后
+            var uploader = Qiniu.uploader({
+                runtimes: 'html5,flash,html4',    //上传模式,依次退化
+                browse_button: oPhotoAdd2,       //上传选择的点选按钮，**必需**
+                //uptoken_url:'http://192.168.1.139:3000/api/qiniu_uptoken',            //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
+                //uptoken_url: 'http://101.200.73.14/api/qiniu_uptoken',            //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
+                uptoken :msg.uptoken, //若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
+                // unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK为自动生成上传成功后的key（文件名）。
+                // save_key: true,   // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK会忽略对key的处理
+                domain:msg.qiniu_host,   //bucket 域名，下载资源时用到，**必需**
+                get_new_uptoken: true,  //设置上传文件的时候是否每次都重新获取新的token
+                max_file_size: '2M',           //最大文件体积限制
+                flash_swf_url: 'js/plupload/Moxie.swf',  //引入flash,相对路径
+                max_retries: 3,                   //上传失败最大重试次数
+                dragdrop:false,                   //开启可拖曳上传
+                // drop_element: 'container',        //拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
+                chunk_size: '4mb',                //分块上传时，每片的体积
+                auto_start: true,                 //选择文件后自动上传，若关闭需要自己绑定事件触发上传
+                filters: {
+                  mime_types : [ //只允许上传图片和zip文件
+                    { title : "Image files", extensions : "jpg,png,jpeg" },
+                  ],
+                  max_file_size : '2048kb', //最大只能上传4000kb的文件
+                  prevent_duplicates : false //不允许选取重复文件
+                },
+                init: {
+                  'FileFiltered':function(uploader,file){
+
+                   },
+                  'FilesAdded': function(up, files) {
+                    plupload.each(files, function(file) {
+                      // 文件添加进队列后,处理相关的事情
+                      if(!checkImgExtension(file.name)){
+                        uploader.stop();
+                        uploader.destroy();
+                        alert('格式需是jpg/jpeg/gif/png');
+                      }
+                    });
+                  },
+                  'BeforeUpload': function(up, file) {
+                           // 每个文件上传前,处理相关的事情
+
+                  },
+                  'UploadProgress': function(up, file) {
+                     // 每个文件上传时,处理相关的事情
+
+                  },
+                  'FileUploaded': function(up, file, info) {
+                     // 每个文件上传成功后,处理相关的事情
+                     // 其中 info 是文件上传成功后，服务端返回的json，形式如
+                     // {
+                     //    "hash": "Fh8xVqod2MQ1mocfI4S4KpRL6D98",
+                     //    "key": "gogopher.jpg"
+                     //  }
+                     // 参考http://developer.qiniu.com/docs/v6/api/overview/up/response/simple-response.html
+                      imglen++;
+                      if(imglen>maxlen){
+                        bAdd=false;
+                        uploader.splice(maxlen,9999);
+                        alert('最多上传'+maxlen+'张');
+                        imglen--;
+                        oPhotoAdd2.style.display='none';
+                      }
+                      else if(imglen==maxlen){
+                        bAdd=true;
+                        uploader.splice(maxlen,999);
+                        oPhotoAdd2.style.display='none';
+                      }
+                      else{
+                        bAdd=true;
+                        oPhotoAdd2.style.display='block';
+                      }
+                      if(bAdd){
+                        var domain = up.getOption('domain');
+                        var res =$.parseJSON(info);
+                        var sourceLink ='http://'+domain+'/'+res.key; //获取上传成功后的文件的Url
+                        var div=document.createElement('div');
+                        div.className='thumb-show';
+                        div.innerHTML='<span class="thumbnail-cover"><img class="js-inputImg" src='+sourceLink+'?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120'+' data-src='+res.key+'></span>';
+                        oPhoto2.appendChild(div);
+                        var oA=document.createElement('a');
+                        oA.innerHTML='&times';
+                        oA.className='close close-rounded-sm deletephoto';
+                        oA.setAttribute('href','javascript:;')
+                        div.appendChild(oA);
+                        oA.onclick=function(){
+                         oPhoto2.removeChild(this.parentNode);
+                         imglen--;
+                         oPhotoAdd2.style.display='block';
+                        }
+                      };
+                  },
+                  'Error': function(up, err, errTip) {
+                     //上传出错时,处理相关的事情
+                       alert(errTip);
+                  },
+                  'UploadComplete': function() {
+                    //队列文件处理完毕后,处理相关的事情
+                  },
+                  'Key': function(up, file) {
+                    // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+                    // 该配置必须要在 unique_names: false , save_key: false 时才生效
+                    var date = new Date();
+                    var time = date.getTime();
+                    var md = $.md5('' + time);
+                    var key = "tasktype" + "/" + "uid" + "/" + md + ".jpg";
+                    return key;
+                  }
+                }
+            });
+        },
+        error:function(msg){
+          alert('暂时无法上传');
+        }
+      });
+    }
+  });
+  </script>
+<% end %>

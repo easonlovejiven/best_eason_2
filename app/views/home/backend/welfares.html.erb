@@ -1,0 +1,72 @@
+<div class="container m-container">
+  <div class="row row-10">
+    <div class="col-sm-3">
+      <%= render "home/users/panel" %>
+    </div>
+    <div class="col-sm-9">
+      <ul class="head-highline list-unstyled">
+        <li class="item <%= 'active' if params[:shop_category] == 'welfare_events' %>">
+          <%= link_to '活动管理', welfares_home_backend_index_path(shop_category: 'welfare_events') %>
+        </li>
+        <li class="item <%= 'active' if params[:shop_category] == 'welfare_products' %>">
+          <%= link_to '商品管理', welfares_home_backend_index_path(shop_category: 'welfare_products') %>
+        </li>
+      </ul>
+      <p>此列表仅显示已发布的福利。若需查看或编辑未发布的福利，请到左侧导航的「发布任务/福利」>「草稿」页面。</p>
+      <%= form_tag welfares_home_backend_index_path, method: :get, class: "form-inline"  do %>
+        <%= hidden_field_tag "shop_category", params[:shop_category] %>
+        <div class="form-group">
+          <label for="">任务ID</label>
+          <%= text_field_tag 'id', params[:id], class: "form-control", placeholder: "1255" %>
+        </div>
+        <div class="form-group">
+          <label for="">关键字</label>
+          <%= text_field_tag 'title', params[:title], class: "form-control", placeholder: "请输入关键字" %>
+        </div>
+        <button type="submit" class="btn btn-highlight btn-md">搜索</button>
+      <% end %>
+      <br>
+
+      <% @shop_title = params[:shop_category] == "welfare_events" ? '免费活动' : '免费商品' %>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>名称</th> <!-- （活动／商品／应援） -->
+              <th>订单数</th>
+              <th>交易额</th>
+              <th>创建时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @shops.includes(:expens).each do |task| %>
+              <tr>
+                <td class=""><%= task.id %></td>
+                <td class="col-md-4">
+                  <span class="label label-success"><%= @shop_title %></span><%= task.title %>
+                </td>
+                <td class=""><%= task.expens_size %></td>
+                <td class=""><%= task.sum_fee %></td>
+                <td class=""><%= task.created_at.to_s(:db) %></td>
+                <td class="">
+                  <%= link_to '查看', expens_home_backend_index_path(task_id: task.id, shop_category: task.class.name), class: 'btn btn-default btn-sm' %>
+                  <% if params[:shop_category] == 'welfare_events' %>
+                    <%= link_to '编辑', edit_welfare_event_path(task), class: 'btn btn-default btn-sm' %>
+                  <% else %>
+                    <%= link_to '编辑', edit_welfare_product_path(task), class: 'btn btn-default btn-sm' %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <br>
+      <div class="text-center">
+        <%= will_paginate @tasks %>
+      </div>
+    </div>
+  </div>
+</div>

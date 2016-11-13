@@ -1,0 +1,3 @@
+.form-group
+	= label_tag "where[#{field}][like]", model.human_attribute_name(field)
+	= text_field_tag "where[#{field}][like]", params[:where].try(:[], field).respond_to?(:[]) ? params[:where].try(:[], field).try(:[], :like).to_s.gsub('%', '') : params[:where].try(:[], field), class: 'form-control'

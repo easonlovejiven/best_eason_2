@@ -1,0 +1,43 @@
+<%= f.input field, label: false, collection: options[:selects], input_html: {class: 'form-control select2 required'}.merge!(options[:multiple_class] ? {multiple: 'multiple', id: field} : {id: field} ) %>
+<% content_for :tail do %>
+  <style media="screen">
+    .select2-hidden-accessible{
+      visibility: hidden;
+    }
+  </style>
+
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $("#<%= field%>").select2({
+      placeholder: "请输入关键字来选择",
+      // tokenSeparators: [',', ' '],
+      tags: "<% options[:tag] ? true : false %>",
+      maximumSelectionLength: 10,
+      ajax: {
+        url: "<%= options[:url] %>",
+        dataType: 'json',
+        delay: 250,
+        type: "POST",
+        data: function (params) {
+          return {
+            name: params,
+          };
+        },
+        processResults: function (data, page) {
+          return { results: $.map( data.stars, function(client, i) {
+                    return { id: client.id, text: client.name }
+                } ) };
+        },
+        cache: true
+      },
+      escapeMarkup: function (markup) { return markup; },
+      minimumInputLength: 1
+
+    });
+    var value = $.map($('.select2').select2('data'), function(client, i) {
+      client.name
+    });
+    $('input.select2').val(value.join(','));
+  })
+</script>
+<% end %>

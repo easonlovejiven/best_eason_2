@@ -1,0 +1,58 @@
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <span class="pull-right">
+      <form class="form-search hide-sm" action="<%= search_result_home_home_index_path %>" method="get">
+        <div class="input-group">
+          <input type="text" class="form-control js_search_val" name='keyword' placeholder="热搜: <% @hot_records && @hot_records.each do |r| %> <%= r %> <% end %>" value="<%= params[:keyword] %>">
+          <div class="input-group-btn">
+            <button type="submit" class="btn btn-default js_search_btn"><i class="icons">&#xe617;</i></button>
+          </div>
+        </div>
+      </form>
+
+      <% if @current_user %>
+        <span class="dropdown dropdown-group">
+          <a href="javascript:;" data-toggle="dropdown" class="navbar-link ellipsis"><%= @current_user.name %> <i class="dropdown-arrow"></i> </a>
+          <ul class="dropdown-menu list-unstyled">
+            <li>
+              <a href="<%= edit_home_users_path %>">个人中心</a>
+            </li>
+            <li>
+              <a href="<%= home_user_path(@current_user) %>">我的主页</a>
+            </li>
+            <% if @current_user && @current_user.verified? %>
+              <li>
+                <%= link_to "发布任务", personal_center_home_users_path %>
+              </li>
+            <% end %>
+            <li>
+              <a href="/shop/orders">订单管理</a>
+            </li>
+            <li>
+              <%= link_to "购物车", shop_cart_path(@current_user) %>
+            </li>
+            <li>
+              <%= link_to "关注", home_stars_path %>
+            </li>
+            <li>
+              <%= link_to '退出', session_path(0, redirect: request.fullpath), method: 'delete', confirm: ' ', class: '' %>
+            </li>
+          </ul>
+        </span>
+      <% else %>
+        <span class="navbar-link">
+          <%= link_to '登录', new_session_path, class: "#{'active' if params[:controller] == 'home/sessions'}" %>/<%= link_to '注册', new_account_path, class: "#{'active' if params[:controller] == 'home/accounts'}" %>
+        </span>
+      <% end %>
+    </span>
+    <span class="pull-left form-search-sm show-sm">
+      <a href="<%= search_result_home_home_index_path %>" class="btn btn-highlight-outline"><i class="icons">&#xe617;</i></a>
+    </span>
+    <span class="logo-sm pull-left"><%= link_to image_tag("home/logo.png"), home_root_path, alt: "Owhat logo", class: 'logo', data: {'no-turbolink':true} %></span>
+    <%= link_to "任务", shop_tasks_path, class: "navbar-link hide-sm #{'active' if request.path.match(/\/shop\/tasks/)}" %>
+    <%= link_to "福利", welfare_letters_path, class: "navbar-link hide-sm #{'active' if request.path.match(/\/welfare\/letters/)}" %>
+    <%= link_to "应援榜", stars_home_rankings_path, class: "navbar-link hide-sm #{'active' if request.path.match(/\/home\/rankings\/stars/)}" %>
+    <%= link_to "关注", home_stars_path, class: "navbar-link hide-sm #{'active' if request.path.match(/\/home\/stars/)}" %>
+
+  </div>
+</div>

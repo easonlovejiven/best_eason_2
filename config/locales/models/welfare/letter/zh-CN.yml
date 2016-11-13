@@ -1,0 +1,15 @@
+zh-CN:
+  activerecord:
+    models:
+      welfare/letter: 书信
+    attributes:
+      welfare/letter:
+        paper_id: 信纸
+        title: 标题
+        pic: 封页图
+        receiver: 收件人
+        content: 书信正文
+        signature: 署名
+        star_list: 关联明星
+        is_share: 分享
+        images: 图片
