@@ -810,6 +810,12 @@ module V3
           SELECT `f`.id, `f`.is_income, `f`.shop_funding_id, `f`.shop_funding_type, `f`.created_at, `f`.payment FROM `shop_funding_orders` AS `f`  WHERE `f`.owner_id = #{user.id} AND `f`.status = 2 UNION ALL
           SELECT `w`.id, `w`.is_income, `w`.task_id, `w`.task_type, `w`.created_at, `w`.amount FROM `core_withdraw_orders` AS `w` WHERE `w`.requested_by = #{user.id} AND `w`.status = 3 LIMIT #{per_page} OFFSET #{(params[:page] ? params[:page] - 1 : 0)*per_page || 0};")
       end
+
+      SELECT m.id id, m.name, m.phone, f.created_at, count(s.id) shop_count, c.name company_name, ifnull(sum(t.price),0) total_amount FROM mind_users m INNER join fx_users f on f.id = m.id left join fx_infos i on i.user_id=f.id left join core_branch_companies c on c.id = f.company_id inner join mind_shops s on s.mind_id = m.id left join (select shop_id, sum(price) price from shop_trades where payment_status = 'success' group by shop_id) t on t.shop_id = s.id where f.created_at between '2017-01-01' and '2017-10-01' and f.company_id = 137 GROUP BY m.id
+
+
+      SELECT m.id id, m.name, m.phone, f.created_at, count(s.id) shop_count, c.name company_name, ifnull(sum(t.price),0) total_amount FROM mind_users m INNER join fx_users f on f.id = m.id left join fx_infos i on i.user_id=f.id left join core_branch_companies c on c.id = f.company_id inner join mind_shops s on s.mind_id = m.id left join (select shop_id, sum(price) price from shop_trades where payment_status = 'success' group by shop_id) t on t.shop_id = s.id where f.created_at between '2017-01-01' and '2017-10-01' and f.company_id = 137 GROUP BY m.id
+
       sql1 = "SELECT `o`.task_id, `o`.user_id AS user_id, `o`.task_type, `o`.obi, `o`.from, `o`.is_income, `o`.created_at FROM `core_task_awards` AS `o` WHERE `o`.user_id = #{user.id} AND `o`.active = 1"
       sql2 = "SELECT `f`.resource_id, `f`.user_id AS user_id, `f`.resource_type, `f`.amount, `f`.status, `f`.is_income, `f`.created_at FROM `core_expens` AS `f`  WHERE `f`.user_id = #{user.id} "
       @obi_detail = Core::TaskAward.find_by_sql("(#{sql1}) UNION ALL (#{sql2}) ORDER BY created_at DESC LIMIT #{per_page} OFFSET #{(params[:page] ? params[:page] - 1 : 0)*per_page || 0};")

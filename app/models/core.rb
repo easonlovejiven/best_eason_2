@@ -1,5 +1,14 @@
-module Core
-  def self.table_name_prefix
-    'core_'
-  end
-end
+SELECT m.id id, m.name, m.phone, f.created_at, ifnull(store_count,0), shop_count,price,  i.amount mind_income, c.name company_name FROM mind_users m left join fx_users f on f.id = m.id left join fx_infos i on i.user_id=f.id left join core_branch_companies c on c.id = f.company_id left join (select sum(price) price, count(*) shop_count, mind_id from mind_shops s left join (select shop_id, sum(price) price from shop_trades where payment_status = 'success' group by shop_id) t on t.shop_id=s.id group by mind_id) tt on tt.mind_id = m.id left join (select count(*) store_count, mind_id from  mind_stores group by mind_id) st on st.mind_id = m.id
+
+ curl -X PUT -H "token: mind" -H "x-shop: 176" -H "v: 1.0.8"  -d "id=781&product[content]=<p><br></p>
+<figure><img+src="http://img.mallbear.com/1497576782987.018.jpeg-content"></figure>
+<p><br></p>&product[is_postage]=true&product[name]=测试&product[pic_list][]=1497576783349.1182.jpeg&product[postage]=15&product[sku_name_1][id]=3&product[sku_name_1][is_show]=true&product[sku_name_1][text]=颜色&product[sku_name_1][values][][id]=1&product[sku_name_1][values][][pic]=1497576783442.561.jpeg&product[sku_name_1][values][][text]=11&product[sku_name_1_value][][id]=1&product[sku_name_1_value][][pic]=1497576783442.561.jpeg&product[sku_name_1_value][][text]=11&product[stock][][code]=123&product[stock][][id]=1193&product[stock][][k1]=颜色&product[stock][][k1_id]=3&product[stock][][md_index]=25&product[stock][][order_num]=0&product[stock][][origin_price]=0.50&product[stock][][price]=555.00&product[stock][][product_id]=781&product[stock][][sale_count]=0&product[stock][][stock_num]=100001&product[stock][][v1]=11&product[stock][][v1_id]=1&product[template_id]=96&product[total_stock]=100001"  http://localhost:3000/api/mind/shop/products/781 | jq
+
+
+select s_p.id, s_p.name, ifnull(SUM(s_t.price), 0) trades_amount, s_p.created_at, s_p.sale_count, m_s.name s_name from shop_products s_p left join shop_items s_i on s_i.product_id = s_p.id left join shop_trades s_t on s_i.trade_id = s_t.id left join mind_shops m_s on s_t.shop_id = m_s.id where s_t.payment_status = 'success' group by s_p.id
+
+
+
+trades_count = Shop::Trade.find_by_sql("select s_p.id, s_p.name, ifnull(SUM(s_t.price), 0) trades_amount, s_p.created_at, s_p.sale_count, m_s.name s_name from shop_products s_p left join shop_items s_i on s_i.product_id = s_p.id left join shop_trades s_t on s_i.trade_id = s_t.id left join mind_shops m_s on s_t.shop_id = m_s.id where s_t.payment_status = 'success' group by s_p.id")
+
+select s_p.id, s_p.name, ifnull(SUM(s_t.price), 0) trades_amount, s_p.created_at, s_p.sale_count, m_s.name s_name from shop_products s_p left join shop_items s_i on s_i.product_id = s_p.id left join shop_trades s_t on s_i.trade_id = s_t.id left join mind_shops m_s on s_t.shop_id = m_s.id where s_t.payment_status = 'success' group by s_p.id

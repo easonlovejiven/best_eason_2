@@ -19,6 +19,7 @@ module SendMessage
       end
 		end
 
+    
     def send_single_sms(mobile, text)
       return unless mobile.present? && mobile.is_mobile? && text.present?
       response = api('single_send.json', 'sms', {apikey: @options['apikey'], mobile: mobile, text: text})
